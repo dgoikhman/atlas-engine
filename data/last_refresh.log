@@ -1,0 +1,42 @@
+[zillow:zhvi] https://files.zillowstatic.com/research/public_csvs/zhvi/Metro_zhvi_uc_sfrcondo_tier_0.33_0.67_sm_sa_month.csv
+[zillow:zori] https://files.zillowstatic.com/research/public_csvs/zori/Metro_zori_uc_sfrcondo_sm_sa_month.csv
+Traceback (most recent call last):
+  File "/home/runner/work/atlas-engine/atlas-engine/pipelines/public_data.py", line 184, in <module>
+    main()
+  File "/home/runner/work/atlas-engine/atlas-engine/pipelines/public_data.py", line 115, in main
+    zori, rdates = _read_csv("zori")
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/atlas-engine/atlas-engine/pipelines/public_data.py", line 68, in _read_csv
+    r.raise_for_status()
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/requests/models.py", line 1167, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 404 Client Error: Not Found for url: https://files.zillowstatic.com/research/public_csvs/zori/Metro_zori_uc_sfrcondo_sm_sa_month.csv
+[census] ACS 2023 profile
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/requests/models.py", line 1116, in json
+    return complexjson.loads(self.text, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/decoder.py", line 338, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/decoder.py", line 356, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/runner/work/atlas-engine/atlas-engine/pipelines/context.py", line 114, in <module>
+    main()
+  File "/home/runner/work/atlas-engine/atlas-engine/pipelines/context.py", line 70, in main
+    cur = _index(_get(2023, now_fields), now_fields)
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/atlas-engine/atlas-engine/pipelines/context.py", line 43, in _get
+    return r.json()
+           ^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/requests/models.py", line 1120, in json
+    raise RequestsJSONDecodeError(e.msg, e.doc, e.pos)
+requests.exceptions.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
