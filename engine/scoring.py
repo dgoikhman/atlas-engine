@@ -20,7 +20,7 @@ RENTALS = {
             "display": lambda m: f"{m['rent']*12/m['home_value']*100:.1f}%",
         },
         "entry": {
-            "label": "Entry price vs a $100K war chest",
+            "label": "Entry price (vs $100K reference budget)",
             "weight": 0.15,
             "fn": lambda m: clamp01((340000 - m["home_value"]) / 140000) * 100,
         },

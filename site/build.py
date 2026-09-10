@@ -97,6 +97,25 @@ METRO_BODY = """
 <tr><td>Gross rental yield</td><td class="n">{{ yield_pct }}%</td></tr>
 <tr><td>Star Score</td><td class="n">{{ score }}/100 <span class="stars">{{ star_str }}</span></td></tr>
 <tr><td>Rank among tracked markets</td><td class="n">#{{ rank }} of {{ total }}</td></tr></table>
+<div class="explain"><b>Your buying power in {{ m.name }}</b>
+<div class="cgrid" style="margin:6px 0">
+<div class="field"><label>Free cash ($)</label><input id="bp-cash" type="number" inputmode="numeric" value="60000"></div>
+<div class="field"><label>Available credit ($)</label><input id="bp-credit" type="number" inputmode="numeric" value="40000"></div>
+</div>
+<div id="bp-out" style="font-size:14.5px"></div>
+</div>
+<script>
+(function(){var V={{ m.home_value }};
+function calc(){var c=+document.getElementById("bp-cash").value||0,k=+document.getElementById("bp-credit").value||0,p=c+k;
+try{localStorage.setItem("bm_cash",c);localStorage.setItem("bm_credit",k);}catch(e){}
+var per=0.25*V+12000, d=Math.max(0,Math.floor(p/per));
+var out="Deployable capital <b>$"+p.toLocaleString()+"</b> → about <b>"+d+" door"+(d==1?"":"s")+"</b> at this metro's typical price (25% down + ~$12K closing/reserves each). Investor price points stretch further.";
+if(k>0)out+=" <span style='color:var(--muted)'>Using credit for down payments? DSCR and HELOC-friendly lenders matter — that's a question the <a href='{{ base }}/start/'>market finder</a> routes for you.</span>";
+document.getElementById("bp-out").innerHTML=out;}
+try{if(localStorage.getItem("bm_cash"))document.getElementById("bp-cash").value=localStorage.getItem("bm_cash");
+if(localStorage.getItem("bm_credit"))document.getElementById("bp-credit").value=localStorage.getItem("bm_credit");}catch(e){}
+["bp-cash","bp-credit"].forEach(function(i){document.getElementById(i).addEventListener("input",calc)});calc();})();
+</script>
 <h2>Why {{ m.name }} scores {{ score }}</h2>
 {% if unlocked %}<table><tr><th>Factor</th><th class="n">Score</th><th class="n">Weight</th></tr>
 {% for f in factors.values() %}<tr><td>{{ f.label }}</td><td class="n">{{ f.score }}</td><td class="n">{{ (f.weight*100)|int }}%</td></tr>
@@ -161,7 +180,7 @@ INDEX_BODY = """
 
 METHOD_BODY = """
 <h1>Star Score methodology</h1>
-<p class="lede">The Star Score is a 0-100 index of how well a US metro suits the equity-snowball strategy: buy under market, force appreciation, refinance, repeat. It weights gross rental yield 35%, entry price against a $100K capital base 15%, landlord-friendliness 15%, equity growth 15%, property-tax drag 10%, and climate/insurance risk 10%.</p>
+<p class="lede">The Star Score is a 0-100 index of how well a US metro suits the equity-snowball strategy: buy under market, force appreciation, refinance, repeat. It weights gross rental yield 35%, entry affordability against a fixed $100K reference budget 15% — a stable benchmark so scores stay comparable across markets and over time (personalize with your own cash and credit on any market page), landlord-friendliness 15%, equity growth 15%, property-tax drag 10%, and climate/insurance risk 10%.</p>
 <h2>Sources</h2>
 <p>Home values are Zillow Home Value Index (ZHVI) metro figures and rents are Zillow Observed Rent Index (ZORI) metro figures, {{ vintage }}. Supporting context: US Census ACS, HUD Fair Market Rents, state landlord-tenant statutes, Tax Foundation effective property-tax tables. Landlord-friendliness, growth, and climate factors are editorial scores on public data, reviewed {{ today }}.</p>
 <h2>What it is not</h2>
@@ -172,10 +191,12 @@ QUIZ_BODY = """
 <h1>Find your first (or next) market in 5 taps</h1>
 <p class="lede">Answer five questions and get your three best-fit markets from {{ total }} tracked metros — plus a plan matched to how you want to operate. Free, no signup to see results.</p>
 <div id="quiz">
-<div class="explain"><b>1 · Capital to deploy</b><br>
-<label><input type="radio" name="cap" value="50"> Under $50K</label><br>
-<label><input type="radio" name="cap" value="120" checked> $50K–$150K</label><br>
-<label><input type="radio" name="cap" value="300"> $150K+</label></div>
+<div class="explain"><b>1 · Your buying power</b><br>
+<div class="cgrid" style="margin-top:6px">
+<div class="field"><label>Free cash ($)</label><input id="q-cash" type="number" inputmode="numeric" value="60000"></div>
+<div class="field"><label>Available credit — HELOC, lines ($)</label><input id="q-credit" type="number" inputmode="numeric" value="40000"></div>
+</div>
+<span style="font-size:12.5px;color:var(--muted)">BRRRR runs on leverage: down payments and rehabs are routinely funded with home-equity lines and investor credit, so both count.</span></div>
 <div class="explain"><b>2 · What matters most</b><br>
 <label><input type="radio" name="goal" value="cash" checked> Monthly cash flow</label><br>
 <label><input type="radio" name="goal" value="bal"> Balanced</label><br>
@@ -198,9 +219,13 @@ QUIZ_BODY = """
 var MK = {{ markets_json }};
 var ST = [...new Set(MK.map(m=>m.state))].sort();
 document.getElementById("mystate").innerHTML = ST.map(s=>"<option>"+s+"</option>").join("");
+try{if(localStorage.getItem("bm_cash"))document.getElementById("q-cash").value=localStorage.getItem("bm_cash");
+if(localStorage.getItem("bm_credit"))document.getElementById("q-credit").value=localStorage.getItem("bm_credit");}catch(e){}
 function quizGo(){
  var v=n=>document.querySelector("input[name="+n+"]:checked").value;
- var cap=+v("cap")*1000, goal=v("goal"), wh=v("where"), rehab=v("rehab"), fin=v("fin");
+ var cash=+document.getElementById("q-cash").value||0, cred=+document.getElementById("q-credit").value||0;
+ var cap=cash+cred, goal=v("goal"), wh=v("where"), rehab=v("rehab"), fin=v("fin");
+ try{localStorage.setItem("bm_cash",cash);localStorage.setItem("bm_credit",cred);}catch(e){}
  var pool=MK.filter(m=>m.v*0.25<=Math.max(cap,30000)*1.1);
  if(wh=="state"){var st=document.getElementById("mystate").value; var loc=pool.filter(m=>m.state==st); if(loc.length)pool=loc;}
  pool.sort((a,b)=> goal=="cash" ? b.y-a.y : goal=="growth" ? b.g-a.g : b.s-a.s);
