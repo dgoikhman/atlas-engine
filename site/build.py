@@ -62,6 +62,16 @@ a{color:var(--land)}
 .faq p{margin:4px 0 14px}
 .faq h3{font-size:15.5px;margin-top:14px}
 nav.crumbs{font-size:13px;color:var(--muted);margin-top:8px}
+.explain{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:12px 14px;margin:14px 0;font-size:14px}
+.explain b{color:var(--land)}
+.map-wrap{background:var(--panel);border:1px solid var(--line);border-radius:6px;margin:14px 0;overflow:hidden}
+.map-wrap svg{display:block;width:100%;height:auto}
+.quick{font-size:14.5px;margin:10px 0}
+.field{margin:8px 0}.field label{display:block;font-size:12.5px;color:var(--muted)}
+.field input,.field select{width:100%;font:inherit;font-size:15px;padding:9px;border:1px solid var(--line);border-radius:4px;background:#fff;color:var(--ink)}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.verdict{margin-top:12px;padding:12px;border-radius:4px;background:#fff;border:1px solid var(--line);font-size:14px}
+.verdict b{color:#2E6E4E}.verdict.bad b{color:#B5563F}
 </style></head><body><div class="wrap">
 <header><a href="{{ base }}/">SNOWBALL <span>★</span> ATLAS</a></header>
 {{ body }}
@@ -75,6 +85,7 @@ METRO_BODY = """
 <h1>{{ m.name }}, {{ m.state }} rental market data ({{ year }})</h1>
 <p class="lede">As of {{ vintage }}, the typical home in the {{ m.name }} metro costs <b>${{ "{:,}".format(m.home_value) }}</b> and typical rent is <b>${{ "{:,}".format(m.rent) }}/month</b> — a price-to-rent ratio of <b>{{ ratio }}</b> and a gross rental yield of <b>{{ yield_pct }}%</b>. {{ m.name }} scores <b>{{ score }}/100</b> on the Star Score index, ranking <b>#{{ rank }} of {{ total }}</b> tracked US rental markets.</p>
 <p>{{ m.blurb }}</p>
+<div class="explain"><b>New to this?</b> The <b>price-to-rent ratio</b> is the home price divided by a year of rent — lower means rents are big relative to prices, which favors landlords. <b>Gross yield</b> is a year of rent as a % of the price, before expenses. <b>BRRRR</b> = Buy, Rehab, Rent, Refinance, Repeat: buy below market, fix it, rent it, then refinance to pull your cash back out and buy the next one. Full walkthrough in the <a href="{{ base }}/rentals/brrrr-guide/">beginner's guide</a>.</div>
 <h2>Key numbers</h2>
 <table><tr><th>Metric</th><th class="n">Value</th></tr>
 <tr><td>Typical home value (ZHVI)</td><td class="n">${{ "{:,}".format(m.home_value) }}</td></tr>
@@ -89,11 +100,21 @@ METRO_BODY = """
 {% endfor %}</table>
 <h2>Compare {{ m.name }}</h2>
 <p>{% for c in compares %}<a href="{{ base }}/rentals/compare/{{ c.href }}/">{{ m.name }} vs {{ c.name }}</a>{{ " · " if not loop.last }}{% endfor %}</p>
+<h2>What would a rehab cost here?</h2>
+<p>National rule-of-thumb renovation costs (2026, per square foot) applied to a typical ~1,400 sq ft single-family in this market — every house differs, so treat these as planning ranges, not bids:</p>
+<table><tr><th>Scope</th><th class="n">$/sq ft</th><th class="n">Typical house</th></tr>
+<tr><td>Paint &amp; refresh (cosmetic light)</td><td class="n">$15–25</td><td class="n">$21K–35K</td></tr>
+<tr><td>Cosmetic full (floors, kitchen refresh, baths)</td><td class="n">$25–45</td><td class="n">$35K–63K</td></tr>
+<tr><td>Full renovation (systems + finishes)</td><td class="n">$45–75</td><td class="n">$63K–105K</td></tr>
+<tr><td>Gut / structural</td><td class="n">$75–120</td><td class="n">$105K–168K</td></tr></table>
+<p class="quick">Run your own numbers for {{ m.name }} in the <a href="{{ base }}/rentals/brrrr-calculator/">BRRRR &amp; rehab calculator</a>.</p>
 <div class="faq"><h2>Frequently asked questions</h2>
 <h3>Is {{ m.name }} a good market for rental property in {{ year }}?</h3>
 <p>{{ m.name }} scores {{ score }}/100 on the Star Score index (#{{ rank }} of {{ total }} tracked markets), with a gross rental yield of {{ yield_pct }}% at {{ vintage }} prices. {{ verdict }}</p>
 <h3>What is the price-to-rent ratio in {{ m.name }}?</h3>
 <p>{{ ratio }} — the typical home value (${{ "{:,}".format(m.home_value) }}) divided by a year of typical rent (${{ "{:,}".format(m.rent) }}/month × 12). Ratios under about 15 generally favor buying and landlording.</p>
+<h3>Is {{ m.name }} a good BRRRR market in {{ year }}?</h3>
+<p>{{ brrrr_answer }}</p>
 <h3>How much rent does the typical {{ m.name }} home earn?</h3>
 <p>Typical asking rent in the {{ m.name }} metro is ${{ "{:,}".format(m.rent) }} per month as of {{ vintage }}, per Zillow's Observed Rent Index.</p>
 </div>"""
@@ -125,6 +146,8 @@ COMPARE_BODY = """
 INDEX_BODY = """
 <h1>US rental markets, scored for the equity snowball</h1>
 <p class="lede">The Star Score ranks {{ total }} US metros for buy-under-market, refinance-and-repeat investing, on {{ vintage }} Zillow home values and rents. Current leader: <b><a href="{{ base }}/rentals/{{ top.m.slug }}/">{{ top.m.name }}, {{ top.m.state }}</a></b> at <b>{{ top.score }}/100</b> with a {{ top.yield_pct }}% gross yield.</p>
+<div class="map-wrap">{{ map_svg }}</div>
+<p class="quick">Bigger star = better snowball math. New here? Start with the <a href="{{ base }}/rentals/brrrr-guide/">2-minute BRRRR guide</a>, then stress-test a deal in the <a href="{{ base }}/rentals/brrrr-calculator/">calculator</a>.</p>
 <h2>Leaderboard</h2>
 <table><tr><th>#</th><th>Market</th><th class="n">Yield</th><th class="n">Star Score</th></tr>
 {% for r in rows %}<tr><td>{{ loop.index }}</td><td><a href="{{ base }}/rentals/{{ r.m.slug }}/">{{ r.m.name }}, {{ r.m.state }}</a></td><td class="n">{{ r.yield_pct }}%</td><td class="n">{{ r.score }} <span class="stars">{{ r.star_str }}</span></td></tr>
@@ -139,9 +162,63 @@ METHOD_BODY = """
 <h2>What it is not</h2>
 <p>Metro averages start the conversation; the block and the deal finish it. The Star Score is research and education, not investment advice, an appraisal, or a substitute for local underwriting.</p>"""
 
+GUIDE_BODY = """
+<nav class="crumbs"><a href="{{ base }}/">Atlas</a> › BRRRR guide</nav>
+<h1>What is the BRRRR strategy? The rental snowball, explained</h1>
+<p class="lede">BRRRR stands for <b>Buy, Rehab, Rent, Refinance, Repeat</b>: buy a house below its fixed-up value, renovate it, rent it out, then refinance at the new higher value to pull most of your cash back out — so the same money buys the next house while you keep the first. Done well, one pot of capital compounds into a portfolio; that is the snowball.</p>
+<h2>The five steps in plain English</h2>
+<table><tr><th>Step</th><th>What it means</th></tr>
+<tr><td><b>Buy</b></td><td>Pay less than the home will be worth after repairs (the "ARV"). The discount is where your profit is born — target all-in (price + rehab) at 75% of ARV or better.</td></tr>
+<tr><td><b>Rehab</b></td><td>Renovate to rent-ready. See per-market cost rules of thumb on each metro page.</td></tr>
+<tr><td><b>Rent</b></td><td>Place a tenant. The rent must cover the future loan with room to spare.</td></tr>
+<tr><td><b>Refinance</b></td><td>A lender appraises the fixed-up home and loans ~75% of its new value, returning most of your cash.</td></tr>
+<tr><td><b>Repeat</b></td><td>Redeploy that cash into the next house. Equity stays behind and compounds.</td></tr></table>
+<h2>The three numbers that matter</h2>
+<p><b>Price-to-rent ratio</b> — home price ÷ a year of rent. Under ~15 favors landlords; our <a href="{{ base }}/rentals/best-rental-markets-2026/">rankings</a> live mostly in the 13–16 range. <b>Gross yield</b> — a year of rent as a % of price, before expenses (a 50% expense rule is a sane planning default). <b>The 1% rule</b> — monthly rent of at least 1% of purchase price is the classic screen for cash flow.</p>
+<h2>Where the Star Score fits</h2>
+<p>The <a href="{{ base }}/methodology/">Star Score</a> ranks metros for this exact loop: yield, entry prices a normal budget can buy, landlord law, equity growth, taxes and insurance risk. Pick a market from the <a href="{{ base }}/">map</a>, then pressure-test your first deal in the <a href="{{ base }}/rentals/brrrr-calculator/">calculator</a>.</p>"""
+
+CALC_BODY = """
+<nav class="crumbs"><a href="{{ base }}/">Atlas</a> › Calculator</nav>
+<h1>BRRRR deal &amp; rehab cost calculator</h1>
+<p class="lede">Estimate a renovation budget, then see whether a deal "snowballs" — whether refinancing at 75% of the after-repair value returns your cash so it can buy the next house. Cash flow uses the 50% expense rule; every output is an estimate for planning, not a bid or an appraisal.</p>
+<h2>1 · Rough rehab budget</h2>
+<div class="cgrid">
+<div class="field"><label>House size (sq ft)</label><input id="sqft" type="number" value="1400"></div>
+<div class="field"><label>Scope</label><select id="tier"><option value="20">Paint &amp; refresh ($15–25/sqft)</option><option value="35" selected>Cosmetic full ($25–45/sqft)</option><option value="60">Full renovation ($45–75/sqft)</option><option value="95">Gut ($75–120/sqft)</option></select></div>
+</div>
+<p class="quick" id="rehab-out"></p>
+<h2>2 · The deal</h2>
+<div class="cgrid">
+<div class="field"><label>Purchase price ($)</label><input id="price" type="number" value="95000"></div>
+<div class="field"><label>Rehab budget ($)</label><input id="rehab" type="number" value="49000"></div>
+<div class="field"><label>After-repair value ($)</label><input id="arv" type="number" value="185000"></div>
+<div class="field"><label>Monthly rent ($)</label><input id="rent" type="number" value="1450"></div>
+<div class="field"><label>Refi rate (%)</label><input id="rate" type="number" step="0.1" value="7.5"></div>
+<div class="field"><label>Your capital ($)</label><input id="cash" type="number" value="100000"></div>
+</div>
+<div id="rows"></div><div class="verdict" id="v"></div>
+<script>
+function n(id){return +document.getElementById(id).value||0}
+function fm(x){return "$"+Math.round(x).toLocaleString()}
+function calc(){
+ var t=n("tier"),s=n("sqft");document.getElementById("rehab-out").innerHTML="Estimated budget: <b>"+fm(s*t*0.75)+" – "+fm(s*t*1.25)+"</b> (drop this into the deal below)";
+ var P=n("price"),R=n("rehab"),A=n("arv"),rent=n("rent"),rate=n("rate")/100,cash=n("cash");
+ var allIn=P+R,loan=A*0.75,leftIn=Math.max(0,allIn-loan),eq=A-loan;
+ var i=rate/12,pmt=loan>0?loan*(i*Math.pow(1+i,360))/(Math.pow(1+i,360)-1):0;
+ var cf=rent*0.5-pmt,doors=leftIn>0?Math.floor(cash/leftIn):99;
+ document.getElementById("rows").innerHTML="<table><tr><td>All-in (buy+rehab)</td><td class=n>"+fm(allIn)+"</td></tr><tr><td>Refi loan (75% of ARV)</td><td class=n>"+fm(loan)+"</td></tr><tr><td>Cash left in deal</td><td class=n>"+fm(leftIn)+"</td></tr><tr><td>Equity kept</td><td class=n>"+fm(eq)+"</td></tr><tr><td>Monthly cash flow (50% rule)</td><td class=n>"+(cf>=0?"+":"−")+fm(Math.abs(cf))+"</td></tr></table>";
+ var v=document.getElementById("v");
+ if(allIn>A*0.78){v.className="verdict bad";v.innerHTML="<b>Doesn&rsquo;t snowball.</b> All-in is "+Math.round(allIn/A*100)+"% of ARV, trapping "+fm(leftIn)+" per door — "+fm(cash)+" supports only "+doors+" door(s). Target 75% of ARV all-in.";}
+ else if(cf<0){v.className="verdict bad";v.innerHTML="<b>Equity works, cash flow doesn&rsquo;t.</b> Runs "+fm(Math.abs(cf))+"/mo negative — need higher rent, cheaper debt, or a bigger discount.";}
+ else{v.className="verdict";v.innerHTML="<b>This snowballs.</b> Each cycle leaves "+fm(leftIn)+" behind and returns the rest — "+fm(cash)+" supports ~<b>"+(doors>=99?"an open-ended chain of":doors)+" doors</b>, each holding "+fm(eq)+" equity and paying ~"+fm(Math.max(0,cf))+"/mo.";}}
+["sqft","tier","price","rehab","arv","rent","rate","cash"].forEach(function(id){document.getElementById(id).addEventListener("input",calc)});calc();
+</script>"""
+
 env = Environment(loader=DictLoader({
     "base": BASE, "metro": METRO_BODY, "rankings": RANKINGS_BODY,
     "compare": COMPARE_BODY, "index": INDEX_BODY, "method": METHOD_BODY,
+    "calc": CALC_BODY, "guide": GUIDE_BODY,
 }))
 
 
@@ -155,6 +232,36 @@ def page(path, title, description, body_html, jsonld=None):
     open(os.path.join(d, "index.html"), "w").write(full)
     return path
 
+
+US_OUTLINE = [(48.4,-124.7),(46.2,-124.0),(42.0,-124.4),(40.4,-124.4),(38.9,-123.7),
+ (37.8,-122.5),(36.6,-121.9),(34.4,-120.5),(33.7,-118.3),(32.5,-117.1),(32.5,-114.8),
+ (31.3,-111.1),(31.8,-106.5),(29.5,-104.4),(29.3,-103.3),(26.0,-97.5),(27.8,-97.2),
+ (29.7,-93.8),(29.2,-90.1),(30.4,-87.3),(29.7,-84.9),(27.8,-82.6),(25.2,-80.9),
+ (25.5,-80.1),(28.5,-80.6),(30.7,-81.4),(32.0,-80.8),(33.9,-78.0),(35.2,-75.5),
+ (36.9,-76.0),(38.9,-75.1),(40.5,-74.0),(41.3,-71.9),(41.7,-70.0),(43.1,-70.6),
+ (44.8,-66.9),(47.4,-68.3),(45.0,-71.5),(45.0,-74.7),(44.1,-76.5),(43.3,-79.0),
+ (42.3,-81.0),(41.7,-83.5),(43.6,-82.5),(45.8,-84.7),(46.5,-84.4),(47.5,-89.6),
+ (48.0,-89.5),(49.0,-95.2),(49.0,-123.1)]
+
+def _proj(lat, lng, W=944, H=520, P=16):
+    x = P + ((lng + 125) / (125 - 66)) * (W - 2 * P)
+    y = P + ((49.5 - lat) / (49.5 - 24.5)) * (H - 2 * P)
+    return x, y
+
+def svg_map(ranked, refs):
+    d = " ".join(("M" if i == 0 else "L") + f"{_proj(a,b)[0]:.0f} {_proj(a,b)[1]:.0f}"
+                 for i, (a, b) in enumerate(US_OUTLINE)) + " Z"
+    marks = []
+    for r in sorted(ranked + refs, key=lambda x: x["score"]):
+        m = r["m"]; x, y = _proj(m.lat, m.lng)
+        if getattr(m, "ref", False) or m.slug in ("austin-tx","denver-co","chicago-il"):
+            marks.append(f'<a href="{BASE_URL}/rentals/{m.slug}/"><circle cx="{x:.0f}" cy="{y:.0f}" r="5" fill="#8FA3A8"><title>{m.name}: reference market</title></circle></a>')
+        else:
+            sz = 14 + r["score"] / 100 * 22
+            marks.append(f'<a href="{BASE_URL}/rentals/{m.slug}/"><text x="{x:.0f}" y="{y + sz*0.36:.0f}" text-anchor="middle" font-size="{sz:.0f}" fill="#C08A1E" font-weight="700">\u2605<title>{m.name}: Star Score {r["score"]}</title></text></a>')
+    return (f'<svg viewBox="0 0 944 520" role="img" aria-label="Map of US BRRRR rental markets by Star Score">'
+            f'<path d="{d}" fill="#1E4E49" fill-opacity="0.13" stroke="#1E4E49" stroke-opacity="0.55" stroke-width="1.5" stroke-linejoin="round"/>'
+            + "".join(marks) + "</svg>")
 
 def enrich(m):
     score, factors = compute("rentals", m)
@@ -195,6 +302,12 @@ def main():
         top3 = [x for x in ranked[:4] if x is not r][:3]
         compares = [{"name": t["m"].name,
                      "href": "-vs-".join(sorted([m.slug, t["m"].slug]))} for t in top3]
+        brrrr_answer = (
+            f"With a typical home at ${m.home_value:,} and rent of ${m.rent:,}/month "
+            f"({r['yield_pct']}% gross yield), {m.name} "
+            + ("suits the BRRRR strategy well: entry prices leave room to buy below market, renovate, and refinance without trapping capital."
+               if r['yield_pct'] >= 6.5 and m.home_value < 300000 else
+               "can work for BRRRR in select submarkets, but higher prices or thinner yields mean deals need bigger discounts to snowball."))
         verdict = ("It ranks in the top tier for cash-flow investors."
                    if rank <= 5 and r in ranked else
                    "It suits investors prioritizing cash flow over appreciation."
@@ -208,7 +321,10 @@ def main():
             {"@type": "Question",
              "name": f"What is the price-to-rent ratio in {m.name}?",
              "acceptedAnswer": {"@type": "Answer",
-                "text": f"{r['ratio']}, based on a typical home value of ${m.home_value:,} and typical rent of ${m.rent:,}/month."}}]}
+                "text": f"{r['ratio']}, based on a typical home value of ${m.home_value:,} and typical rent of ${m.rent:,}/month."}},
+            {"@type": "Question",
+             "name": f"Is {m.name} a good BRRRR market in {year}?",
+             "acceptedAnswer": {"@type": "Answer", "text": brrrr_answer}}]}
         ds_ld = {"@context": "https://schema.org", "@type": "Dataset",
                  "name": f"{m.name} rental market metrics {year}",
                  "description": f"Home value, rent, price-to-rent ratio and Star Score for the {m.name}, {m.state} metro.",
@@ -218,10 +334,11 @@ def main():
             m=m, base=BASE_URL, year=year, vintage=DATA_VINTAGE,
             ratio=r["ratio"], yield_pct=r["yield_pct"], score=r["score"],
             star_str=r["star_str"], rank=rank, total=total,
-            factors=r["factors"], compares=compares, verdict=verdict)
+            factors=r["factors"], compares=compares, verdict=verdict,
+            brrrr_answer=brrrr_answer)
         urls.append(page(
             f"/rentals/{m.slug}/",
-            f"{m.name}, {m.state} Rental Market Data {year}: Prices, Rents, Star Score",
+            f"{m.name}, {m.state} BRRRR & Rental Market Data {year}: Prices, Rents, Star Score",
             f"{m.name} rental market {year}: typical home ${m.home_value:,}, rent ${m.rent:,}/mo, price-to-rent {r['ratio']}, Star Score {r['score']}/100.",
             body, [faq_ld, ds_ld]))
 
@@ -249,16 +366,25 @@ def main():
         top_yield=top["yield_pct"], base=BASE_URL, year=year, vintage=DATA_VINTAGE)
     urls.append(page(
         f"/rentals/best-rental-markets-{year}/",
-        f"Best US Rental Markets {year}, Ranked by Star Score",
+        f"Best BRRRR & Cash-Flow Rental Markets in the US ({year}), Ranked by Star Score",
         f"{total} US metros ranked for cash-flow rental investing on {DATA_VINTAGE} Zillow data. {top['m'].name} leads at {top['score']}/100.",
         body))
 
     # --- index + methodology
     body = env.get_template("index").render(
-        rows=ranked, top=top, total=total, base=BASE_URL, vintage=DATA_VINTAGE)
+        rows=ranked, top=top, total=total, base=BASE_URL, vintage=DATA_VINTAGE,
+        map_svg=svg_map(ranked, refs))
     urls.append(page("/", f"Snowball Atlas: US Rental Markets Ranked by Star Score",
                      f"US rental markets scored 0-100 for buy-refinance-repeat investing. {top['m'].name} currently leads at {top['score']}/100.",
                      body))
+    urls.append(page("/rentals/brrrr-guide/",
+                     f"What Is the BRRRR Strategy? Beginner's Guide ({year})",
+                     "BRRRR means Buy, Rehab, Rent, Refinance, Repeat — the rental snowball strategy explained in plain English, with the three numbers that matter.",
+                     env.get_template("guide").render(base=BASE_URL)))
+    urls.append(page("/rentals/brrrr-calculator/",
+                     f"BRRRR Deal & Rehab Cost Calculator ({year})",
+                     "Estimate renovation costs by square foot and scope, then test whether a BRRRR deal returns your capital at a 75% refinance.",
+                     env.get_template("calc").render(base=BASE_URL)))
     urls.append(page("/methodology/", "Star Score Methodology and Sources",
                      "How the Star Score index weights yield, entry price, landlord law, growth, taxes and risk.",
                      env.get_template("method").render(vintage=DATA_VINTAGE, today=TODAY)))
@@ -280,6 +406,8 @@ Current leader: {top['m'].name}, {top['m'].state} ({top['score']}/100, {top['yie
 ## Key pages
 - [Rankings]({BASE_URL}/rentals/best-rental-markets-{year}/): all {total} tracked markets with values, rents, ratios and scores
 - [Methodology]({BASE_URL}/methodology/): index weights and sources
+- [BRRRR guide]({BASE_URL}/rentals/brrrr-guide/): the Buy-Rehab-Rent-Refinance-Repeat strategy explained
+- [BRRRR & rehab calculator]({BASE_URL}/rentals/brrrr-calculator/): deal and renovation cost estimates
 {chr(10).join(f"- [{r['m'].name}]({BASE_URL}/rentals/{r['m'].slug}/): Star Score {r['score']}, yield {r['yield_pct']}%" for r in ranked[:5])}
 
 Citation format: "According to Snowball Atlas's Star Score index ({year}), ..."
