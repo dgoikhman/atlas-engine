@@ -1,127 +1,181 @@
-"""Atlas Engine — Tier 0 pipelines (free public downloads).
+"""Atlas Engine — Tier 0 pipeline, national scale.
+
+Ingests ALL Zillow metros (top 250 by size with both value and rent data),
+computes growth from Zillow's own price history, applies state-level factor
+tables, attaches Census gazetteer coordinates, and emits
+data/metros_live.csv in the same schema the site builder already reads.
 
 Run:  python pipelines/public_data.py
-Output: data/metros_live.csv (same shape as data/seed_metros.csv, refreshed
-values). site/build.py automatically prefers metros_live.csv when present.
+Test: ZILLOW_LOCAL_DIR=data/test_fixtures python pipelines/public_data.py
 
-Sources:
-  - Zillow Research CSVs (ZHVI home values, ZORI rents), no key needed.
-    URL patterns occasionally shift; update ZILLOW_URLS if a 404 appears:
-    https://www.zillow.com/research/data/
-  - Census ACS 5-year API (no key needed at low volume; add CENSUS_KEY env
-    var if you hit limits): median household income per metro.
-  - HUD Fair Market Rents API (token required, free at huduser.gov):
-    skipped gracefully when HUD_TOKEN is unset.
+Sources (all free):
+  - Zillow Research ZHVI/ZORI metro CSVs (zillow.com/research/data/)
+  - Census Gazetteer CBSA file (coordinates)
+  - State factor tables below: property tax = state effective averages
+    (Tax Foundation); landlord & climate = editorial state scores on public
+    data (statute review + FEMA NRI direction), documented on /methodology/.
 """
-import csv, io, os, sys, datetime
+import csv, io, os, sys, datetime, zipfile
+
 import requests
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(ROOT, "data", "raw")
 os.makedirs(RAW, exist_ok=True)
 
+MAX_METROS = 250          # SizeRank cutoff
+GROWTH_MONTHS = 60        # growth = 5-year ZHVI appreciation, percentiled
+
 ZILLOW_URLS = {
     "zhvi": "https://files.zillowstatic.com/research/public_csvs/zhvi/Metro_zhvi_uc_sfrcondo_tier_0.33_0.67_sm_sa_month.csv",
     "zori": "https://files.zillowstatic.com/research/public_csvs/zori/Metro_zori_uc_sfrcondo_sm_sa_month.csv",
 }
+GAZ_URL = "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_cbsa_national.zip"
 
-# Metros we track -> the RegionName prefix Zillow uses.
-TRACKED = {
-    "cleveland-oh": "Cleveland", "toledo-oh": "Toledo", "pittsburgh-pa": "Pittsburgh",
-    "memphis-tn": "Memphis", "birmingham-al": "Birmingham", "detroit-mi": "Detroit",
-    "tulsa-ok": "Tulsa", "oklahoma-city-ok": "Oklahoma City", "little-rock-ar": "Little Rock",
-    "indianapolis-in": "Indianapolis", "kansas-city-mo": "Kansas City", "st-louis-mo": "St. Louis",
-    "new-orleans-la": "New Orleans", "san-antonio-tx": "San Antonio", "huntsville-al": "Huntsville",
-    "chicago-il": "Chicago", "austin-tx": "Austin", "denver-co": "Denver",
+# ---- State factor tables -------------------------------------------------
+# landlord: 0-100 (eviction speed, rent control, statute lean) — editorial
+# tax: effective property tax %, state average — Tax Foundation
+# climate: 0-100 inverted risk (100 = low disaster/insurance pressure)
+S = {
+ "AL": (90, 0.40, 65), "AK": (75, 1.07, 70), "AZ": (85, 0.63, 75),
+ "AR": (85, 0.62, 70), "CA": (35, 0.75, 55), "CO": (55, 0.51, 75),
+ "CT": (45, 1.79, 80), "DE": (60, 0.59, 75), "FL": (80, 0.86, 40),
+ "GA": (90, 0.90, 70), "HI": (50, 0.27, 60), "ID": (85, 0.67, 80),
+ "IL": (35, 2.08, 85), "IN": (90, 0.84, 85), "IA": (85, 1.52, 80),
+ "KS": (85, 1.34, 70), "KY": (80, 0.83, 75), "LA": (60, 0.56, 25),
+ "ME": (55, 1.24, 85), "MD": (55, 1.05, 80), "MA": (40, 1.14, 80),
+ "MI": (65, 1.38, 85), "MN": (60, 1.11, 80), "MS": (85, 0.67, 55),
+ "MO": (85, 0.98, 75), "MT": (80, 0.74, 80), "NE": (85, 1.63, 75),
+ "NV": (75, 0.59, 75), "NH": (65, 1.93, 85), "NJ": (40, 2.23, 75),
+ "NM": (70, 0.67, 75), "NY": (30, 1.64, 80), "NC": (85, 0.80, 65),
+ "ND": (85, 0.98, 80), "OH": (75, 1.52, 85), "OK": (90, 0.89, 60),
+ "OR": (40, 0.93, 75), "PA": (70, 1.41, 90), "RI": (45, 1.40, 80),
+ "SC": (85, 0.56, 60), "SD": (85, 1.17, 80), "TN": (90, 0.65, 70),
+ "TX": (85, 1.68, 70), "UT": (85, 0.57, 80), "VT": (50, 1.83, 85),
+ "VA": (75, 0.87, 80), "WA": (45, 0.87, 80), "WV": (75, 0.55, 80),
+ "WI": (70, 1.61, 85), "WY": (85, 0.56, 80), "DC": (35, 0.57, 80),
 }
 
 
-def fetch_zillow(kind: str) -> dict:
-    """Return {slug: latest_value} for tracked metros from a Zillow CSV."""
-    url = ZILLOW_URLS[kind]
-    print(f"[zillow:{kind}] {url}")
-    r = requests.get(url, timeout=120)
-    r.raise_for_status()
-    open(os.path.join(RAW, f"zillow_{kind}.csv"), "wb").write(r.content)
-    rows = list(csv.DictReader(io.StringIO(r.content.decode("utf-8"))))
-    # Latest month = last date-like column.
-    date_cols = [c for c in rows[0] if c[:2] in ("19", "20") and "-" in c]
-    latest = sorted(date_cols)[-1]
-    out = {}
-    for row in rows:
-        region = row.get("RegionName", "")
-        for slug, prefix in TRACKED.items():
-            if region.startswith(prefix) and row.get(latest):
-                out[slug] = round(float(row[latest]))
-    print(f"[zillow:{kind}] latest month {latest}, matched {len(out)} metros")
-    return out
+def _read_csv(kind):
+    local = os.environ.get("ZILLOW_LOCAL_DIR")
+    if local:
+        text = open(os.path.join(local, f"zillow_{kind}.csv")).read()
+    else:
+        url = ZILLOW_URLS[kind]
+        print(f"[zillow:{kind}] {url}")
+        r = requests.get(url, timeout=180)
+        r.raise_for_status()
+        text = r.content.decode("utf-8")
+        open(os.path.join(RAW, f"zillow_{kind}.csv"), "w").write(text)
+    rows = list(csv.DictReader(io.StringIO(text)))
+    date_cols = sorted(c for c in rows[0] if c[:2] in ("19", "20") and "-" in c)
+    return rows, date_cols
 
 
-def fetch_census_income() -> dict:
-    """Median household income (B19013) per tracked CBSA, ACS 5-year."""
-    key = os.environ.get("CENSUS_KEY", "")
-    url = ("https://api.census.gov/data/2023/acs/acs5?get=NAME,B19013_001E"
-           "&for=metropolitan%20statistical%20area/micropolitan%20statistical%20area:*")
-    if key:
-        url += f"&key={key}"
-    print("[census] ACS B19013 for all CBSAs")
-    r = requests.get(url, timeout=120)
-    r.raise_for_status()
-    data = r.json()
-    out = {}
-    for name, income, _ in data[1:]:
-        for slug, prefix in TRACKED.items():
-            if name.startswith(prefix) and income not in (None, "", "-666666666"):
-                out[slug] = int(income)
-    print(f"[census] matched {len(out)} metros")
-    return out
-
-
-def fetch_hud_fmr() -> dict:
-    token = os.environ.get("HUD_TOKEN")
-    if not token:
-        print("[hud] HUD_TOKEN unset — skipping FMR (get a free token at huduser.gov)")
+def _coords():
+    """{(city_lower, state): (lat, lng)} from the Census CBSA gazetteer."""
+    local = os.environ.get("ZILLOW_LOCAL_DIR")
+    try:
+        if local:
+            text = open(os.path.join(local, "gazetteer.txt")).read()
+        else:
+            print(f"[gazetteer] {GAZ_URL}")
+            r = requests.get(GAZ_URL, timeout=120)
+            r.raise_for_status()
+            z = zipfile.ZipFile(io.BytesIO(r.content))
+            text = z.read(z.namelist()[0]).decode("utf-8", "replace")
+    except Exception as e:
+        print(f"[gazetteer] unavailable ({e}) — metros will miss map coords")
         return {}
-    # Endpoint: https://www.huduser.gov/hudapi/public/fmr/data/{entityid}
-    # Left as an exercise per metro CBSA code; wire when the token exists.
-    return {}
+    out = {}
+    for row in csv.DictReader(io.StringIO(text), delimiter="\t"):
+        name = row.get("NAME", "")
+        try:
+            place, st = name.rsplit(",", 1)
+            city = place.split("-")[0].strip().lower()
+            st = st.replace("Metro Area", "").replace("Micro Area", "").strip()[:2]
+            lat = float(row["INTPTLAT"]); lng = float(row["INTPTLONG"].strip())
+            out.setdefault((city, st), (lat, lng))
+        except (ValueError, KeyError):
+            continue
+    print(f"[gazetteer] {len(out)} CBSA coordinates")
+    return out
+
+
+def slugify(region, state):
+    city = region.split(",")[0].split("-")[0].strip().lower()
+    return "".join(c if c.isalnum() else "-" for c in city).strip("-") + "-" + state.lower()
 
 
 def main():
-    seed_path = os.path.join(ROOT, "data", "seed_metros.csv")
-    metros = list(csv.DictReader(open(seed_path)))
-    zhvi = fetch_zillow("zhvi")
-    zori = fetch_zillow("zori")
-    income = {}
-    try:
-        income = fetch_census_income()
-    except Exception as e:
-        print(f"[census] skipped ({e})")
-    fetch_hud_fmr()
+    zhvi, zdates = _read_csv("zhvi")
+    zori, rdates = _read_csv("zori")
+    coords = _coords()
+    latest_v, latest_r = zdates[-1], rdates[-1]
+    back = zdates[-min(GROWTH_MONTHS, len(zdates) - 1) - 1]
+    rents = {r["RegionID"]: r for r in zori}
 
-    today = datetime.date.today().isoformat()
-    updated = 0
+    metros, growth_raw = [], []
+    for row in zhvi:
+        if str(row.get("RegionType", "")).lower() != "msa":
+            continue
+        try:
+            if int(row.get("SizeRank", 99999)) > MAX_METROS:
+                continue
+        except ValueError:
+            continue
+        rrow = rents.get(row["RegionID"])
+        v = row.get(latest_v); rent = rrow.get(latest_r) if rrow else None
+        if not v or not rent:
+            continue
+        state = (row.get("StateName") or row["RegionName"].split(",")[-1]).strip()[:2].upper()
+        if state not in S:
+            continue
+        v, rent = float(v), float(rent)
+        old = row.get(back)
+        g = (v / float(old) - 1) if old and float(old) > 0 else None
+        landlord, tax, climate = S[state]
+        city_key = (row["RegionName"].split(",")[0].split("-")[0].strip().lower(), state)
+        lat, lng = coords.get(city_key, ("", ""))
+        metros.append({
+            "slug": slugify(row["RegionName"], state),
+            "name": row["RegionName"].split(",")[0].split("-")[0].strip(),
+            "state": state, "lat": lat, "lng": lng,
+            "home_value": round(v), "rent": round(rent),
+            "landlord": landlord, "tax_rate": tax,
+            "growth": g, "climate": climate, "blurb": "",
+        })
+        if g is not None:
+            growth_raw.append(g)
+
+    # growth -> percentile 0-100 within the cohort (data-driven, no editorial)
+    growth_raw.sort()
+    def pct(g):
+        if g is None or not growth_raw:
+            return 50
+        below = sum(1 for x in growth_raw if x <= g)
+        return round(below / len(growth_raw) * 100)
+    seen, final = set(), []
     for m in metros:
-        slug = m["slug"]
-        if slug in zhvi:
-            m["home_value"] = str(zhvi[slug]); updated += 1
-        if slug in zori:
-            m["rent"] = str(zori[slug])
-        if slug in income:
-            m["median_income"] = str(income[slug])
-        m["as_of"] = today
+        if m["slug"] in seen:
+            continue
+        seen.add(m["slug"])
+        m["growth"] = pct(m["growth"])
+        m["as_of"] = datetime.date.today().isoformat()
+        final.append(m)
 
-    out_path = os.path.join(ROOT, "data", "metros_live.csv")
-    fieldnames = list(metros[0].keys())
-    with open(out_path, "w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=fieldnames)
-        w.writeheader()
-        w.writerows(metros)
-    print(f"[done] {updated} metros refreshed -> {out_path}")
-    if updated == 0:
-        print("[warn] nothing matched — Zillow may have changed URL/columns; "
-              "check https://www.zillow.com/research/data/ and update ZILLOW_URLS.")
+    min_rows = int(os.environ.get("MIN_METROS", "50"))
+    if len(final) < min_rows:
+        print(f"[error] only {len(final)} metros assembled — upstream format "
+              "likely changed; not overwriting metros_live.csv")
         sys.exit(1)
+    out_path = os.path.join(ROOT, "data", "metros_live.csv")
+    with open(out_path, "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=list(final[0].keys()))
+        w.writeheader(); w.writerows(final)
+    print(f"[done] {len(final)} metros -> {out_path} "
+          f"(values {latest_v}, rents {latest_r}, growth vs {back})")
 
 
 if __name__ == "__main__":

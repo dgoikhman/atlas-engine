@@ -178,6 +178,14 @@ GUIDE_BODY = """
 <h2>Where the Star Score fits</h2>
 <p>The <a href="{{ base }}/methodology/">Star Score</a> ranks metros for this exact loop: yield, entry prices a normal budget can buy, landlord law, equity growth, taxes and insurance risk. Pick a market from the <a href="{{ base }}/">map</a>, then pressure-test your first deal in the <a href="{{ base }}/rentals/brrrr-calculator/">calculator</a>.</p>"""
 
+STATE_BODY = """
+<nav class="crumbs"><a href="{{ base }}/">Atlas</a> › <a href="{{ base }}/rentals/best-rental-markets-2026/">Rankings</a> › {{ state }}</nav>
+<h1>Best rental markets in {{ state_name }} ({{ year }})</h1>
+<p class="lede">{{ top.m.name }} is the highest-scoring rental market in {{ state_name }}, with a Star Score of <b>{{ top.score }}/100</b> and a gross yield of {{ top.yield_pct }}% on a typical home value of ${{ "{:,}".format(top.m.home_value) }} ({{ vintage }} data). {{ count }} {{ state_name }} metro{{ "s" if count > 1 }} rank among the top US markets tracked.</p>
+<table><tr><th>#</th><th>Market</th><th class="n">Home value</th><th class="n">Rent/mo</th><th class="n">Yield</th><th class="n">Star Score</th></tr>
+{% for r in rows %}<tr><td>{{ loop.index }}</td><td><a href="{{ base }}/rentals/{{ r.m.slug }}/">{{ r.m.name }}</a></td><td class="n">${{ "{:,}".format(r.m.home_value) }}</td><td class="n">${{ "{:,}".format(r.m.rent) }}</td><td class="n">{{ r.yield_pct }}%</td><td class="n">{{ r.score }}</td></tr>
+{% endfor %}</table>"""
+
 CALC_BODY = """
 <nav class="crumbs"><a href="{{ base }}/">Atlas</a> › Calculator</nav>
 <h1>BRRRR deal &amp; rehab cost calculator</h1>
@@ -218,9 +226,11 @@ function calc(){
 env = Environment(loader=DictLoader({
     "base": BASE, "metro": METRO_BODY, "rankings": RANKINGS_BODY,
     "compare": COMPARE_BODY, "index": INDEX_BODY, "method": METHOD_BODY,
-    "calc": CALC_BODY, "guide": GUIDE_BODY,
+    "calc": CALC_BODY, "guide": GUIDE_BODY, "state": STATE_BODY,
 }))
 
+
+STATE_NAMES = {"AL":"Alabama","AK":"Alaska","AZ":"Arizona","AR":"Arkansas","CA":"California","CO":"Colorado","CT":"Connecticut","DE":"Delaware","FL":"Florida","GA":"Georgia","HI":"Hawaii","ID":"Idaho","IL":"Illinois","IN":"Indiana","IA":"Iowa","KS":"Kansas","KY":"Kentucky","LA":"Louisiana","ME":"Maine","MD":"Maryland","MA":"Massachusetts","MI":"Michigan","MN":"Minnesota","MS":"Mississippi","MO":"Missouri","MT":"Montana","NE":"Nebraska","NV":"Nevada","NH":"New Hampshire","NJ":"New Jersey","NM":"New Mexico","NY":"New York","NC":"North Carolina","ND":"North Dakota","OH":"Ohio","OK":"Oklahoma","OR":"Oregon","PA":"Pennsylvania","RI":"Rhode Island","SC":"South Carolina","SD":"South Dakota","TN":"Tennessee","TX":"Texas","UT":"Utah","VT":"Vermont","VA":"Virginia","WA":"Washington","WV":"West Virginia","WI":"Wisconsin","WY":"Wyoming","DC":"Washington DC"}
 
 def page(path, title, description, body_html, jsonld=None):
     full = env.get_template("base").render(
@@ -253,7 +263,10 @@ def svg_map(ranked, refs):
                  for i, (a, b) in enumerate(US_OUTLINE)) + " Z"
     marks = []
     for r in sorted(ranked + refs, key=lambda x: x["score"]):
-        m = r["m"]; x, y = _proj(m.lat, m.lng)
+        m = r["m"]
+        if m.lat is None or m.lng is None:
+            continue
+        x, y = _proj(m.lat, m.lng)
         if getattr(m, "ref", False) or m.slug in ("austin-tx","denver-co","chicago-il"):
             marks.append(f'<a href="{BASE_URL}/rentals/{m.slug}/"><circle cx="{x:.0f}" cy="{y:.0f}" r="5" fill="#8FA3A8"><title>{m.name}: reference market</title></circle></a>')
         else:
@@ -282,9 +295,19 @@ def main():
         m = dict(r)
         for k in ("home_value", "rent", "landlord", "growth", "climate"):
             m[k] = int(float(m[k]))
-        for k in ("tax_rate", "lat", "lng"):
+        for k in ("tax_rate",):
             m[k] = float(m[k])
-        m["ref"] = m["slug"] in ("austin-tx", "denver-co", "chicago-il")
+        for k in ("lat", "lng"):
+            m[k] = float(m[k]) if str(m[k]).strip() else None
+        m["ratio_raw"] = m["home_value"] / (m["rent"] * 12)
+        m["ref"] = m["ratio_raw"] >= 19  # rent-lean reference tier
+        if not m.get("blurb"):
+            y = m["rent"] * 12 / m["home_value"] * 100
+            m["blurb"] = (f"The {m['name']} metro posts a price-to-rent ratio of "
+                f"{round(m['ratio_raw']) if 'ratio_raw' in m else round(m['home_value']/(m['rent']*12))} "
+                f"on a typical home value of ${m['home_value']:,} and typical rent of ${m['rent']:,}/month "
+                f"— a gross rental yield of {y:.1f}% before expenses. Factor scores below show how it "
+                "stacks up on landlord law, taxes, growth and risk.")
         metros.append(m)
 
     year = datetime.date.today().year
@@ -343,7 +366,7 @@ def main():
             body, [faq_ld, ds_ld]))
 
     # --- comparison pages (top 10 pairs)
-    for a, b in itertools.combinations(ranked[:10], 2):
+    for a, b in itertools.combinations(ranked[:15], 2):
         a2, b2 = sorted([a, b], key=lambda x: x["m"].slug)
         winner, loser = (a, b) if a["score"] >= b["score"] else (b, a)
         wf = max(winner["factors"].values(),
@@ -369,6 +392,24 @@ def main():
         f"Best BRRRR & Cash-Flow Rental Markets in the US ({year}), Ranked by Star Score",
         f"{total} US metros ranked for cash-flow rental investing on {DATA_VINTAGE} Zillow data. {top['m'].name} leads at {top['score']}/100.",
         body))
+
+    # --- state pages
+    by_state = {}
+    for r in ranked:
+        by_state.setdefault(r["m"].state, []).append(r)
+    for st, rows in sorted(by_state.items()):
+        if len(rows) < 1:
+            continue
+        sname = STATE_NAMES.get(st, st)
+        sslug = sname.lower().replace(" ", "-")
+        body = env.get_template("state").render(
+            rows=rows, top=rows[0], count=len(rows), state=st, state_name=sname,
+            base=BASE_URL, year=year, vintage=DATA_VINTAGE)
+        urls.append(page(
+            f"/rentals/state/{sslug}/",
+            f"Best Rental Markets in {sname} ({year}): Star Score Rankings",
+            f"{sname} rental markets ranked for cash-flow and BRRRR investing on {DATA_VINTAGE} data. {rows[0]['m'].name} leads at {rows[0]['score']}/100.",
+            body))
 
     # --- index + methodology
     body = env.get_template("index").render(
