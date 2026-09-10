@@ -14,7 +14,7 @@ Site goes live at https://<you>.github.io/atlas-engine/ within ~2 minutes.
 - Settings -> Secrets and variables -> Actions -> **Secrets** -> New:
   `ANTHROPIC_API_KEY` = your key from platform.claude.com
 - Same page -> **Variables** -> New:
-  `BASE_URL` = your real domain once you buy it (e.g. https://brrrrmarket.com)
+  `BASE_URL` = your real domain once you buy it (e.g. https://brrrrmarkets.com)
 
 ## 4. Custom domain (when you've bought it)
 Settings -> Pages -> Custom domain -> enter it, add the DNS records GitHub
@@ -50,7 +50,7 @@ Expected idle-month spend: cents to a few dollars.
 ## Social layer (optional, add when ready)
 X posting uses X's pay-per-use API (~$0.015/plain post; keep links out of
 main posts — URL posts bill ~$0.20 and travel worse anyway):
-1. developer.x.com -> create app on the BRRRR Market account -> generate
+1. developer.x.com -> create app on the BRRRR Markets account -> generate
    OAuth 1.0a user tokens (read+write).
 2. Add repo secrets: X_API_KEY, X_API_SECRET, X_ACCESS_TOKEN, X_ACCESS_SECRET.
 3. Flow: Monday agent PR ("Social queue: week of ...") -> you review/edit ->

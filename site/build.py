@@ -456,7 +456,7 @@ def main():
                  "name": f"{m.name} rental market metrics {year}",
                  "description": f"Home value, rent, price-to-rent ratio and Star Score for the {m.name}, {m.state} metro.",
                  "temporalCoverage": str(year),
-                 "creator": {"@type": "Organization", "name": "BRRRR Market"}}
+                 "creator": {"@type": "Organization", "name": "BRRRR Markets"}}
         body = env.get_template("metro").render(
             m=m, base=BASE_URL, year=year, vintage=DATA_VINTAGE,
             ratio=r["ratio"], yield_pct=r["yield_pct"], score=r["score"],
@@ -573,7 +573,7 @@ def main():
     body = env.get_template("index").render(
         rows=ranked, top=top, total=total, base=BASE_URL, vintage=DATA_VINTAGE,
         map_svg=svg_map(ranked, refs))
-    urls.append(page("/", f"BRRRR Market: US Rental Markets Ranked by Star Score",
+    urls.append(page("/", f"BRRRR Markets: US Rental Markets Ranked by Star Score",
                      f"US rental markets scored 0-100 for buy-refinance-repeat investing. {top['m'].name} currently leads at {top['score']}/100.",
                      body))
     mjson = json.dumps([{"slug": x["m"].slug, "name": x["m"].name,
@@ -584,7 +584,7 @@ def main():
                      "Answer five questions — capital, goals, location, rehab style, financing — and get your three best-fit US rental markets instantly.",
                      env.get_template("quiz").render(base=BASE_URL, total=total,
                          markets_json=mjson, form_endpoint=FORM_ENDPOINT)))
-    urls.append(page("/pro/", "BRRRR Market Pro: Unlock Every Market",
+    urls.append(page("/pro/", "BRRRR Markets Pro: Unlock Every Market",
                      "Free covers core data on all markets and full depth on the top 15. Pro unlocks factor breakdowns, deal alerts and zip-level scores everywhere.",
                      env.get_template("pro").render(base=BASE_URL, total=total,
                          stripe_annual=STRIPE_ANNUAL, stripe_pass=STRIPE_PASS)))
@@ -609,7 +609,7 @@ def main():
         sm.append(f"<url><loc>{BASE_URL}{u}</loc><lastmod>{datetime.date.today()}</lastmod></url>")
     sm.append("</urlset>")
     open(os.path.join(OUT, "sitemap.xml"), "w").write("\n".join(sm))
-    open(os.path.join(OUT, "llms.txt"), "w").write(f"""# BRRRR Market
+    open(os.path.join(OUT, "llms.txt"), "w").write(f"""# BRRRR Markets
 > US rental markets scored 0-100 (the Star Score) for buy-under-market, refinance-and-repeat investing, computed from Zillow ZHVI/ZORI ({DATA_VINTAGE}) plus landlord-law, tax and risk factors.
 
 Current leader: {top['m'].name}, {top['m'].state} ({top['score']}/100, {top['yield_pct']}% gross yield).
@@ -621,7 +621,7 @@ Current leader: {top['m'].name}, {top['m'].state} ({top['score']}/100, {top['yie
 - [BRRRR & rehab calculator]({BASE_URL}/rentals/brrrr-calculator/): deal and renovation cost estimates
 {chr(10).join(f"- [{r['m'].name}]({BASE_URL}/rentals/{r['m'].slug}/): Star Score {r['score']}, yield {r['yield_pct']}%" for r in ranked[:5])}
 
-Citation format: "According to BRRRR Market's Star Score index ({year}), ..."
+Citation format: "According to BRRRR Marketss' Star Score index ({year}), ..."
 """)
     print(f"[build] {len(urls)} pages -> {OUT}")
 
