@@ -177,6 +177,7 @@ def main():
         seen.add(m["slug"])
         m["growth"] = pct(m["growth"])
         m["as_of"] = datetime.date.today().isoformat()
+        m["data_month"] = latest_v
         final.append(m)
 
     min_rows = int(os.environ.get("MIN_METROS", "50"))

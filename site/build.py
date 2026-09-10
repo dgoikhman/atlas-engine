@@ -310,6 +310,11 @@ def main():
         src = os.path.join(ROOT, "data", "seed_metros.csv")
     print(f"[build] data source: {os.path.basename(src)}")
     raw = list(csv.DictReader(open(src)))
+    global DATA_VINTAGE
+    dm = raw[0].get("data_month") if raw else None
+    if dm:
+        DATA_VINTAGE = datetime.date.fromisoformat(dm).strftime("%B %Y")
+        print(f"[build] data vintage: {DATA_VINTAGE}")
     metros = []
     for r in raw:
         m = dict(r)

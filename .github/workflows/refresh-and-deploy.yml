@@ -30,6 +30,8 @@ jobs:
         run: gh workflow run agent-task.yml -f task=scraper_repair || true
       - name: Refresh Census living context (non-fatal)
         continue-on-error: true
+        env:
+          CENSUS_KEY: ${{ secrets.CENSUS_KEY }}
         run: |
           set -o pipefail
           python pipelines/context.py 2>&1 | tee -a data/last_refresh.log
@@ -42,7 +44,8 @@ jobs:
           git config user.name "atlas-bot"
           git config user.email "bot@users.noreply.github.com"
           git add -f data/last_refresh.log
-          git add -f data/metros_live.csv data/metro_context.csv 2>/dev/null || true
+          git add -f data/metros_live.csv 2>/dev/null || true
+          git add -f data/metro_context.csv 2>/dev/null || true
           git diff --cached --quiet || git commit -m "data: refreshed metros dataset [skip ci]"
           git push || true
   deploy:
