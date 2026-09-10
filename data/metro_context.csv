@@ -1,0 +1,242 @@
+slug,population,pop_5yr_pct,income,ind1,ind1_pct,ind2,ind2_pct,ind3,ind3_pct,ind4,ind4_pct,ind5,ind5_pct
+new-york-ny,19756722,-1.2,97334,Education & health care,27.2,Professional & management,14.6,Retail trade,9.4,"Finance, insurance & real estate",9.2,"Arts, food & hospitality",7.8
+los-angeles-ca,13012469,-1.9,93525,Education & health care,21.5,Professional & management,14.0,"Arts, food & hospitality",10.4,Retail trade,9.8,Manufacturing,9.4
+chicago-il,9359555,-1.9,88850,Education & health care,22.6,Professional & management,14.4,Manufacturing,11.3,Retail trade,10.1,"Arts, food & hospitality",8.4
+dallas-tx,7807555,7.6,87155,Education & health care,19.5,Professional & management,14.1,Retail trade,11.1,"Finance, insurance & real estate",9.4,Manufacturing,9.0
+houston-tx,7274714,7.3,80458,Education & health care,20.9,Professional & management,13.4,Retail trade,10.5,Construction,9.7,Manufacturing,9.4
+washington-dc,6263796,2.0,123896,Professional & management,22.4,Education & health care,19.4,Public administration,13.0,"Arts, food & hospitality",7.6,Retail trade,7.5
+philadelphia-pa,6241882,2.8,89273,Education & health care,27.3,Professional & management,13.4,Retail trade,10.2,Manufacturing,8.7,"Finance, insurance & real estate",8.4
+miami-fl,6138876,1.1,73481,Education & health care,20.8,Professional & management,14.8,Retail trade,11.5,"Arts, food & hospitality",10.2,Construction,8.2
+atlanta-ga,6176937,6.9,86338,Education & health care,19.7,Professional & management,16.1,Retail trade,10.9,"Arts, food & hospitality",8.5,Manufacturing,8.4
+boston-ma,4917661,2.2,112484,Education & health care,27.2,Professional & management,17.4,Retail trade,9.3,Manufacturing,8.9,"Finance, insurance & real estate",8.0
+phoenix-az,4941206,5.7,84703,Education & health care,20.8,Professional & management,13.3,Retail trade,11.9,"Finance, insurance & real estate",10.3,"Arts, food & hospitality",8.9
+san-francisco-ca,4653593,-0.4,133780,Professional & management,21.5,Education & health care,21.4,Retail trade,8.9,"Arts, food & hospitality",7.9,Manufacturing,7.5
+riverside-ca,4637725,2.6,86031,Education & health care,21.5,Retail trade,12.2,Professional & management,10.1,"Arts, food & hospitality",9.8,Transportation & utilities,9.7
+detroit-mi,4367620,1.2,75123,Education & health care,21.7,Manufacturing,19.2,Professional & management,11.8,Retail trade,10.5,"Arts, food & hospitality",8.3
+seattle-wa,4021467,5.6,112594,Education & health care,20.4,Professional & management,17.9,Retail trade,11.9,Manufacturing,9.3,"Arts, food & hospitality",8.1
+minneapolis-mn,3693351,3.8,98180,Education & health care,23.9,Manufacturing,13.7,Professional & management,12.5,Retail trade,10.5,"Finance, insurance & real estate",8.5
+san-diego-ca,3282782,-0.6,102285,Education & health care,21.9,Professional & management,16.5,"Arts, food & hospitality",10.2,Manufacturing,10.0,Retail trade,10.0
+tampa-fl,3240469,6.9,71254,Education & health care,21.7,Professional & management,15.2,Retail trade,12.0,"Finance, insurance & real estate",9.9,"Arts, food & hospitality",9.6
+denver-co,2977085,4.5,102339,Education & health care,20.5,Professional & management,16.9,Retail trade,9.8,"Arts, food & hospitality",8.6,"Finance, insurance & real estate",8.3
+baltimore-md,2839409,1.7,97300,Education & health care,25.8,Professional & management,15.4,Public administration,9.9,Retail trade,9.4,"Arts, food & hospitality",7.2
+st--louis-mo,2809414,0.1,78225,Education & health care,24.2,Professional & management,11.9,Manufacturing,10.9,Retail trade,10.5,"Finance, insurance & real estate",8.3
+orlando-fl,2721022,11.1,75611,Education & health care,19.5,"Arts, food & hospitality",15.4,Professional & management,14.6,Retail trade,11.8,Construction,7.6
+charlotte-nc,2712818,9.7,80201,Education & health care,19.0,Professional & management,13.1,Retail trade,11.2,Manufacturing,11.0,"Finance, insurance & real estate",10.8
+san-antonio-tx,2612802,7.7,74297,Education & health care,22.8,Professional & management,12.3,Retail trade,11.7,"Arts, food & hospitality",10.2,Construction,8.5
+portland-or,2510529,3.8,94573,Education & health care,22.1,Professional & management,13.8,Manufacturing,12.2,Retail trade,11.3,"Arts, food & hospitality",8.3
+sacramento-ca,2406563,5.0,93986,Education & health care,22.9,Professional & management,12.7,Retail trade,10.4,Public administration,9.9,"Arts, food & hospitality",9.2
+pittsburgh-pa,2443921,4.4,73942,Education & health care,26.5,Professional & management,12.0,Retail trade,11.3,Manufacturing,10.0,"Arts, food & hospitality",7.7
+cincinnati-oh,2255257,4.0,79490,Education & health care,23.1,Manufacturing,14.0,Professional & management,12.0,Retail trade,11.1,"Arts, food & hospitality",8.6
+austin-tx,2357497,14.5,97638,Education & health care,19.7,Professional & management,18.9,Retail trade,10.4,"Arts, food & hospitality",8.3,Manufacturing,7.9
+las-vegas-nv,2293764,7.1,73845,"Arts, food & hospitality",22.8,Education & health care,16.5,Professional & management,12.7,Retail trade,11.4,Construction,7.4
+kansas-city-mo,2202006,4.5,81927,Education & health care,22.2,Professional & management,13.4,Retail trade,10.8,Manufacturing,9.4,"Finance, insurance & real estate",8.6
+columbus-oh,2151847,4.8,79847,Education & health care,24.3,Professional & management,12.0,Retail trade,11.1,"Finance, insurance & real estate",9.2,Manufacturing,9.0
+indianapolis-in,2106327,4.9,77065,Education & health care,23.0,Professional & management,12.4,Manufacturing,12.0,Retail trade,11.0,"Arts, food & hospitality",7.9
+cleveland-oh,2171978,5.3,68507,Education & health care,25.1,Manufacturing,14.0,Professional & management,11.0,Retail trade,10.8,"Arts, food & hospitality",8.4
+san-jose-ca,1969353,-0.6,157444,Professional & management,22.4,Education & health care,18.9,Manufacturing,16.3,Retail trade,8.2,"Arts, food & hospitality",7.2
+nashville-tn,2043713,9.6,82499,Education & health care,22.5,Professional & management,12.8,Retail trade,11.0,Manufacturing,9.9,"Arts, food & hospitality",9.6
+virginia-beach-va,1782590,3.5,80533,Education & health care,23.7,Professional & management,13.3,Retail trade,10.9,"Arts, food & hospitality",9.4,Manufacturing,8.8
+providence-ri,1673807,3.6,85646,Education & health care,26.5,Retail trade,11.5,Professional & management,11.1,Manufacturing,10.8,"Arts, food & hospitality",8.6
+jacksonville-fl,1645707,11.5,77013,Education & health care,20.5,Professional & management,13.5,Retail trade,12.1,"Finance, insurance & real estate",10.9,"Arts, food & hospitality",9.6
+milwaukee-wi,1566361,-0.6,76404,Education & health care,24.7,Manufacturing,16.9,Professional & management,11.3,Retail trade,10.6,"Arts, food & hospitality",7.6
+oklahoma-city-ok,1445122,5.5,70499,Education & health care,22.8,Retail trade,12.0,Professional & management,11.0,"Arts, food & hospitality",9.1,Public administration,7.3
+raleigh-nc,1449594,11.3,96066,Education & health care,20.1,Professional & management,19.9,Retail trade,9.8,Manufacturing,9.2,"Finance, insurance & real estate",7.9
+memphis-tn,1341606,-0.3,64743,Education & health care,21.9,Transportation & utilities,13.7,Retail trade,10.6,Manufacturing,10.0,Professional & management,10.0
+richmond-va,1327321,3.6,84405,Education & health care,23.1,Professional & management,12.7,Retail trade,10.7,"Finance, insurance & real estate",9.4,"Arts, food & hospitality",7.6
+new-orleans-la,988763,-21.8,62271,Education & health care,25.3,Professional & management,12.1,"Arts, food & hospitality",11.8,Retail trade,9.9,Construction,7.9
+salt-lake-city-ut,1261337,6.4,95045,Education & health care,21.2,Professional & management,13.7,Retail trade,11.4,Manufacturing,9.8,"Finance, insurance & real estate",8.7
+hartford-ct,1144012,-5.4,92823,Education & health care,26.5,Professional & management,11.5,Manufacturing,11.0,Retail trade,10.4,"Finance, insurance & real estate",10.0
+buffalo-ny,1161385,2.6,70572,Education & health care,28.0,Retail trade,11.2,Manufacturing,10.8,Professional & management,10.2,"Arts, food & hospitality",8.4
+birmingham-al,1181432,3.0,69627,Education & health care,24.1,Retail trade,11.2,Professional & management,10.1,Manufacturing,10.0,"Finance, insurance & real estate",8.3
+rochester-ny,1058875,-1.5,74438,Education & health care,30.9,Professional & management,12.1,Manufacturing,11.4,Retail trade,10.8,"Arts, food & hospitality",7.4
+grand-rapids-mi,1154320,9.9,80296,Education & health care,22.6,Manufacturing,20.5,Retail trade,10.8,Professional & management,9.8,"Arts, food & hospitality",7.8
+tucson-az,1049947,3.0,67929,Education & health care,26.1,Professional & management,12.5,Retail trade,11.9,"Arts, food & hospitality",10.4,Manufacturing,7.2
+urban-honolulu-hi,1003666,1.6,104264,Education & health care,23.4,"Arts, food & hospitality",13.1,Professional & management,10.8,Retail trade,10.6,Public administration,9.6
+tulsa-ok,1026209,4.2,67823,Education & health care,21.9,Retail trade,11.6,Manufacturing,11.3,Professional & management,10.4,"Arts, food & hospitality",8.8
+fresno-ca,1170942,19.7,71897,Education & health care,25.3,Retail trade,10.0,Professional & management,9.0,Agriculture & mining,8.5,"Arts, food & hospitality",8.2
+worcester-ma,861664,-8.2,93561,Education & health care,28.0,Professional & management,12.3,Manufacturing,11.6,Retail trade,11.2,Construction,7.0
+omaha-ne,972840,5.4,83023,Education & health care,24.3,Professional & management,12.1,Retail trade,10.3,"Finance, insurance & real estate",10.2,Manufacturing,8.2
+bridgeport-ct,947528,0.3,111656,Education & health care,22.8,Professional & management,16.1,"Finance, insurance & real estate",11.7,Retail trade,10.4,Manufacturing,8.1
+greenville-sc,945301,7.0,69016,Education & health care,22.7,Manufacturing,16.9,Professional & management,11.7,Retail trade,10.4,"Arts, food & hospitality",8.6
+albuquerque-nm,918567,0.9,67995,Education & health care,26.0,Professional & management,14.9,Retail trade,10.4,"Arts, food & hospitality",9.4,Public administration,7.1
+bakersfield-ca,910433,3.1,67660,Education & health care,22.1,Agriculture & mining,12.9,Retail trade,10.9,"Arts, food & hospitality",8.3,Professional & management,8.1
+albany-ny,902372,2.5,86072,Education & health care,26.6,Professional & management,12.0,Retail trade,9.9,Public administration,9.8,Manufacturing,8.2
+knoxville-tn,919553,5.9,69734,Education & health care,22.9,Professional & management,12.3,Retail trade,12.2,Manufacturing,10.5,"Arts, food & hospitality",9.0
+baton-rouge-la,871379,5.0,68910,Education & health care,24.4,Retail trade,11.0,Manufacturing,9.6,Professional & management,9.5,Construction,9.2
+mcallen-tx,880921,3.7,52281,Education & health care,27.7,Retail trade,12.3,Construction,9.5,Professional & management,9.0,"Arts, food & hospitality",8.9
+new-haven-ct,566803,-34.0,86266,Education & health care,33.3,Manufacturing,10.4,Professional & management,10.4,Retail trade,9.8,"Arts, food & hospitality",8.0
+el-paso-tx,869606,3.3,58800,Education & health care,25.7,Retail trade,11.4,Professional & management,10.7,"Arts, food & hospitality",9.5,Construction,7.6
+allentown-pa,866764,3.9,82602,Education & health care,26.3,Manufacturing,13.1,Retail trade,11.1,Professional & management,10.3,Transportation & utilities,8.0
+oxnard-ca,838259,-1.2,107327,Education & health care,20.8,Professional & management,12.8,Retail trade,10.3,Manufacturing,10.2,"Arts, food & hospitality",9.2
+columbia-sc,839868,2.8,66146,Education & health care,23.9,Professional & management,11.0,Retail trade,10.7,Manufacturing,9.5,"Arts, food & hospitality",8.4
+north-port-fl,865031,10.1,78278,Education & health care,21.4,Professional & management,14.1,Retail trade,12.9,"Arts, food & hospitality",10.7,Construction,9.0
+charleston-sc,817756,7.7,82272,Education & health care,21.1,Professional & management,14.4,Retail trade,10.7,"Arts, food & hospitality",10.0,Manufacturing,9.8
+greensboro-nc,779894,2.9,63083,Education & health care,23.2,Manufacturing,15.5,Retail trade,11.3,Professional & management,9.6,"Arts, food & hospitality",8.7
+stockton-ca,787416,7.5,88531,Education & health care,20.6,Retail trade,11.7,Professional & management,10.4,Manufacturing,9.8,Transportation & utilities,9.0
+cape-coral-fl,792692,10.3,73099,Education & health care,20.3,Retail trade,14.2,Professional & management,13.6,Construction,12.2,"Arts, food & hospitality",11.3
+boise-city-id,790640,13.9,82694,Education & health care,22.0,Professional & management,11.7,Retail trade,11.4,Construction,9.6,Manufacturing,9.3
+colorado-springs-co,760782,6.8,87180,Education & health care,23.8,Professional & management,14.7,Retail trade,11.1,"Arts, food & hospitality",9.0,Construction,7.7
+little-rock-ar,753605,2.6,65309,Education & health care,26.6,Retail trade,12.3,Professional & management,10.1,Manufacturing,7.4,Construction,7.2
+lakeland-fl,760961,13.8,63644,Education & health care,18.8,Retail trade,13.9,"Arts, food & hospitality",13.8,Professional & management,11.2,Construction,8.5
+akron-oh,699508,-0.7,71312,Education & health care,24.0,Manufacturing,14.7,Retail trade,11.6,Professional & management,10.4,"Arts, food & hospitality",9.1
+des-moines-ia,720331,13.6,84209,Education & health care,21.3,"Finance, insurance & real estate",14.7,Retail trade,10.9,Professional & management,10.7,Manufacturing,9.3
+springfield-ma,462853,-26.6,70535,Education & health care,31.1,Manufacturing,11.0,Retail trade,10.8,Professional & management,8.2,"Arts, food & hospitality",7.2
+ogden-ut,645510,-1.1,98361,Education & health care,21.3,Manufacturing,11.7,Retail trade,11.5,Professional & management,11.3,Public administration,8.4
+madison-wi,683967,5.7,86827,Education & health care,27.3,Professional & management,14.6,Manufacturing,10.2,Retail trade,9.6,"Arts, food & hospitality",7.3
+winston-nc,683637,3.3,64282,Education & health care,24.3,Manufacturing,14.8,Retail trade,11.1,Professional & management,9.7,Construction,7.5
+deltona-fl,689939,8.7,67599,Education & health care,21.8,Retail trade,13.2,Professional & management,13.1,"Arts, food & hospitality",10.8,Construction,8.4
+syracuse-ny,657128,0.4,73558,Education & health care,31.0,Retail trade,11.2,Professional & management,10.1,Manufacturing,8.8,"Arts, food & hospitality",7.7
+provo-ut,695895,15.7,96745,Education & health care,25.3,Professional & management,15.8,Retail trade,11.7,Manufacturing,9.1,Construction,7.7
+toledo-oh,602977,-0.3,63749,Education & health care,24.9,Manufacturing,17.1,Retail trade,11.6,"Arts, food & hospitality",9.3,Professional & management,9.0
+wichita-ks,648935,0.8,68930,Education & health care,24.2,Manufacturing,17.3,Retail trade,10.7,Professional & management,9.3,"Arts, food & hospitality",8.5
+durham-nc,594291,6.4,81017,Education & health care,33.2,Professional & management,16.3,Retail trade,8.4,Manufacturing,7.9,"Arts, food & hospitality",7.8
+augusta-ga,618022,4.0,66628,Education & health care,23.3,Professional & management,12.6,Manufacturing,11.6,Retail trade,10.6,"Arts, food & hospitality",9.7
+palm-bay-fl,620533,7.6,75817,Education & health care,20.8,Professional & management,14.3,Manufacturing,12.1,Retail trade,11.8,"Arts, food & hospitality",9.5
+jackson-ms,615908,6.1,60489,Education & health care,25.9,Retail trade,11.3,Manufacturing,10.0,"Arts, food & hospitality",8.4,Professional & management,8.1
+harrisburg-pa,597894,5.3,79281,Education & health care,24.6,Retail trade,11.2,Professional & management,11.0,Manufacturing,8.0,Public administration,7.9
+spokane-wa,591793,6.6,72836,Education & health care,25.9,Retail trade,12.0,Professional & management,10.3,"Arts, food & hospitality",8.7,Manufacturing,7.6
+scranton-pa,567887,2.0,63656,Education & health care,25.5,Retail trade,12.8,Manufacturing,11.1,Professional & management,8.7,"Arts, food & hospitality",8.1
+chattanooga-tn,569333,3.1,68666,Education & health care,21.7,Manufacturing,14.4,Retail trade,11.0,Professional & management,9.5,"Arts, food & hospitality",8.8
+modesto-ca,552250,2.4,79661,Education & health care,21.9,Manufacturing,12.3,Retail trade,11.4,Construction,8.9,Professional & management,8.4
+lancaster-pa,555151,3.1,83703,Education & health care,23.8,Manufacturing,14.4,Retail trade,11.9,Professional & management,9.8,Construction,8.0
+portland-me,557764,5.4,88602,Education & health care,26.4,Retail trade,12.1,Professional & management,12.1,Manufacturing,9.6,"Arts, food & hospitality",8.4
+youngstown-oh,428430,-21.5,55357,Education & health care,25.1,Manufacturing,15.5,Retail trade,12.0,"Arts, food & hospitality",10.1,Professional & management,7.3
+lansing-mi,470434,-1.3,70886,Education & health care,27.2,Manufacturing,11.6,Retail trade,9.9,Professional & management,9.2,"Finance, insurance & real estate",8.3
+fayetteville-ar,563436,7.0,77979,Education & health care,20.8,Retail trade,17.5,Manufacturing,11.7,Professional & management,10.2,"Arts, food & hospitality",8.5
+fayetteville-nc,389851,1.2,58909,Education & health care,25.9,Retail trade,12.9,"Arts, food & hospitality",10.3,Professional & management,10.1,Manufacturing,9.0
+lexington-ky,517378,2.1,70717,Education & health care,27.6,Retail trade,12.0,Manufacturing,11.7,Professional & management,11.2,"Arts, food & hospitality",8.5
+pensacola-fl,516994,7.3,73588,Education & health care,23.0,Retail trade,12.2,Professional & management,11.9,"Arts, food & hospitality",10.6,"Finance, insurance & real estate",9.5
+santa-rosa-ca,485642,-3.1,102840,Education & health care,22.5,Professional & management,12.7,Retail trade,11.0,Manufacturing,10.2,"Arts, food & hospitality",9.7
+reno-nv,556539,22.5,84684,Education & health care,18.4,"Arts, food & hospitality",13.1,Professional & management,12.2,Retail trade,10.9,Manufacturing,10.2
+huntsville-al,504712,12.0,83529,Education & health care,19.4,Professional & management,18.3,Manufacturing,14.2,Retail trade,10.2,Public administration,8.4
+port-st--lucie-fl,506701,9.4,72506,Education & health care,22.0,Retail trade,12.6,Professional & management,12.6,"Arts, food & hospitality",10.5,Construction,9.5
+lafayette-la,410883,-16.0,60910,Education & health care,25.4,Retail trade,12.1,Professional & management,10.0,"Arts, food & hospitality",8.4,Construction,7.9
+myrtle-beach-sc,368937,-17.6,64623,Education & health care,19.9,"Arts, food & hospitality",17.3,Retail trade,14.2,Professional & management,11.0,Construction,9.4
+springfield-mo,481671,5.0,61488,Education & health care,25.5,Retail trade,12.9,Professional & management,10.0,Manufacturing,9.2,"Arts, food & hospitality",9.1
+visalia-ca,475774,3.3,69489,Education & health care,22.6,Agriculture & mining,14.9,Retail trade,10.5,Manufacturing,8.3,"Arts, food & hospitality",7.8
+killeen-tx,485850,10.9,67203,Education & health care,24.2,Retail trade,11.5,Professional & management,10.5,"Arts, food & hospitality",9.4,Construction,8.3
+asheville-nc,410817,-8.7,69236,Education & health care,23.9,"Arts, food & hospitality",12.8,Retail trade,12.4,Professional & management,11.1,Manufacturing,9.8
+york-pa,459312,3.4,82238,Education & health care,22.0,Manufacturing,15.4,Retail trade,11.4,Professional & management,9.4,Transportation & utilities,7.4
+vallejo-ca,450824,2.8,99994,Education & health care,22.7,Retail trade,11.7,Professional & management,11.0,Manufacturing,8.6,"Arts, food & hospitality",8.5
+santa-maria-ca,443975,0.1,95977,Education & health care,23.0,Professional & management,13.0,"Arts, food & hospitality",11.2,Retail trade,9.6,Agriculture & mining,8.1
+salinas-ca,435834,0.6,94486,Education & health care,21.2,Agriculture & mining,14.5,"Arts, food & hospitality",11.0,Professional & management,10.4,Retail trade,9.5
+salem-or,435085,4.3,76010,Education & health care,23.2,Retail trade,11.9,Manufacturing,9.2,Professional & management,9.0,Construction,8.8
+mobile-al,413162,-0.4,58119,Education & health care,23.3,Manufacturing,12.6,Retail trade,11.4,Professional & management,9.8,"Arts, food & hospitality",9.0
+reading-pa,429989,3.2,77684,Education & health care,23.4,Manufacturing,17.8,Retail trade,11.7,Professional & management,9.5,"Arts, food & hospitality",7.0
+corpus-christi-tx,446797,-1.2,65801,Education & health care,24.1,Retail trade,12.3,Construction,10.4,"Arts, food & hospitality",9.9,Professional & management,9.2
+brownsville-tx,423192,0.3,51334,Education & health care,31.5,Retail trade,11.4,Professional & management,8.9,"Arts, food & hospitality",8.3,Construction,7.5
+manchester-nh,424732,3.3,100436,Education & health care,22.9,Manufacturing,14.5,Professional & management,13.4,Retail trade,12.3,Construction,7.3
+fort-wayne-in,451440,4.6,69378,Education & health care,24.2,Manufacturing,19.7,Retail trade,11.7,Professional & management,7.8,"Arts, food & hospitality",7.3
+gulfport-ms,418452,6.9,61266,Education & health care,24.1,"Arts, food & hospitality",13.7,Retail trade,10.7,Manufacturing,10.0,Construction,8.0
+salisbury-md,128802,-67.7,69592,Education & health care,28.1,Retail trade,11.7,"Arts, food & hospitality",11.1,Manufacturing,9.8,Professional & management,7.8
+flint-mi,404087,-1.3,60673,Education & health care,23.7,Manufacturing,17.5,Retail trade,13.2,Professional & management,8.9,"Arts, food & hospitality",8.7
+peoria-il,365773,-2.3,70872,Education & health care,27.5,Manufacturing,14.8,Retail trade,10.5,Professional & management,9.1,"Arts, food & hospitality",8.7
+canton-oh,400495,-0.1,65666,Education & health care,23.5,Manufacturing,16.9,Retail trade,12.1,"Arts, food & hospitality",8.8,Professional & management,8.5
+savannah-ga,412089,8.0,74632,Education & health care,21.8,Retail trade,12.4,Professional & management,11.3,"Arts, food & hospitality",11.3,Manufacturing,10.0
+anchorage-ak,399746,0.0,95918,Education & health care,24.3,Retail trade,10.8,Professional & management,10.0,Public administration,9.8,Transportation & utilities,9.6
+beaumont-tx,396058,-3.3,65245,Education & health care,21.5,Manufacturing,13.1,Construction,12.0,Retail trade,11.0,Professional & management,9.2
+shreveport-la,389004,-11.9,54635,Education & health care,27.0,Retail trade,11.6,"Arts, food & hospitality",9.8,Professional & management,9.2,Manufacturing,6.3
+trenton-nj,383286,3.9,96333,Education & health care,26.7,Professional & management,14.9,Retail trade,8.9,"Finance, insurance & real estate",8.0,Manufacturing,7.6
+montgomery-al,385159,3.1,62746,Education & health care,21.8,Manufacturing,12.3,Retail trade,11.3,Public administration,10.7,Professional & management,10.3
+davenport-ia,381864,-0.2,71925,Education & health care,22.5,Manufacturing,16.7,Retail trade,11.4,"Arts, food & hospitality",8.3,Professional & management,7.9
+tallahassee-fl,388298,2.2,63078,Education & health care,26.0,Public administration,14.4,Professional & management,13.0,Retail trade,11.0,"Arts, food & hospitality",9.7
+eugene-or,382628,3.7,69311,Education & health care,27.2,Retail trade,12.1,Professional & management,10.6,Manufacturing,9.9,"Arts, food & hospitality",9.5
+naples-fl,387681,6.5,86173,Education & health care,17.9,Professional & management,14.9,"Arts, food & hospitality",13.8,Retail trade,12.2,Construction,10.8
+ann-arbor-mi,368394,0.7,87156,Education & health care,37.5,Professional & management,13.0,Manufacturing,12.4,"Arts, food & hospitality",8.8,Retail trade,7.8
+ocala-fl,387697,11.3,58535,Education & health care,21.8,Retail trade,14.2,Professional & management,11.2,"Arts, food & hospitality",9.9,Construction,8.8
+hickory-nc,366972,0.4,60255,Manufacturing,24.5,Education & health care,20.4,Retail trade,11.4,"Arts, food & hospitality",7.7,Professional & management,7.0
+huntington-wv,372801,4.1,58483,Education & health care,31.1,Retail trade,12.5,Manufacturing,8.5,"Arts, food & hospitality",8.3,Professional & management,7.7
+fort-collins-co,363561,7.5,91364,Education & health care,24.8,Professional & management,14.8,Retail trade,10.4,Manufacturing,10.0,"Arts, food & hospitality",10.0
+rockford-il,336605,-0.9,66571,Education & health care,22.0,Manufacturing,20.2,Retail trade,11.7,Professional & management,8.6,"Arts, food & hospitality",8.1
+lincoln-ne,341309,4.3,73095,Education & health care,26.8,Retail trade,11.0,Manufacturing,9.8,Professional & management,9.7,"Finance, insurance & real estate",8.0
+gainesville-fl,344521,22.7,58946,Education & health care,36.0,Professional & management,10.7,"Arts, food & hospitality",10.5,Retail trade,10.3,Construction,5.4
+boulder-co,328317,2.3,102772,Education & health care,24.3,Professional & management,20.6,Manufacturing,10.0,"Arts, food & hospitality",9.9,Retail trade,9.5
+green-bay-wi,329375,3.7,77459,Education & health care,21.9,Manufacturing,19.2,Retail trade,10.3,Professional & management,8.2,"Arts, food & hospitality",7.4
+columbus-ga,326136,6.0,57762,Education & health care,23.2,Manufacturing,10.8,"Finance, insurance & real estate",10.4,Retail trade,9.9,Professional & management,9.7
+south-bend-in,324180,1.1,65385,Education & health care,27.8,Manufacturing,18.0,Retail trade,10.4,Professional & management,8.5,"Arts, food & hospitality",7.6
+spartanburg-sc,365086,10.7,62440,Education & health care,21.2,Manufacturing,20.7,Retail trade,11.0,Professional & management,9.0,"Arts, food & hospitality",8.2
+greeley-co,340711,15.4,93287,Education & health care,20.1,Professional & management,11.5,Manufacturing,10.9,Construction,10.3,Retail trade,10.3
+lubbock-tx,354782,13.3,62288,Education & health care,28.7,Retail trade,12.3,"Arts, food & hospitality",9.8,Professional & management,8.2,Construction,7.1
+clarksville-tn,328626,16.1,66210,Education & health care,23.3,Manufacturing,12.8,Retail trade,12.2,Professional & management,10.1,"Arts, food & hospitality",9.4
+roanoke-va,314661,0.4,67447,Education & health care,26.7,Retail trade,11.1,Manufacturing,10.8,Professional & management,10.0,"Arts, food & hospitality",7.8
+evansville-in,269721,-14.4,67671,Education & health care,24.4,Manufacturing,17.2,Retail trade,12.0,Professional & management,8.7,"Arts, food & hospitality",8.7
+kingsport-tn,309580,1.0,55948,Education & health care,22.8,Manufacturing,15.6,Retail trade,13.6,"Arts, food & hospitality",9.0,Professional & management,8.0
+kennewick-wa,307900,8.1,85881,Education & health care,21.2,Professional & management,13.4,Retail trade,10.7,Construction,8.9,"Arts, food & hospitality",8.1
+utica-ny,289577,-1.3,68830,Education & health care,28.3,Retail trade,11.4,Manufacturing,9.5,Professional & management,9.2,"Arts, food & hospitality",8.1
+hagerstown-md,298525,13.4,75473,Education & health care,22.4,Retail trade,12.4,Manufacturing,10.2,Professional & management,10.2,Transportation & utilities,8.4
+duluth-mn,280710,0.6,71067,Education & health care,28.9,Retail trade,11.8,"Arts, food & hospitality",9.7,Manufacturing,8.4,Professional & management,7.4
+olympia-wa,296640,8.0,93985,Education & health care,22.1,Public administration,16.4,Retail trade,11.8,Professional & management,9.3,"Arts, food & hospitality",8.5
+longview-tx,288921,32.6,65210,Education & health care,23.3,Retail trade,11.6,Manufacturing,10.9,Professional & management,8.7,"Arts, food & hospitality",8.2
+wilmington-nc,440578,55.5,73687,Education & health care,22.0,Professional & management,13.6,Retail trade,12.4,"Arts, food & hospitality",10.6,Construction,8.9
+san-luis-obispo-ca,281486,0.0,93398,Education & health care,22.6,"Arts, food & hospitality",12.7,Professional & management,12.0,Retail trade,10.8,Manufacturing,8.0
+crestview-fl,294127,10.3,79150,Education & health care,16.9,Professional & management,14.9,"Arts, food & hospitality",13.1,Retail trade,11.8,Public administration,9.4
+merced-ca,285597,6.1,65044,Education & health care,21.8,Retail trade,10.7,Agriculture & mining,10.5,Manufacturing,10.5,Construction,8.5
+waco-tx,299217,12.6,63880,Education & health care,25.6,Retail trade,12.0,Manufacturing,10.8,"Arts, food & hospitality",8.6,Professional & management,8.3
+cedar-rapids-ia,275960,2.8,77084,Education & health care,22.9,Manufacturing,17.0,Retail trade,11.1,Professional & management,9.6,"Finance, insurance & real estate",7.7
+atlantic-city-nj,369940,37.8,80600,Education & health care,25.0,"Arts, food & hospitality",18.5,Retail trade,11.4,Professional & management,9.9,Construction,6.8
+bremerton-wa,276581,5.4,98546,Education & health care,20.0,Professional & management,12.6,Retail trade,12.2,Manufacturing,11.5,Public administration,10.6
+sioux-falls-sd,293107,14.7,81418,Education & health care,25.3,Retail trade,11.6,"Finance, insurance & real estate",10.6,Manufacturing,10.1,Professional & management,8.3
+santa-cruz-ca,266021,-2.8,109266,Education & health care,25.1,Professional & management,14.0,"Arts, food & hospitality",10.3,Retail trade,9.8,Manufacturing,7.8
+erie-pa,269544,-2.3,61476,Education & health care,28.4,Manufacturing,15.5,Retail trade,10.5,"Arts, food & hospitality",8.9,Professional & management,7.7
+norwich-ct,279025,3.8,84185,Education & health care,26.0,Manufacturing,14.6,"Arts, food & hospitality",13.0,Retail trade,10.7,Professional & management,9.3
+amarillo-tx,270207,2.6,66571,Education & health care,22.7,Retail trade,11.5,Manufacturing,10.2,"Arts, food & hospitality",8.9,Construction,8.6
+laredo-tx,267731,-1.6,62506,Education & health care,22.4,Transportation & utilities,15.8,Retail trade,12.7,"Arts, food & hospitality",9.0,Professional & management,8.9
+tuscaloosa-al,275217,14.0,59975,Education & health care,29.0,Manufacturing,16.4,Retail trade,10.9,"Arts, food & hospitality",8.3,Professional & management,7.6
+college-station-tx,273280,7.6,59691,Education & health care,30.8,"Arts, food & hospitality",11.3,Retail trade,11.1,Professional & management,10.2,Construction,7.2
+kalamazoo-mi,261437,-22.4,70525,Education & health care,25.4,Manufacturing,17.4,Retail trade,10.7,"Arts, food & hospitality",10.4,Professional & management,9.4
+lynchburg-va,262716,0.8,67782,Education & health care,27.2,Manufacturing,12.9,Retail trade,11.1,Professional & management,9.2,"Arts, food & hospitality",8.8
+charleston-wv,207456,-4.5,58089,Education & health care,28.2,Retail trade,11.5,Professional & management,9.4,Public administration,8.9,"Arts, food & hospitality",8.3
+yakima-wa,256605,2.9,68015,Education & health care,22.4,Agriculture & mining,15.2,Retail trade,10.9,Manufacturing,9.6,"Arts, food & hospitality",7.6
+fargo-nd,254914,7.6,75523,Education & health care,28.7,Retail trade,10.5,Professional & management,10.2,Manufacturing,8.6,"Arts, food & hospitality",8.4
+binghamton-ny,245844,1.0,63347,Education & health care,32.0,Retail trade,11.8,Manufacturing,10.4,Professional & management,9.0,"Arts, food & hospitality",8.6
+fort-smith-ar,228916,-18.6,56717,Education & health care,22.2,Manufacturing,16.3,Retail trade,11.2,Professional & management,9.4,"Arts, food & hospitality",8.8
+appleton-wi,244163,4.1,83919,Manufacturing,22.6,Education & health care,20.4,Retail trade,10.0,Professional & management,8.9,Construction,7.2
+topeka-ks,232724,-0.2,68160,Education & health care,25.4,Manufacturing,10.0,Retail trade,9.3,Public administration,9.0,Construction,7.6
+macon-ga,234040,1.9,58127,Education & health care,25.0,Retail trade,11.5,Professional & management,9.4,Manufacturing,8.7,"Arts, food & hospitality",8.4
+tyler-tx,238014,5.8,71923,Education & health care,26.2,Retail trade,12.2,Manufacturing,8.9,Professional & management,8.8,"Arts, food & hospitality",8.6
+barnstable-town-ma,230073,7.7,94452,Education & health care,24.4,Professional & management,14.2,Retail trade,11.7,"Arts, food & hospitality",10.4,Construction,9.7
+daphne-al,239945,15.3,75019,Education & health care,19.3,Retail trade,14.6,Professional & management,11.8,"Arts, food & hospitality",10.1,Manufacturing,9.8
+bellingham-wa,228432,5.4,80989,Education & health care,23.6,Professional & management,10.6,"Arts, food & hospitality",10.3,Manufacturing,10.1,Retail trade,9.7
+burlington-vt,226603,3.9,90911,Education & health care,29.1,Manufacturing,11.2,Professional & management,11.1,Retail trade,10.5,"Arts, food & hospitality",8.7
+rochester-mn,227252,5.2,89675,Education & health care,43.4,Manufacturing,9.4,Retail trade,8.7,Professional & management,7.1,Construction,6.3
+lafayette-in,225019,3.2,59895,Education & health care,32.4,Manufacturing,19.0,"Arts, food & hospitality",9.2,Retail trade,9.0,Professional & management,7.8
+champaign-il,236196,-1.3,64558,Education & health care,38.9,Retail trade,9.6,Professional & management,9.1,Manufacturing,8.1,"Arts, food & hospitality",8.1
+medford-or,222563,3.9,71443,Education & health care,26.0,Retail trade,14.3,"Arts, food & hospitality",10.2,Professional & management,8.9,Manufacturing,7.6
+charlottesville-va,222937,-3.5,90552,Education & health care,34.1,Professional & management,15.3,Retail trade,9.4,"Arts, food & hospitality",8.1,Construction,5.9
+lake-charles-la,245973,18.8,67010,Education & health care,24.7,Manufacturing,10.8,Retail trade,10.6,Construction,10.3,"Arts, food & hospitality",9.9
+las-cruces-nm,221665,2.9,55663,Education & health care,28.8,Retail trade,10.5,Professional & management,10.3,"Arts, food & hospitality",9.2,Construction,8.5
+chico-ca,209470,-7.8,68574,Education & health care,27.5,"Arts, food & hospitality",11.9,Retail trade,11.3,Professional & management,10.2,Construction,6.4
+hilton-head-island-sc,222781,5.8,81015,Education & health care,20.4,Retail trade,15.0,Professional & management,12.9,"Arts, food & hospitality",12.8,Construction,8.8
+athens-ga,218190,6.3,62897,Education & health care,31.7,"Arts, food & hospitality",11.3,Professional & management,10.6,Retail trade,10.2,Manufacturing,8.2
+lake-havasu-city-az,217420,5.5,55799,Education & health care,21.0,"Arts, food & hospitality",14.0,Retail trade,13.9,Construction,8.5,Professional & management,8.5
+columbia-mo,212850,20.6,69463,Education & health care,34.0,"Arts, food & hospitality",10.1,Retail trade,10.0,"Finance, insurance & real estate",8.0,Professional & management,7.9
+springfield-il,207386,-1.3,74580,Education & health care,28.1,Public administration,13.6,Retail trade,9.7,Professional & management,9.7,"Finance, insurance & real estate",7.2
+houma-la,204032,-3.2,64269,Education & health care,22.7,Retail trade,14.1,Construction,9.1,Professional & management,8.1,"Arts, food & hospitality",8.0
+monroe-la,224705,25.8,49203,Education & health care,27.9,Retail trade,11.9,Professional & management,8.2,Manufacturing,7.9,"Arts, food & hospitality",7.6
+elkhart-in,206868,1.6,65617,Manufacturing,34.8,Education & health care,19.2,Retail trade,9.7,"Arts, food & hospitality",6.7,Construction,5.5
+johnson-city-tn,208934,3.8,56096,Education & health care,27.2,Manufacturing,12.8,Retail trade,12.3,Professional & management,9.2,"Arts, food & hospitality",9.2
+yuma-az,207685,-0.1,60417,Education & health care,20.4,Retail trade,10.5,"Arts, food & hospitality",10.1,Agriculture & mining,9.7,Professional & management,9.6
+gainesville-ga,208395,6.3,77430,Education & health care,17.6,Manufacturing,16.3,Professional & management,12.0,Retail trade,11.1,Construction,10.7
+jacksonville-nc,208537,7.5,64568,Education & health care,21.1,Retail trade,14.4,"Arts, food & hospitality",12.2,Professional & management,10.9,Construction,8.8
+florence-sc,199675,-3.0,53874,Education & health care,26.3,Manufacturing,16.0,Retail trade,12.2,"Arts, food & hospitality",9.0,Professional & management,7.1
+hilo-hi,203684,3.0,77215,Education & health care,21.9,"Arts, food & hospitality",16.2,Retail trade,12.1,Professional & management,10.9,Construction,8.1
+st--cloud-mn,200816,2.1,75670,Education & health care,29.0,Manufacturing,13.2,Retail trade,11.4,Construction,7.6,"Arts, food & hospitality",7.2
+racine-wi,196888,0.8,75331,Education & health care,22.7,Manufacturing,20.8,Retail trade,11.4,Construction,7.8,Professional & management,7.6
+bend-or,253650,40.4,85509,Education & health care,23.5,Professional & management,13.2,Retail trade,13.0,"Arts, food & hospitality",9.8,Construction,8.3
+saginaw-mi,189210,-1.9,58347,Education & health care,26.0,Manufacturing,16.3,Retail trade,11.9,"Arts, food & hospitality",9.5,Professional & management,8.7
+warner-robins-ga,195171,2.8,78702,Education & health care,20.8,Public administration,14.9,Retail trade,12.9,Professional & management,10.2,Manufacturing,8.9
+terre-haute-in,168850,-0.9,55380,Education & health care,26.0,Manufacturing,16.7,Retail trade,12.3,"Arts, food & hospitality",8.6,Construction,6.8
+torrington-ct,112848,-38.3,91035,Education & health care,27.1,Professional & management,11.8,Manufacturing,10.9,Retail trade,9.8,Construction,9.0
+punta-gorda-fl,195083,10.2,66154,Education & health care,20.1,Retail trade,14.4,Professional & management,11.8,"Arts, food & hospitality",11.4,Construction,10.9
+billings-mt,187269,10.8,74599,Education & health care,24.1,Retail trade,12.2,"Arts, food & hospitality",10.2,Professional & management,9.8,Construction,8.5
+redding-ca,181554,1.4,71931,Education & health care,24.6,Retail trade,12.5,"Arts, food & hospitality",10.4,Professional & management,9.7,Construction,7.9
+kingston-ny,182109,1.6,81804,Education & health care,29.4,Retail trade,10.9,Professional & management,10.5,"Arts, food & hospitality",9.5,Construction,7.1
+panama-city-fl,206627,4.1,67834,Education & health care,17.3,Retail trade,12.8,"Arts, food & hospitality",12.3,Professional & management,11.5,Construction,10.0
+joplin-mo,202258,14.0,60146,Education & health care,23.8,Manufacturing,17.6,Retail trade,11.9,"Arts, food & hospitality",8.4,Professional & management,7.9
+dover-de,185043,5.8,72872,Education & health care,25.1,Retail trade,13.7,Public administration,9.7,"Arts, food & hospitality",8.9,Manufacturing,8.0
+el-centro-ca,179319,-0.5,56393,Education & health care,23.8,Retail trade,11.7,Public administration,10.7,Agriculture & mining,9.8,"Arts, food & hospitality",9.3
+jackson-tn,180844,39.8,58740,Education & health care,24.4,Manufacturing,18.5,Retail trade,12.2,"Arts, food & hospitality",8.2,Professional & management,8.1
+yuba-city-ca,182050,6.2,74762,Education & health care,22.5,Retail trade,12.2,Professional & management,8.6,Construction,8.4,"Arts, food & hospitality",8.2
+bowling-green-ky,183194,6.5,62437,Education & health care,23.0,Manufacturing,16.5,Retail trade,12.6,"Arts, food & hospitality",11.5,Professional & management,8.6
+st--george-ut,189827,18.2,76411,Education & health care,24.7,Retail trade,12.2,Professional & management,11.0,"Arts, food & hospitality",10.5,Construction,10.0
+muskegon-mi,175378,1.3,63495,Manufacturing,25.9,Education & health care,20.7,Retail trade,11.0,"Arts, food & hospitality",9.6,Professional & management,7.7
