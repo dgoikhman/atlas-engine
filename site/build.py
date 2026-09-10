@@ -752,41 +752,6 @@ def main():
                      "How the Star Score index weights yield, entry price, landlord law, growth, taxes and risk.",
                      env.get_template("method").render(vintage=DATA_VINTAGE, today=TODAY)))
 
-    # --- Main Street Atlas (renders when the registry pipeline has run)
-    MS_BRAND = 'MAIN STREET <span>★</span> ATLAS'
-    ms_path = os.path.join(ROOT, "data", "mainstreet_cities.csv")
-    if os.path.exists(ms_path):
-        ms_raw = list(csv.DictReader(open(ms_path)))
-        ms = []
-        for row in ms_raw:
-            c = dict(row)
-            for k in ("total_active", "over20", "over30"):
-                c[k] = int(c[k])
-            for k in ("share20", "share30"):
-                c[k] = float(c[k])
-            sc, _f = compute("mainstreet", c)
-            band = "b-green" if sc >= 70 else "b-gold" if sc >= 55 else "b-mid" if sc >= 40 else "b-red"
-            ms.append({"c": type("C", (), c)(), "score": round(sc), "band": band})
-        ms.sort(key=lambda x: -x["score"])
-        for i, r in enumerate(ms):
-            c = r["c"]
-            body = env.get_template("ms_city").render(
-                c=c, score=r["score"], band=r["band"], rank=i + 1,
-                total=len(ms), base=BASE_URL, year=year)
-            urls.append(page(
-                f"/businesses/{c.slug}/",
-                f"{c.city}, {c.state} Business Succession Outlook ({year}): Succession Score {r['score']}",
-                f"{c.total_active:,} active businesses in {c.city}; {c.share20}% registered 20+ years. Succession Score {r['score']}/100 from public registry data.",
-                body, brand=MS_BRAND))
-        body = env.get_template("ms_index").render(
-            rows=ms, top=ms[0], base=BASE_URL, year=year)
-        urls.append(page(
-            "/businesses/",
-            f"The Succession Index ({year}): Where Business Ownership Transitions Concentrate",
-            f"City-level map of long-tenured businesses approaching ownership transition. {ms[0]['c'].city} leads Colorado at {ms[0]['c'].share20}% aged 20+ years.",
-            body, brand=MS_BRAND))
-        print(f"[build] mainstreet: {len(ms)} city pages")
-
     # --- shared assets: search index, favicon, default share card
     sidx = [{"n": f"{x['m'].name}, {x['m'].state}", "u": f"/rentals/{x['m'].slug}/"} for x in everything]
     sidx += [{"n": "Rankings — best BRRRR markets", "u": f"/rentals/best-rental-markets-{year}/"},

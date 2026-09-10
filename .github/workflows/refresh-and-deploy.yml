@@ -35,11 +35,6 @@ jobs:
         run: |
           set -o pipefail
           python pipelines/context.py 2>&1 | tee -a data/last_refresh.log
-      - name: Refresh Main Street registry data (non-fatal)
-        continue-on-error: true
-        run: |
-          set -o pipefail
-          python pipelines/mainstreet.py 2>&1 | tee -a data/last_refresh.log
       - name: Build site
         env:
           STRIPE_LINK_ANNUAL: ${{ vars.STRIPE_LINK_ANNUAL }}
@@ -55,7 +50,6 @@ jobs:
           git add -f data/last_refresh.log
           git add -f data/metros_live.csv 2>/dev/null || true
           git add -f data/metro_context.csv 2>/dev/null || true
-          git add -f data/mainstreet_cities.csv 2>/dev/null || true
           git diff --cached --quiet || git commit -m "data: refreshed metros dataset [skip ci]"
           git push || true
   deploy:
