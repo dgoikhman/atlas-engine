@@ -36,6 +36,22 @@ PROMPT = ("For each numbered business entity name, classify its likely industry.
           "Names:\n")
 
 
+def auto():
+    """submit -> wait -> process -> radar, in one run (for CI)."""
+    import anthropic, time
+    bid = submit()
+    if not bid:
+        return radar()
+    client = anthropic.Anthropic()
+    for _ in range(90):                      # up to ~45 min
+        b = client.messages.batches.retrieve(bid)
+        if b.processing_status == "ended":
+            poll(bid); return radar()
+        print(f"[classify] {b.processing_status}...", flush=True)
+        time.sleep(30)
+    print("[classify] batch still running — poll later with:", bid)
+
+
 def submit():
     import anthropic
     client = anthropic.Anthropic()
@@ -43,8 +59,10 @@ def submit():
     if os.path.exists(CLS):
         done = {r["entity_id"] for r in csv.DictReader(open(CLS))}
     ents = [r for r in csv.DictReader(open(ENT)) if r["entity_id"] not in done]
+    cap = int(os.environ.get("CLASSIFY_CAP", "20000"))
+    ents = ents[:cap]
     if not ents:
-        return print("[classify] nothing new")
+        print("[classify] nothing new"); return None
     reqs, chunk = [], 40
     for i in range(0, len(ents), chunk):
         grp = ents[i:i + chunk]
@@ -57,6 +75,7 @@ def submit():
                for i in range(0, len(ents), chunk)}},
               open(os.path.join(ROOT, "data", "pro", "classify_state.json"), "w"))
     print(f"[classify] submitted {len(ents)} names in {len(reqs)} requests, batch {batch.id}")
+    return batch.id
 
 
 def poll(batch_id):
@@ -118,6 +137,7 @@ def radar():
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else ""
     if cmd == "submit": submit()
+    elif cmd == "auto": auto()
     elif cmd == "poll": poll(sys.argv[2])
     elif cmd == "radar": radar()
     else: print(__doc__)

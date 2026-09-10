@@ -1,0 +1,39 @@
+name: Generate Pro dataset (Main Street)
+on:
+  workflow_dispatch:
+    inputs:
+      classify_cap:
+        description: "Max entities to classify this run (~$1.50 per 10K)"
+        default: "20000"
+permissions:
+  contents: write
+jobs:
+  pro:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -r requirements.txt
+      - name: Pull aged entities (row-level, CO)
+        run: python pipelines/mainstreet_entities.py
+      - name: Classify + build Roll-up Radar
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLASSIFY_CAP: ${{ inputs.classify_cap }}
+        run: |
+          python pipelines/classify.py auto
+      - name: Publish safe aggregates (Radar) back to repo
+        run: |
+          git config user.name "atlas-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add -f data/rollup_radar.csv 2>/dev/null || true
+          git diff --cached --quiet || git commit -m "data: roll-up radar refresh [skip ci]"
+          git push || true
+      - name: Hand off Pro files (private artifact, 7-day retention)
+        uses: actions/upload-artifact@v4
+        with:
+          name: mainstreet-pro-dataset
+          path: data/pro/
+          retention-days: 7
