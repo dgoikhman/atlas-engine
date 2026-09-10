@@ -40,7 +40,11 @@ def _get(year, fields):
     print(f"[census] ACS {year} profile")
     r = requests.get(url, timeout=120)
     r.raise_for_status()
-    return r.json()
+    try:
+        return r.json()
+    except ValueError:
+        print(f"[census] non-JSON response ({r.status_code}): {r.text[:300]!r}")
+        raise
 
 
 def _index(data, fields):

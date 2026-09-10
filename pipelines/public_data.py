@@ -26,9 +26,16 @@ os.makedirs(RAW, exist_ok=True)
 MAX_METROS = 250          # SizeRank cutoff
 GROWTH_MONTHS = 60        # growth = 5-year ZHVI appreciation, percentiled
 
-ZILLOW_URLS = {
-    "zhvi": "https://files.zillowstatic.com/research/public_csvs/zhvi/Metro_zhvi_uc_sfrcondo_tier_0.33_0.67_sm_sa_month.csv",
-    "zori": "https://files.zillowstatic.com/research/public_csvs/zori/Metro_zori_uc_sfrcondo_sm_sa_month.csv",
+ZILLOW_URLS = {   # candidates tried in order; Zillow renames these occasionally
+    "zhvi": [
+        "https://files.zillowstatic.com/research/public_csvs/zhvi/Metro_zhvi_uc_sfrcondo_tier_0.33_0.67_sm_sa_month.csv",
+        "https://files.zillowstatic.com/research/public_csvs/zhvi/Metro_zhvi_uc_sfrcondo_tier_0.33_0.67_month.csv",
+    ],
+    "zori": [
+        "https://files.zillowstatic.com/research/public_csvs/zori/Metro_zori_uc_sfrcondomfr_sm_sa_month.csv",
+        "https://files.zillowstatic.com/research/public_csvs/zori/Metro_zori_uc_sfrcondomfr_sm_month.csv",
+        "https://files.zillowstatic.com/research/public_csvs/zori/Metro_zori_uc_sfrcondo_sm_sa_month.csv",
+    ],
 }
 GAZ_URL = "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_cbsa_national.zip"
 
@@ -62,11 +69,16 @@ def _read_csv(kind):
     if local:
         text = open(os.path.join(local, f"zillow_{kind}.csv")).read()
     else:
-        url = ZILLOW_URLS[kind]
-        print(f"[zillow:{kind}] {url}")
-        r = requests.get(url, timeout=180)
-        r.raise_for_status()
-        text = r.content.decode("utf-8")
+        text = None
+        for url in ZILLOW_URLS[kind]:
+            print(f"[zillow:{kind}] trying {url}")
+            r = requests.get(url, timeout=180)
+            if r.ok:
+                text = r.content.decode("utf-8")
+                break
+            print(f"[zillow:{kind}] {r.status_code}, next candidate")
+        if text is None:
+            raise RuntimeError(f"no working {kind} URL — update ZILLOW_URLS from zillow.com/research/data/")
         open(os.path.join(RAW, f"zillow_{kind}.csv"), "w").write(text)
     rows = list(csv.DictReader(io.StringIO(text)))
     date_cols = sorted(c for c in rows[0] if c[:2] in ("19", "20") and "-" in c)
