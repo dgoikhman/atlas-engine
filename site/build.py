@@ -163,7 +163,7 @@ METHOD_BODY = """
 <h1>Star Score methodology</h1>
 <p class="lede">The Star Score is a 0-100 index of how well a US metro suits the equity-snowball strategy: buy under market, force appreciation, refinance, repeat. It weights gross rental yield 35%, entry price against a $100K capital base 15%, landlord-friendliness 15%, equity growth 15%, property-tax drag 10%, and climate/insurance risk 10%.</p>
 <h2>Sources</h2>
-<p>Home values are Zillow Home Value Index (ZHVI) metro figures and rents are Zillow Observed Rent Index (ZORI) metro figures, {{ vintage }}. Supporting context: US Census ACS, HUD Fair Market Rents, state landlord-tenant statutes, Tax Foundation effective property-tax tables. Landlord-friendliness, growth, and climate factors are editorial scores on public data, reviewed {{ today }}.</p>
+<p>Home values are Zillow Home Value Index (ZHVI) metro figures and rents are Zillow Observed Rent Index (ZORI) metro figures, {{ vintage }}. Supporting context: US Census ACS, HUD Fair Market Rents, state landlord-tenant statutes, Tax Foundation effective property-tax tables. Landlord-friendliness and climate/insurance risk are editorial state-level scores on public data, reviewed {{ today }}; property-tax drag uses Tax Foundation state average effective rates. Equity growth is not editorial: it is each metro's five-year ZHVI appreciation, percentile-ranked within the tracked cohort, so it moves when the cohort changes.</p>
 <h2>What it is not</h2>
 <p>Metro averages start the conversation; the block and the deal finish it. The Star Score is research and education, not investment advice, an appraisal, or a substitute for local underwriting.</p>"""
 
@@ -373,7 +373,8 @@ def svg_map(ranked, refs):
 def enrich(m):
     score, factors = compute("rentals", m)
     y = m["rent"] * 12 / m["home_value"] * 100
-    return {"m": type("M", (), m)(), "score": round(score), "factors": factors,
+    return {"m": type("M", (), m)(), "score": round(score), "score_raw": score,
+            "factors": factors,
             "ratio": round(m["home_value"] / (m["rent"] * 12)),
             "yield_pct": round(y, 1), "star_str": stars(score)}
 
@@ -410,9 +411,13 @@ def main():
         metros.append(m)
 
     year = datetime.date.today().year
+    # Rank on the unrounded score: sorting on the display-rounded integer put
+    # ties in CSV order, which mis-ordered most of the table (e.g. Montgomery
+    # 86.1 listed below Mobile 85.7). Name breaks exact ties for build determinism.
     ranked = sorted([enrich(m) for m in metros if not m["ref"]],
-                    key=lambda x: -x["score"])
-    refs = sorted([enrich(m) for m in metros if m["ref"]], key=lambda x: -x["score"])
+                    key=lambda x: (-x["score_raw"], x["m"].name))
+    refs = sorted([enrich(m) for m in metros if m["ref"]],
+                  key=lambda x: (-x["score_raw"], x["m"].name))
     everything = ranked + refs
     total = len(ranked)
     urls = []
