@@ -83,3 +83,21 @@ public pages, queued for review). Sanity rules per data-quality skill.
 
 Prereq before P1 ships publicly: membership layer live on Snowball
 (shared auth = one account across atlases, per launch plan).
+
+## Phase 2 addendum (agreed Sep 2026): entities, contact rails, revenue
+- Row-level entities (names, city, zip, age) are PRO-ONLY: outputs live in
+  data/pro/ (gitignored), delivered under Pro terms. Never on public pages
+  until the claim/correct flow ships. Radar aggregates (counts by city x
+  vertical, no names) are publishable and are the free teaser.
+- Contact rails: business-public channels only (the company's own published
+  address/phone/site); letter-first outreach tooling; permanent suppression
+  list honored across all products; Pro terms prohibit bulk spam. We sell
+  introductions to likely sellers, not a spam cannon.
+- Revenue: there is NO public IRS data on individual private-company
+  revenue. We publish MODELED BANDS: IRS SOI + Census CBP revenue-per-
+  employee benchmarks by industry x county, crossed with headcount signals,
+  always labeled modeled with methodology. Nonprofit 990s (public, actual)
+  can power a nonprofit layer later.
+- Roll-up Radar: fragmentation = count of aged independents per city x
+  vertical (chain/consolidator detection later via name-frequency across
+  cities). The Pro pitch: the list behind the radar cell.
