@@ -55,7 +55,31 @@ RENTALS = {
 # MAINSTREET-> "Succession Score": owner-age proxies, registry age, digital
 #               weakness, density gap vs demand.
 
-CONFIGS = {"rentals": RENTALS}
+# ---------------- Main Street: the Succession Score (v0.1, registry-only) --
+import math
+
+MAINSTREET = {
+    "index_name": "Succession Score",
+    "factors": {
+        "share20": {
+            "label": "Share of businesses 20+ years old",
+            "weight": 0.45,
+            "fn": lambda m: clamp01((m["share20"] - 5) / 25) * 100,
+        },
+        "share30": {
+            "label": "Share 30+ years old",
+            "weight": 0.25,
+            "fn": lambda m: clamp01((m["share30"] - 2) / 13) * 100,
+        },
+        "depth": {
+            "label": "Depth of aged businesses (count)",
+            "weight": 0.30,
+            "fn": lambda m: clamp01(math.log10(max(m["over20"], 1)) / 4) * 100,
+        },
+    },
+}
+
+CONFIGS = {"rentals": RENTALS, "mainstreet": MAINSTREET}
 
 
 def compute(atlas: str, m: dict):

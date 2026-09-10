@@ -95,7 +95,7 @@ nav.crumbs{font-size:13px;color:var(--muted);margin-top:8px}
 .mk[hidden]{display:none}
 svg text.star-label{pointer-events:none}
 </style></head><body><div class="wrap">
-<header><a href="{{ base }}/">BRRRR <span>★</span> MARKETS</a>
+<header><a href="{{ base }}/">{% if brand %}{{ brand }}{% else %}BRRRR <span>★</span> MARKETS{% endif %}</a>
 <div class="nav"><a href="{{ base }}/">Map</a><a href="{{ base }}/rentals/best-rental-markets-2026/">Rankings</a><a href="{{ base }}/start/">Market finder</a><a href="{{ base }}/rentals/brrrr-calculator/">Calculator</a><a href="{{ base }}/pro/">Pro</a></div>
 <div class="srch"><input id="q" placeholder="Search 242 markets…" autocomplete="off"><div id="qr"></div></div></header>
 <script>
@@ -241,6 +241,35 @@ METHOD_BODY = """
 <p>Home values are Zillow Home Value Index (ZHVI) metro figures and rents are Zillow Observed Rent Index (ZORI) metro figures, {{ vintage }}. Supporting context: US Census ACS, HUD Fair Market Rents, state landlord-tenant statutes, Tax Foundation effective property-tax tables. Landlord-friendliness, growth, and climate factors are editorial scores on public data, reviewed {{ today }}.</p>
 <h2>What it is not</h2>
 <p>Metro averages start the conversation; the block and the deal finish it. The Star Score is research and education, not investment advice, an appraisal, or a substitute for local underwriting.</p>"""
+
+MS_CITY_BODY = """
+<nav class="crumbs"><a href="{{ base }}/businesses/">Main Street Atlas</a> › {{ c.city }}</nav>
+<div class="scorebadge {{ band }}"><span class="n">{{ score }}</span><span class="l">SUCCESSION</span></div>
+<h1>Business succession outlook: {{ c.city }}, {{ c.state }} ({{ year }})</h1>
+<p class="lede">{{ "{:,}".format(c.total_active) }} active registered businesses operate in {{ c.city }}, and <b>{{ "{:,}".format(c.over20) }} of them — {{ c.share20 }}%</b> — have been registered for 20+ years, per Colorado Secretary of State records. {{ "{:,}".format(c.over30) }} ({{ c.share30 }}%) pass 30 years. {{ c.city }}'s Succession Score is <b>{{ score }}/100</b> (#{{ rank }} of {{ total }} Colorado cities tracked).</p>
+<p>Long-tenured, owner-operated businesses are where ownership transitions concentrate as founders retire — the "silver tsunami." A high score means a deep bench of aged businesses relative to the market, which is where buyers hunting main-street acquisitions focus their search.</p>
+<h2>The numbers</h2>
+<table><tr><th>Metric</th><th class="n">Value</th></tr>
+<tr><td>Active registered businesses</td><td class="n">{{ "{:,}".format(c.total_active) }}</td></tr>
+<tr><td>Registered 20+ years</td><td class="n">{{ "{:,}".format(c.over20) }} ({{ c.share20 }}%)</td></tr>
+<tr><td>Registered 30+ years</td><td class="n">{{ "{:,}".format(c.over30) }} ({{ c.share30 }}%)</td></tr>
+<tr><td>Succession Score</td><td class="n">{{ score }}/100</td></tr></table>
+<div class="faq"><h2>Frequently asked questions</h2>
+<h3>What does a high Succession Score mean for {{ c.city }}?</h3>
+<p>A larger-than-typical share of the city's businesses have operated 20+ years, the cohort where retirements and ownership transitions concentrate. It describes registry data patterns — never any individual owner's intent.</p>
+<h3>Where does this data come from?</h3>
+<p>The Colorado Secretary of State's public business registry (entity status and original filing dates), aggregated at city level. No individual businesses or owners are identified on this page.</p>
+</div>
+<p class="quick">Business-level succession signals, listed-deal partnerships, and buyer tools are in build — this city-level index is the free layer. Registry data, aggregated; scores describe data patterns, not anyone's intent.</p>"""
+
+MS_INDEX_BODY = """
+<h1>The Succession Index: where America's business handover concentrates</h1>
+<p class="lede">Main Street Atlas maps the silver tsunami — the wave of long-tenured, founder-owned businesses approaching ownership transition. Launch state: Colorado. <b>{{ top.c.city }}</b> leads with {{ top.c.share20 }}% of its {{ "{:,}".format(top.c.total_active) }} active businesses registered 20+ years (Succession Score {{ top.score }}/100), per Secretary of State records.</p>
+<table><tr><th>#</th><th>City</th><th class="n">Active businesses</th><th class="n">20+ yrs</th><th class="n">Share</th><th class="n">Score</th></tr>
+{% for r in rows %}<tr><td>{{ loop.index }}</td><td><a href="{{ base }}/businesses/{{ r.c.slug }}/">{{ r.c.city }}, {{ r.c.state }}</a></td><td class="n">{{ "{:,}".format(r.c.total_active) }}</td><td class="n">{{ "{:,}".format(r.c.over20) }}</td><td class="n">{{ r.c.share20 }}%</td><td class="n"><span class="chip {{ r.band }}">{{ r.score }}</span></td></tr>
+{% endfor %}</table>
+<h2>What this is</h2>
+<p>The Succession Score (0-100) weighs the share of businesses aged 20+ years (45%), 30+ years (25%), and the absolute depth of aged businesses (30%) — all from public registry filing dates. It is research about market structure, not claims about any owner's plans. More states, business-level signals, and broker-partnered listings are on the roadmap; brokers who want their deals distributed here can reach out.</p>"""
 
 QUIZ_BODY = """
 <nav class="crumbs"><a href="{{ base }}/">Atlas</a> › Find your market</nav>
@@ -401,16 +430,16 @@ function calc(){
 env = Environment(loader=DictLoader({
     "base": BASE, "metro": METRO_BODY, "rankings": RANKINGS_BODY,
     "compare": COMPARE_BODY, "index": INDEX_BODY, "method": METHOD_BODY,
-    "calc": CALC_BODY, "guide": GUIDE_BODY, "state": STATE_BODY, "life": LIFE_BODY, "quiz": QUIZ_BODY, "pro": PRO_BODY,
+    "calc": CALC_BODY, "guide": GUIDE_BODY, "state": STATE_BODY, "life": LIFE_BODY, "quiz": QUIZ_BODY, "pro": PRO_BODY, "ms_city": MS_CITY_BODY, "ms_index": MS_INDEX_BODY,
 }))
 
 
 STATE_NAMES = {"AL":"Alabama","AK":"Alaska","AZ":"Arizona","AR":"Arkansas","CA":"California","CO":"Colorado","CT":"Connecticut","DE":"Delaware","FL":"Florida","GA":"Georgia","HI":"Hawaii","ID":"Idaho","IL":"Illinois","IN":"Indiana","IA":"Iowa","KS":"Kansas","KY":"Kentucky","LA":"Louisiana","ME":"Maine","MD":"Maryland","MA":"Massachusetts","MI":"Michigan","MN":"Minnesota","MS":"Mississippi","MO":"Missouri","MT":"Montana","NE":"Nebraska","NV":"Nevada","NH":"New Hampshire","NJ":"New Jersey","NM":"New Mexico","NY":"New York","NC":"North Carolina","ND":"North Dakota","OH":"Ohio","OK":"Oklahoma","OR":"Oregon","PA":"Pennsylvania","RI":"Rhode Island","SC":"South Carolina","SD":"South Dakota","TN":"Tennessee","TX":"Texas","UT":"Utah","VT":"Vermont","VA":"Virginia","WA":"Washington","WV":"West Virginia","WI":"Wisconsin","WY":"Wyoming","DC":"Washington DC"}
 
-def page(path, title, description, body_html, jsonld=None, og_image=None):
+def page(path, title, description, body_html, jsonld=None, og_image=None, brand=None):
     full = env.get_template("base").render(
         title=title, description=description, body=body_html,
-        canonical=f"{BASE_URL}{path}", base=BASE_URL, today=TODAY, og_image=og_image,
+        canonical=f"{BASE_URL}{path}", base=BASE_URL, today=TODAY, og_image=og_image, brand=brand,
         vintage=DATA_VINTAGE, jsonld=[json.dumps(x) for x in (jsonld or [])])
     d = os.path.join(OUT, path.strip("/"))
     os.makedirs(d, exist_ok=True)
@@ -722,6 +751,41 @@ def main():
     urls.append(page("/methodology/", "Star Score Methodology and Sources",
                      "How the Star Score index weights yield, entry price, landlord law, growth, taxes and risk.",
                      env.get_template("method").render(vintage=DATA_VINTAGE, today=TODAY)))
+
+    # --- Main Street Atlas (renders when the registry pipeline has run)
+    MS_BRAND = 'MAIN STREET <span>★</span> ATLAS'
+    ms_path = os.path.join(ROOT, "data", "mainstreet_cities.csv")
+    if os.path.exists(ms_path):
+        ms_raw = list(csv.DictReader(open(ms_path)))
+        ms = []
+        for row in ms_raw:
+            c = dict(row)
+            for k in ("total_active", "over20", "over30"):
+                c[k] = int(c[k])
+            for k in ("share20", "share30"):
+                c[k] = float(c[k])
+            sc, _f = compute("mainstreet", c)
+            band = "b-green" if sc >= 70 else "b-gold" if sc >= 55 else "b-mid" if sc >= 40 else "b-red"
+            ms.append({"c": type("C", (), c)(), "score": round(sc), "band": band})
+        ms.sort(key=lambda x: -x["score"])
+        for i, r in enumerate(ms):
+            c = r["c"]
+            body = env.get_template("ms_city").render(
+                c=c, score=r["score"], band=r["band"], rank=i + 1,
+                total=len(ms), base=BASE_URL, year=year)
+            urls.append(page(
+                f"/businesses/{c.slug}/",
+                f"{c.city}, {c.state} Business Succession Outlook ({year}): Succession Score {r['score']}",
+                f"{c.total_active:,} active businesses in {c.city}; {c.share20}% registered 20+ years. Succession Score {r['score']}/100 from public registry data.",
+                body, brand=MS_BRAND))
+        body = env.get_template("ms_index").render(
+            rows=ms, top=ms[0], base=BASE_URL, year=year)
+        urls.append(page(
+            "/businesses/",
+            f"The Succession Index ({year}): Where Business Ownership Transitions Concentrate",
+            f"City-level map of long-tenured businesses approaching ownership transition. {ms[0]['c'].city} leads Colorado at {ms[0]['c'].share20}% aged 20+ years.",
+            body, brand=MS_BRAND))
+        print(f"[build] mainstreet: {len(ms)} city pages")
 
     # --- shared assets: search index, favicon, default share card
     sidx = [{"n": f"{x['m'].name}, {x['m'].state}", "u": f"/rentals/{x['m'].slug}/"} for x in everything]

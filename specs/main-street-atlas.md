@@ -73,7 +73,7 @@ public pages, queued for review). Sanity rules per data-quality skill.
   broker referral. The opt-out IS a lead channel.
 
 ## Build phases
-- P1: Florida Sunbiz bulk pipeline → entity age + status; MAINSTREET score
+- P1 (SHIPPED as v0.1): Colorado registry via open-data API — city-level aggregates + Succession Index pages. Swapped ahead of Florida: same public-records legality, clean queryable API vs gigabyte fixed-width SFTP files. Florida moves to the scale phase. → entity age + status; MAINSTREET score
   config; 50 city pages + national index page. (FL alone ≈ 3M entities.)
 - P2: name→industry Haiku classifier; first-party digital-decay crawler;
   Census ABS owner-age + CBP density joins.
