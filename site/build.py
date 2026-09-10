@@ -101,7 +101,7 @@ METRO_BODY = """
 {% if unlocked %}<table><tr><th>Factor</th><th class="n">Score</th><th class="n">Weight</th></tr>
 {% for f in factors.values() %}<tr><td>{{ f.label }}</td><td class="n">{{ f.score }}</td><td class="n">{{ (f.weight*100)|int }}%</td></tr>
 {% endfor %}</table>{% else %}<div class="explain"><b>Factor breakdown is a Pro layer for this market.</b> The top 15 markets show it free — see the <a href="{{ base }}/rentals/best-rental-markets-2026/">rankings</a> — or <a href="{{ base }}/pro/">unlock all {{ total }} markets</a>. Not sure where to start? <a href="{{ base }}/start/">Find your market in 5 taps</a>.</div>{% endif %}
-<p class="quick">More context: <a href="{{ base }}/rentals/{{ m.slug }}/living/">Living in {{ m.name }} — economy, industries &amp; affordability</a></p>
+{% if has_living %}<p class="quick">More context: <a href="{{ base }}/rentals/{{ m.slug }}/living/">Living in {{ m.name }} — economy, industries &amp; affordability</a></p>{% endif %}
 <h2>Compare {{ m.name }}</h2>
 <p>{% for c in compares %}<a href="{{ base }}/rentals/compare/{{ c.href }}/">{{ m.name }} vs {{ c.name }}</a>{{ " · " if not loop.last }}{% endfor %}</p>
 <h2>What would a rehab cost here?</h2>
@@ -416,6 +416,11 @@ def main():
     everything = ranked + refs
     total = len(ranked)
     urls = []
+    ctx_path = os.path.join(ROOT, "data", "metro_context.csv")
+    ctx = {}
+    if os.path.exists(ctx_path):
+        for row in csv.DictReader(open(ctx_path)):
+            ctx[row["slug"]] = row
 
     # --- metro pages
     for i, r in enumerate(everything):
@@ -457,7 +462,8 @@ def main():
             ratio=r["ratio"], yield_pct=r["yield_pct"], score=r["score"],
             star_str=r["star_str"], rank=rank, total=total,
             factors=r["factors"], compares=compares, verdict=verdict,
-            brrrr_answer=brrrr_answer, unlocked=(rank <= 15 or r not in ranked))
+            brrrr_answer=brrrr_answer, unlocked=(rank <= 15 or r not in ranked),
+            has_living=(m.slug in ctx))
         urls.append(page(
             f"/rentals/{m.slug}/",
             f"{m.name}, {m.state} BRRRR & Rental Market Data {year}: Prices, Rents, Star Score",
@@ -493,11 +499,6 @@ def main():
         body))
 
     # --- living pages (only when the Census context pipeline has run)
-    ctx_path = os.path.join(ROOT, "data", "metro_context.csv")
-    ctx = {}
-    if os.path.exists(ctx_path):
-        for row in csv.DictReader(open(ctx_path)):
-            ctx[row["slug"]] = row
     for r in everything:
         m = r["m"]
         cr = ctx.get(m.slug)
