@@ -1,7 +1,7 @@
 # Atlas Engine
 
 One chassis, many atlases. Data pipelines → named scores → programmatic AEO pages.
-First atlas live in this repo: **Snowball Atlas** (US rental markets, Star Score index).
+First atlas live in this repo: **BRRRR Market** (US rental markets, Star Score index).
 
 ## Quick start (5 minutes)
     pip install -r requirements.txt

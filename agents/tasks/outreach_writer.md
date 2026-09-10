@@ -9,7 +9,7 @@
      comment) + ONE concrete data gift from our site (a stat they'd post),
      + the offer (exclusive data drops / 30-40% recurring affiliate /
      founder guest pitch). Plain voice per the social-voice skill. No hype.
-   - Disclosure and honesty rules: we are Snowball Atlas / the Atlas
+   - Disclosure and honesty rules: we are BRRRR Market / the Atlas
      network; never imply prior relationship; no fabricated stats — pull
      real numbers from the built site only.
 3. NOTHING SENDS AUTOMATICALLY. These are drafts; email sending happens
