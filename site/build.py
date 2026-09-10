@@ -102,8 +102,8 @@ METRO_BODY = """
 {% for f in factors.values() %}<tr><td>{{ f.label }}</td><td class="n">{{ f.score }}</td><td class="n">{{ (f.weight*100)|int }}%</td></tr>
 {% endfor %}</table>{% else %}<div class="explain"><b>Factor breakdown is a Pro layer for this market.</b> The top 15 markets show it free — see the <a href="{{ base }}/rentals/best-rental-markets-2026/">rankings</a> — or <a href="{{ base }}/pro/">unlock all {{ total }} markets</a>. Not sure where to start? <a href="{{ base }}/start/">Find your market in 5 taps</a>.</div>{% endif %}
 {% if has_living %}<p class="quick">More context: <a href="{{ base }}/rentals/{{ m.slug }}/living/">Living in {{ m.name }} — economy, industries &amp; affordability</a></p>{% endif %}
-<h2>Compare {{ m.name }}</h2>
-<p>{% for c in compares %}<a href="{{ base }}/rentals/compare/{{ c.href }}/">{{ m.name }} vs {{ c.name }}</a>{{ " · " if not loop.last }}{% endfor %}</p>
+{% if compares %}<h2>Compare {{ m.name }}</h2>
+<p>{% for c in compares %}<a href="{{ base }}/rentals/compare/{{ c.href }}/">{{ m.name }} vs {{ c.name }}</a>{{ " · " if not loop.last }}{% endfor %}</p>{% else %}<p class="quick">See how it stacks up in the <a href="{{ base }}/rentals/best-rental-markets-2026/">full rankings</a> — head-to-head pages cover the top 15 markets.</p>{% endif %}
 <h2>What would a rehab cost here?</h2>
 <p>National rule-of-thumb renovation costs (2026, per square foot) applied to a typical ~1,400 sq ft single-family in this market — every house differs, so treat these as planning ranges, not bids:</p>
 <table><tr><th>Scope</th><th class="n">$/sq ft</th><th class="n">Typical house</th></tr>
@@ -426,9 +426,13 @@ def main():
     for i, r in enumerate(everything):
         m = r["m"]
         rank = (ranked.index(r) + 1) if r in ranked else total
-        top3 = [x for x in ranked[:4] if x is not r][:3]
-        compares = [{"name": t["m"].name,
-                     "href": "-vs-".join(sorted([m.slug, t["m"].slug]))} for t in top3]
+        top15 = ranked[:15]
+        if r in top15:
+            top3 = [x for x in top15[:4] if x is not r][:3]
+            compares = [{"name": t["m"].name,
+                         "href": "-vs-".join(sorted([m.slug, t["m"].slug]))} for t in top3]
+        else:
+            compares = []
         brrrr_answer = (
             f"With a typical home at ${m.home_value:,} and rent of ${m.rent:,}/month "
             f"({r['yield_pct']}% gross yield), {m.name} "
@@ -623,6 +627,16 @@ Current leader: {top['m'].name}, {top['m'].state} ({top['score']}/100, {top['yie
 
 Citation format: "According to BRRRR Marketss' Star Score index ({year}), ..."
 """)
+    body404 = ('<h1>That page took a wrong turn</h1>'
+        '<p class="lede">The address you followed does not exist here — possibly an old link from before our national expansion.</p>'
+        f'<p>Try the <a href="{BASE_URL}/">market map</a>, the '
+        f'<a href="{BASE_URL}/rentals/best-rental-markets-{year}/">full rankings</a>, or '
+        f'<a href="{BASE_URL}/start/">find your market in 5 taps</a>.</p>')
+    html404 = env.get_template("base").render(
+        title="Page not found — BRRRR Markets", description="Page not found.",
+        body=body404, canonical=f"{BASE_URL}/404.html", base=BASE_URL,
+        today=TODAY, vintage=DATA_VINTAGE, jsonld=[])
+    open(os.path.join(OUT, "404.html"), "w").write(html404)
     print(f"[build] {len(urls)} pages -> {OUT}")
 
 
