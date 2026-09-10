@@ -26,6 +26,9 @@ from engine.scoring import compute, stars  # noqa: E402
 
 OUT = os.path.join(ROOT, "out")
 BASE_URL = "https://example.com"
+STRIPE_ANNUAL = os.environ.get("STRIPE_LINK_ANNUAL", "")
+STRIPE_PASS = os.environ.get("STRIPE_LINK_PASS", "")
+FORM_ENDPOINT = os.environ.get("FORM_ENDPOINT", "")
 if "--base-url" in sys.argv:
     BASE_URL = sys.argv[sys.argv.index("--base-url") + 1].rstrip("/")
 TODAY = datetime.date.today().strftime("%B %Y")
@@ -95,9 +98,9 @@ METRO_BODY = """
 <tr><td>Star Score</td><td class="n">{{ score }}/100 <span class="stars">{{ star_str }}</span></td></tr>
 <tr><td>Rank among tracked markets</td><td class="n">#{{ rank }} of {{ total }}</td></tr></table>
 <h2>Why {{ m.name }} scores {{ score }}</h2>
-<table><tr><th>Factor</th><th class="n">Score</th><th class="n">Weight</th></tr>
+{% if unlocked %}<table><tr><th>Factor</th><th class="n">Score</th><th class="n">Weight</th></tr>
 {% for f in factors.values() %}<tr><td>{{ f.label }}</td><td class="n">{{ f.score }}</td><td class="n">{{ (f.weight*100)|int }}%</td></tr>
-{% endfor %}</table>
+{% endfor %}</table>{% else %}<div class="explain"><b>Factor breakdown is a Pro layer for this market.</b> The top 15 markets show it free — see the <a href="{{ base }}/rentals/best-rental-markets-2026/">rankings</a> — or <a href="{{ base }}/pro/">unlock all {{ total }} markets</a>. Not sure where to start? <a href="{{ base }}/start/">Find your market in 5 taps</a>.</div>{% endif %}
 <p class="quick">More context: <a href="{{ base }}/rentals/{{ m.slug }}/living/">Living in {{ m.name }} — economy, industries &amp; affordability</a></p>
 <h2>Compare {{ m.name }}</h2>
 <p>{% for c in compares %}<a href="{{ base }}/rentals/compare/{{ c.href }}/">{{ m.name }} vs {{ c.name }}</a>{{ " · " if not loop.last }}{% endfor %}</p>
@@ -148,7 +151,8 @@ INDEX_BODY = """
 <h1>US rental markets, scored for the equity snowball</h1>
 <p class="lede">The Star Score ranks {{ total }} US metros for buy-under-market, refinance-and-repeat investing, on {{ vintage }} Zillow home values and rents. Current leader: <b><a href="{{ base }}/rentals/{{ top.m.slug }}/">{{ top.m.name }}, {{ top.m.state }}</a></b> at <b>{{ top.score }}/100</b> with a {{ top.yield_pct }}% gross yield.</p>
 <div class="map-wrap">{{ map_svg }}</div>
-<p class="quick">Bigger star = better snowball math. New here? Start with the <a href="{{ base }}/rentals/brrrr-guide/">2-minute BRRRR guide</a>, then stress-test a deal in the <a href="{{ base }}/rentals/brrrr-calculator/">calculator</a>.</p>
+<p class="quick">Bigger star = better snowball math. <b><a href="{{ base }}/start/">Find your market in 5 taps →</a></b></p>
+<p class="quick">New here? The <a href="{{ base }}/rentals/brrrr-guide/">2-minute BRRRR guide</a> · <a href="{{ base }}/rentals/brrrr-calculator/">deal calculator</a> · <a href="{{ base }}/pro/">Pro</a></p>
 <h2>Leaderboard</h2>
 <table><tr><th>#</th><th>Market</th><th class="n">Yield</th><th class="n">Star Score</th></tr>
 {% for r in rows[:25] %}<tr><td>{{ loop.index }}</td><td><a href="{{ base }}/rentals/{{ r.m.slug }}/">{{ r.m.name }}, {{ r.m.state }}</a></td><td class="n">{{ r.yield_pct }}%</td><td class="n">{{ r.score }} <span class="stars">{{ r.star_str }}</span></td></tr>
@@ -162,6 +166,76 @@ METHOD_BODY = """
 <p>Home values are Zillow Home Value Index (ZHVI) metro figures and rents are Zillow Observed Rent Index (ZORI) metro figures, {{ vintage }}. Supporting context: US Census ACS, HUD Fair Market Rents, state landlord-tenant statutes, Tax Foundation effective property-tax tables. Landlord-friendliness, growth, and climate factors are editorial scores on public data, reviewed {{ today }}.</p>
 <h2>What it is not</h2>
 <p>Metro averages start the conversation; the block and the deal finish it. The Star Score is research and education, not investment advice, an appraisal, or a substitute for local underwriting.</p>"""
+
+QUIZ_BODY = """
+<nav class="crumbs"><a href="{{ base }}/">Atlas</a> › Find your market</nav>
+<h1>Find your first (or next) market in 5 taps</h1>
+<p class="lede">Answer five questions and get your three best-fit markets from {{ total }} tracked metros — plus a plan matched to how you want to operate. Free, no signup to see results.</p>
+<div id="quiz">
+<div class="explain"><b>1 · Capital to deploy</b><br>
+<label><input type="radio" name="cap" value="50"> Under $50K</label><br>
+<label><input type="radio" name="cap" value="120" checked> $50K–$150K</label><br>
+<label><input type="radio" name="cap" value="300"> $150K+</label></div>
+<div class="explain"><b>2 · What matters most</b><br>
+<label><input type="radio" name="goal" value="cash" checked> Monthly cash flow</label><br>
+<label><input type="radio" name="goal" value="bal"> Balanced</label><br>
+<label><input type="radio" name="goal" value="growth"> Long-term equity growth</label></div>
+<div class="explain"><b>3 · Where</b><br>
+<label><input type="radio" name="where" value="any" checked> Anywhere the numbers work</label><br>
+<label><input type="radio" name="where" value="state"> Near me: <select id="mystate"></select></label></div>
+<div class="explain"><b>4 · The rehab</b><br>
+<label><input type="radio" name="rehab" value="diy"> I'll do the work myself</label><br>
+<label><input type="radio" name="rehab" value="crew" checked> I'll need a contractor crew</label><br>
+<label><input type="radio" name="rehab" value="turnkey"> Hands-off / turnkey</label></div>
+<div class="explain"><b>5 · Financing</b><br>
+<label><input type="radio" name="fin" value="cash"> Cash</label><br>
+<label><input type="radio" name="fin" value="pre"> Pre-approved</label><br>
+<label><input type="radio" name="fin" value="need" checked> I'll need a lender</label></div>
+<button onclick="quizGo()">Show my markets</button>
+</div>
+<div id="quiz-out"></div>
+<script>
+var MK = {{ markets_json }};
+var ST = [...new Set(MK.map(m=>m.state))].sort();
+document.getElementById("mystate").innerHTML = ST.map(s=>"<option>"+s+"</option>").join("");
+function quizGo(){
+ var v=n=>document.querySelector("input[name="+n+"]:checked").value;
+ var cap=+v("cap")*1000, goal=v("goal"), wh=v("where"), rehab=v("rehab"), fin=v("fin");
+ var pool=MK.filter(m=>m.v*0.25<=Math.max(cap,30000)*1.1);
+ if(wh=="state"){var st=document.getElementById("mystate").value; var loc=pool.filter(m=>m.state==st); if(loc.length)pool=loc;}
+ pool.sort((a,b)=> goal=="cash" ? b.y-a.y : goal=="growth" ? b.g-a.g : b.s-a.s);
+ var picks=pool.slice(0,3);
+ var why = goal=="cash"?"highest gross yields your budget reaches":goal=="growth"?"strongest 5-year equity growth in your range":"best overall Star Scores in your range";
+ var html="<h2>Your three markets ("+why+")</h2>";
+ picks.forEach(function(m,i){html+="<div class='explain'><b>"+(i+1)+" · <a href='{{ base }}/rentals/"+m.slug+"/'>"+m.name+", "+m.state+"</a></b> — Star Score "+m.s+", "+m.y+"% gross yield, typical home $"+m.v.toLocaleString()+". <a href='{{ base }}/rentals/"+m.slug+"/living/'>Living context</a></div>";});
+ var plan="<h2>Your plan</h2><ul style='margin:8px 0 8px 20px;font-size:14.5px'>";
+ plan+= rehab=="diy"?"<li>DIY rehab: budget with the <a href='{{ base }}/rentals/brrrr-calculator/'>calculator</a>'s cosmetic tiers and add 20% contingency — solo timelines slip.</li>":rehab=="crew"?"<li><b>Contractor route:</b> get three bids before you offer. We can introduce vetted investor-friendly crews in your market as we onboard them.</li>":"<li><b>Turnkey route:</b> prioritize metros with deep property-management infrastructure (Memphis, Birmingham, Cleveland score highest here).</li>";
+ plan+= fin=="need"?"<li><b>Financing:</b> DSCR lenders qualify the property's rent, not your W-2 — typically 20-25% down. We can connect you with investor lenders active in these markets.</li>":fin=="cash"?"<li>Cash buyer: you're the fastest closer in the room — that's worth 5-10% on price. Refinance after stabilizing to redeploy.</li>":"<li>Pre-approved: confirm your lender allows the cash-out refi timeline BRRRR needs (seasoning rules vary).</li>";
+ plan+="<li>Stress-test your first deal in the <a href='{{ base }}/rentals/brrrr-calculator/'>BRRRR calculator</a> before you offer.</li></ul>";
+ var capture = {{ "true" if form_endpoint else "false" }} ?
+  "<div class='explain'><b>Get this plan + weekly Star Opportunities for your markets</b><br><form action='{{ form_endpoint }}' method='POST' style='margin-top:6px'><input type='email' name='email' required placeholder='you@email.com' style='padding:9px;border:1px solid var(--line);border-radius:4px;width:60%'><input type='hidden' name='segments' id='seg'><button type='submit' style='margin-left:6px'>Send it</button></form></div>"
+  : "<div class='explain'><b>Alerts for your markets are coming online now.</b> Founding-member pricing on the full toolkit: <a href='{{ base }}/pro/'>see Pro</a>.</div>";
+ document.getElementById("quiz-out").innerHTML=html+plan+capture;
+ var seg=document.getElementById("seg"); if(seg) seg.value=[goal,rehab,fin,picks.map(p=>p.slug).join("|")].join(",");
+ document.getElementById("quiz-out").scrollIntoView({behavior:"smooth"});
+}
+</script>"""
+
+PRO_BODY = """
+<nav class="crumbs"><a href="{{ base }}/">Atlas</a> › Pro</nav>
+<h1>Every market. Every layer. One simple unlock.</h1>
+<p class="lede">Free gets you full depth on the top 15 markets and core data on all {{ total }}. Pro unlocks the intelligence layer on everything — and it's priced for one truth: a single good deal pays for decades of this.</p>
+<table><tr><th></th><th>Free</th><th>Pro</th></tr>
+<tr><td>Market pages, rankings, living guides, map</td><td>All {{ total }}</td><td>All {{ total }}</td></tr>
+<tr><td>Full Star Score factor breakdowns</td><td>Top 15</td><td>All {{ total }}</td></tr>
+<tr><td>BRRRR &amp; rehab calculator</td><td>✔</td><td>✔</td></tr>
+<tr><td>Star Opportunity deal alerts (as markets onboard)</td><td>—</td><td>✔</td></tr>
+<tr><td>Zip-level scores (rolling out)</td><td>—</td><td>✔</td></tr>
+<tr><td>Quarterly rankings deep-report + data export</td><td>—</td><td>✔</td></tr></table>
+{% if stripe_annual %}<p style="margin-top:16px"><a href="{{ stripe_annual }}"><button>Founding member — $290/yr (first 20, locked for life)</button></a></p>
+{% if stripe_pass %}<p><a href="{{ stripe_pass }}"><button class="secondary" style="background:transparent;color:var(--ink)">7-day pass — $29</button></a></p>{% endif %}
+{% else %}<div class="explain"><b>Founding membership opens this week</b> — the first 20 members lock $290/yr for life (then $390). Pick your markets meanwhile with the <a href="{{ base }}/start/">market finder</a>.</div>{% endif %}
+<p class="quick">Fair-dealing note: core market data on every page stays free forever — Pro is the tooling on top, not a ransom on public data.</p>"""
 
 GUIDE_BODY = """
 <nav class="crumbs"><a href="{{ base }}/">Atlas</a> › BRRRR guide</nav>
@@ -246,7 +320,7 @@ function calc(){
 env = Environment(loader=DictLoader({
     "base": BASE, "metro": METRO_BODY, "rankings": RANKINGS_BODY,
     "compare": COMPARE_BODY, "index": INDEX_BODY, "method": METHOD_BODY,
-    "calc": CALC_BODY, "guide": GUIDE_BODY, "state": STATE_BODY, "life": LIFE_BODY,
+    "calc": CALC_BODY, "guide": GUIDE_BODY, "state": STATE_BODY, "life": LIFE_BODY, "quiz": QUIZ_BODY, "pro": PRO_BODY,
 }))
 
 
@@ -383,7 +457,7 @@ def main():
             ratio=r["ratio"], yield_pct=r["yield_pct"], score=r["score"],
             star_str=r["star_str"], rank=rank, total=total,
             factors=r["factors"], compares=compares, verdict=verdict,
-            brrrr_answer=brrrr_answer)
+            brrrr_answer=brrrr_answer, unlocked=(rank <= 15 or r not in ranked))
         urls.append(page(
             f"/rentals/{m.slug}/",
             f"{m.name}, {m.state} BRRRR & Rental Market Data {year}: Prices, Rents, Star Score",
@@ -501,6 +575,18 @@ def main():
     urls.append(page("/", f"Snowball Atlas: US Rental Markets Ranked by Star Score",
                      f"US rental markets scored 0-100 for buy-refinance-repeat investing. {top['m'].name} currently leads at {top['score']}/100.",
                      body))
+    mjson = json.dumps([{"slug": x["m"].slug, "name": x["m"].name,
+                          "state": x["m"].state, "v": x["m"].home_value,
+                          "y": x["yield_pct"], "g": x["factors"]["growth"]["score"],
+                          "s": x["score"]} for x in ranked])
+    urls.append(page("/start/", "Find Your Rental Market in 5 Taps",
+                     "Answer five questions — capital, goals, location, rehab style, financing — and get your three best-fit US rental markets instantly.",
+                     env.get_template("quiz").render(base=BASE_URL, total=total,
+                         markets_json=mjson, form_endpoint=FORM_ENDPOINT)))
+    urls.append(page("/pro/", "Snowball Atlas Pro: Unlock Every Market",
+                     "Free covers core data on all markets and full depth on the top 15. Pro unlocks factor breakdowns, deal alerts and zip-level scores everywhere.",
+                     env.get_template("pro").render(base=BASE_URL, total=total,
+                         stripe_annual=STRIPE_ANNUAL, stripe_pass=STRIPE_PASS)))
     urls.append(page("/rentals/brrrr-guide/",
                      f"What Is the BRRRR Strategy? Beginner's Guide ({year})",
                      "BRRRR means Buy, Rehab, Rent, Refinance, Repeat — the rental snowball strategy explained in plain English, with the three numbers that matter.",

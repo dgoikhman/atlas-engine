@@ -36,6 +36,10 @@ jobs:
           set -o pipefail
           python pipelines/context.py 2>&1 | tee -a data/last_refresh.log
       - name: Build site
+        env:
+          STRIPE_LINK_ANNUAL: ${{ vars.STRIPE_LINK_ANNUAL }}
+          STRIPE_LINK_PASS: ${{ vars.STRIPE_LINK_PASS }}
+          FORM_ENDPOINT: ${{ vars.FORM_ENDPOINT }}
         run: python site/build.py --base-url "${{ vars.BASE_URL || format('https://{0}.github.io/{1}', github.repository_owner, github.event.repository.name) }}"
       - uses: actions/upload-pages-artifact@v3
         with: { path: out }
