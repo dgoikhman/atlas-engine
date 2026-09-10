@@ -41,6 +41,10 @@ BASE = """<!DOCTYPE html>
 <title>{{ title }}</title>
 <meta name="description" content="{{ description }}">
 <link rel="canonical" href="{{ canonical }}">
+<link rel="icon" href="{{ base }}/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="{{ title }}"><meta property="og:description" content="{{ description }}">
+<meta property="og:url" content="{{ canonical }}"><meta property="og:site_name" content="BRRRR Markets">
+{% if og_image %}<meta property="og:image" content="{{ og_image }}"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="{{ og_image }}">{% endif %}
 {% for ld in jsonld %}<script type="application/ld+json">{{ ld }}</script>
 {% endfor %}<style>
 :root{--paper:#E9EDEF;--ink:#14232B;--muted:#5E7278;--line:#C9D3D6;--gold:#C08A1E;--land:#1E4E49}
@@ -75,8 +79,34 @@ nav.crumbs{font-size:13px;color:var(--muted);margin-top:8px}
 .cgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .verdict{margin-top:12px;padding:12px;border-radius:4px;background:#fff;border:1px solid var(--line);font-size:14px}
 .verdict b{color:#2E6E4E}.verdict.bad b{color:#B5563F}
+
+.nav{font-size:13px;margin-top:6px;color:var(--muted)} .nav a{color:var(--muted);text-decoration:none;margin-right:10px}
+.srch{position:relative;margin-top:8px} .srch input{width:100%;max-width:340px;font:inherit;font-size:14px;padding:8px 10px;border:1px solid var(--line);border-radius:5px;background:#fff}
+#qr{position:absolute;z-index:9;background:#fff;border:1px solid var(--line);border-radius:5px;max-width:340px;width:100%;box-shadow:0 4px 14px rgba(20,35,43,.12)}
+#qr a{display:block;padding:8px 10px;font-size:14px;text-decoration:none;color:var(--ink);border-bottom:1px solid var(--line)}
+#qr a:last-child{border-bottom:none} #qr a:hover{background:var(--paper)}
+.scorebadge{float:right;margin:0 0 8px 12px;width:82px;height:82px;border-radius:50%;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700}
+.scorebadge .n{font-size:30px;line-height:1} .scorebadge .l{font-size:8.5px;letter-spacing:.08em;margin-top:3px}
+.b-green{background:#2E6E4E}.b-gold{background:#C08A1E}.b-mid{background:#7D939B}.b-red{background:#B5563F}
+.chip{display:inline-block;min-width:2.2em;text-align:center;color:#fff;border-radius:4px;padding:1px 6px;font-weight:700}
+.mapctl{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:10px 14px;font-size:13px;border-bottom:1px solid var(--line)}
+.mapctl select{font:inherit;font-size:13px;padding:5px;border:1px solid var(--line);border-radius:4px;background:#fff}
+.mapctl button{min-height:30px;padding:4px 12px;font-size:14px}
+.mk[hidden]{display:none}
+svg text.star-label{pointer-events:none}
 </style></head><body><div class="wrap">
-<header><a href="{{ base }}/">BRRRR <span>★</span> MARKET</a></header>
+<header><a href="{{ base }}/">BRRRR <span>★</span> MARKETS</a>
+<div class="nav"><a href="{{ base }}/">Map</a><a href="{{ base }}/rentals/best-rental-markets-2026/">Rankings</a><a href="{{ base }}/start/">Market finder</a><a href="{{ base }}/rentals/brrrr-calculator/">Calculator</a><a href="{{ base }}/pro/">Pro</a></div>
+<div class="srch"><input id="q" placeholder="Search 242 markets…" autocomplete="off"><div id="qr"></div></div></header>
+<script>
+(function(){var idx=null,q=document.getElementById("q"),qr=document.getElementById("qr");
+function load(cb){if(idx)return cb();fetch("{{ base }}/search-index.json").then(r=>r.json()).then(d=>{idx=d;cb();}).catch(function(){});}
+q.addEventListener("focus",function(){load(function(){})});
+q.addEventListener("input",function(){var s=q.value.toLowerCase().trim();if(!s||!idx){qr.innerHTML="";return;}
+var hits=idx.filter(m=>m.n.toLowerCase().indexOf(s)>-1).slice(0,8);
+qr.innerHTML=hits.map(m=>'<a href="{{ base }}'+m.u+'">'+m.n+'</a>').join("");});
+document.addEventListener("click",function(e){if(!e.target.closest(".srch"))qr.innerHTML="";});})();
+</script>
 {{ body }}
 <div class="meta">
 <p>Home values and rents: Zillow ZHVI / ZORI, {{ vintage }} metro figures. Factor scores are editorial estimates on public data. Last reviewed {{ today }}. Not investment advice — verify locally before acting. <a href="{{ base }}/methodology/">Methodology &amp; sources</a>.</p>
@@ -85,6 +115,7 @@ nav.crumbs{font-size:13px;color:var(--muted);margin-top:8px}
 
 METRO_BODY = """
 <nav class="crumbs"><a href="{{ base }}/">Atlas</a> › <a href="{{ base }}/rentals/best-rental-markets-2026/">Rankings</a> › {{ m.name }}</nav>
+<div class="scorebadge {{ band }}"><span class="n">{{ score }}</span><span class="l">STAR SCORE</span></div>
 <h1>{{ m.name }}, {{ m.state }} rental market data ({{ year }})</h1>
 <p class="lede">As of {{ vintage }}, the typical home in the {{ m.name }} metro costs <b>${{ "{:,}".format(m.home_value) }}</b> and typical rent is <b>${{ "{:,}".format(m.rent) }}/month</b> — a price-to-rent ratio of <b>{{ ratio }}</b> and a gross rental yield of <b>{{ yield_pct }}%</b>. {{ m.name }} scores <b>{{ score }}/100</b> on the Star Score index, ranking <b>#{{ rank }} of {{ total }}</b> tracked US rental markets.</p>
 <p>{{ m.blurb }}</p>
@@ -147,11 +178,11 @@ RANKINGS_BODY = """
 <h1>Best US rental markets for cash-flow investors ({{ year }})</h1>
 <p class="lede">Ranked by Star Score — a 0-100 index blending gross rental yield ({{ vintage }} Zillow data), entry prices, landlord law, equity growth, taxes, and insurance risk. <b>{{ top.name }}</b> leads at <b>{{ top_score }}/100</b>, with a gross yield of {{ top_yield }}% on a typical home value of ${{ "{:,}".format(top.home_value) }}.</p>
 <table><tr><th>#</th><th>Market</th><th class="n">Home value</th><th class="n">Rent/mo</th><th class="n">Ratio</th><th class="n">Yield</th><th class="n">Star Score</th></tr>
-{% for r in rows %}<tr><td>{{ loop.index }}</td><td><a href="{{ base }}/rentals/{{ r.m.slug }}/">{{ r.m.name }}, {{ r.m.state }}</a></td><td class="n">${{ "{:,}".format(r.m.home_value) }}</td><td class="n">${{ "{:,}".format(r.m.rent) }}</td><td class="n">{{ r.ratio }}</td><td class="n">{{ r.yield_pct }}%</td><td class="n">{{ r.score }}</td></tr>
+{% for r in rows %}<tr><td>{{ loop.index }}</td><td><a href="{{ base }}/rentals/{{ r.m.slug }}/">{{ r.m.name }}, {{ r.m.state }}</a></td><td class="n">${{ "{:,}".format(r.m.home_value) }}</td><td class="n">${{ "{:,}".format(r.m.rent) }}</td><td class="n">{{ r.ratio }}</td><td class="n">{{ r.yield_pct }}%</td><td class="n"><span class="chip {{ r.band }}">{{ r.score }}</span></td></tr>
 {% endfor %}</table>
 <h2>Reference markets (where the math stops working)</h2>
 <table><tr><th>Market</th><th class="n">Ratio</th><th class="n">Yield</th><th class="n">Star Score</th></tr>
-{% for r in refs %}<tr><td><a href="{{ base }}/rentals/{{ r.m.slug }}/">{{ r.m.name }}, {{ r.m.state }}</a></td><td class="n">{{ r.ratio }}</td><td class="n">{{ r.yield_pct }}%</td><td class="n">{{ r.score }}</td></tr>
+{% for r in refs %}<tr><td><a href="{{ base }}/rentals/{{ r.m.slug }}/">{{ r.m.name }}, {{ r.m.state }}</a></td><td class="n">{{ r.ratio }}</td><td class="n">{{ r.yield_pct }}%</td><td class="n"><span class="chip {{ r.band }}">{{ r.score }}</span></td></tr>
 {% endfor %}</table>"""
 
 COMPARE_BODY = """
@@ -169,12 +200,37 @@ COMPARE_BODY = """
 INDEX_BODY = """
 <h1>US rental markets, scored for the equity snowball</h1>
 <p class="lede">The Star Score ranks {{ total }} US metros for buy-under-market, refinance-and-repeat investing, on {{ vintage }} Zillow home values and rents. Current leader: <b><a href="{{ base }}/rentals/{{ top.m.slug }}/">{{ top.m.name }}, {{ top.m.state }}</a></b> at <b>{{ top.score }}/100</b> with a {{ top.yield_pct }}% gross yield.</p>
-<div class="map-wrap">{{ map_svg }}</div>
+<div class="map-wrap"><div class="mapctl">
+<label>Min yield <select id="f-y"><option value="0">any</option><option value="6">6%+</option><option value="7">7%+</option><option value="8">8%+</option></select></label>
+<label>Max price <select id="f-v"><option value="99999999">any</option><option value="250000">$250K</option><option value="350000">$350K</option><option value="500000">$500K</option></select></label>
+<label>Min score <select id="f-s"><option value="0">any</option><option value="60">60+</option><option value="70">70+</option><option value="80">80+</option></select></label>
+<span style="flex:1"></span>
+<button type="button" class="secondary" onclick="mzoom(1.4)">+</button>
+<button type="button" class="secondary" onclick="mzoom(0.72)">−</button>
+<button type="button" class="secondary" onclick="mreset()">Reset</button>
+</div><div id="mapbox">{{ map_svg }}</div></div>
+<script>
+(function(){var sv=document.querySelector("#mapbox svg");if(!sv)return;
+var B=[0,0,944,520],V=B.slice();window.mreset=function(){V=B.slice();apply();filt();};
+function apply(){sv.setAttribute("viewBox",V.join(" "));}
+window.mzoom=function(f){var w=V[2]/f,h=V[3]/f;V[0]+=(V[2]-w)/2;V[1]+=(V[3]-h)/2;V[2]=w;V[3]=h;
+if(V[2]>944){V=B.slice();}apply();};
+var drag=null;
+sv.addEventListener("pointerdown",function(e){drag=[e.clientX,e.clientY];sv.setPointerCapture(e.pointerId);});
+sv.addEventListener("pointermove",function(e){if(!drag)return;var r=sv.getBoundingClientRect();
+V[0]-=(e.clientX-drag[0])*V[2]/r.width;V[1]-=(e.clientY-drag[1])*V[3]/r.height;drag=[e.clientX,e.clientY];apply();});
+sv.addEventListener("pointerup",function(){drag=null;});
+function filt(){var y=+document.getElementById("f-y").value,v=+document.getElementById("f-v").value,s=+document.getElementById("f-s").value;
+document.querySelectorAll(".mk").forEach(function(m){
+var ok=+m.dataset.y>=y && +m.dataset.v<=v && +m.dataset.s>=s;
+if(ok)m.removeAttribute("hidden");else m.setAttribute("hidden","");});}
+["f-y","f-v","f-s"].forEach(function(i){document.getElementById(i).addEventListener("change",filt)});})();
+</script>
 <p class="quick">Bigger star = better snowball math. <b><a href="{{ base }}/start/">Find your market in 5 taps →</a></b></p>
 <p class="quick">New here? The <a href="{{ base }}/rentals/brrrr-guide/">2-minute BRRRR guide</a> · <a href="{{ base }}/rentals/brrrr-calculator/">deal calculator</a> · <a href="{{ base }}/pro/">Pro</a></p>
 <h2>Leaderboard</h2>
 <table><tr><th>#</th><th>Market</th><th class="n">Yield</th><th class="n">Star Score</th></tr>
-{% for r in rows[:25] %}<tr><td>{{ loop.index }}</td><td><a href="{{ base }}/rentals/{{ r.m.slug }}/">{{ r.m.name }}, {{ r.m.state }}</a></td><td class="n">{{ r.yield_pct }}%</td><td class="n">{{ r.score }} <span class="stars">{{ r.star_str }}</span></td></tr>
+{% for r in rows[:25] %}<tr><td>{{ loop.index }}</td><td><a href="{{ base }}/rentals/{{ r.m.slug }}/">{{ r.m.name }}, {{ r.m.state }}</a></td><td class="n">{{ r.yield_pct }}%</td><td class="n"><span class="chip {{ r.band }}">{{ r.score }}</span> <span class="stars">{{ r.star_str }}</span></td></tr>
 {% endfor %}</table>
 <p><a href="{{ base }}/rentals/best-rental-markets-2026/">All {{ total }} ranked markets with home values and rents →</a></p>"""
 
@@ -302,7 +358,7 @@ STATE_BODY = """
 <h1>Best rental markets in {{ state_name }} ({{ year }})</h1>
 <p class="lede">{{ top.m.name }} is the highest-scoring rental market in {{ state_name }}, with a Star Score of <b>{{ top.score }}/100</b> and a gross yield of {{ top.yield_pct }}% on a typical home value of ${{ "{:,}".format(top.m.home_value) }} ({{ vintage }} data). {{ count }} {{ state_name }} metro{{ "s" if count > 1 }} rank among the top US markets tracked.</p>
 <table><tr><th>#</th><th>Market</th><th class="n">Home value</th><th class="n">Rent/mo</th><th class="n">Yield</th><th class="n">Star Score</th></tr>
-{% for r in rows %}<tr><td>{{ loop.index }}</td><td><a href="{{ base }}/rentals/{{ r.m.slug }}/">{{ r.m.name }}</a></td><td class="n">${{ "{:,}".format(r.m.home_value) }}</td><td class="n">${{ "{:,}".format(r.m.rent) }}</td><td class="n">{{ r.yield_pct }}%</td><td class="n">{{ r.score }}</td></tr>
+{% for r in rows %}<tr><td>{{ loop.index }}</td><td><a href="{{ base }}/rentals/{{ r.m.slug }}/">{{ r.m.name }}</a></td><td class="n">${{ "{:,}".format(r.m.home_value) }}</td><td class="n">${{ "{:,}".format(r.m.rent) }}</td><td class="n">{{ r.yield_pct }}%</td><td class="n"><span class="chip {{ r.band }}">{{ r.score }}</span></td></tr>
 {% endfor %}</table>"""
 
 CALC_BODY = """
@@ -351,16 +407,50 @@ env = Environment(loader=DictLoader({
 
 STATE_NAMES = {"AL":"Alabama","AK":"Alaska","AZ":"Arizona","AR":"Arkansas","CA":"California","CO":"Colorado","CT":"Connecticut","DE":"Delaware","FL":"Florida","GA":"Georgia","HI":"Hawaii","ID":"Idaho","IL":"Illinois","IN":"Indiana","IA":"Iowa","KS":"Kansas","KY":"Kentucky","LA":"Louisiana","ME":"Maine","MD":"Maryland","MA":"Massachusetts","MI":"Michigan","MN":"Minnesota","MS":"Mississippi","MO":"Missouri","MT":"Montana","NE":"Nebraska","NV":"Nevada","NH":"New Hampshire","NJ":"New Jersey","NM":"New Mexico","NY":"New York","NC":"North Carolina","ND":"North Dakota","OH":"Ohio","OK":"Oklahoma","OR":"Oregon","PA":"Pennsylvania","RI":"Rhode Island","SC":"South Carolina","SD":"South Dakota","TN":"Tennessee","TX":"Texas","UT":"Utah","VT":"Vermont","VA":"Virginia","WA":"Washington","WV":"West Virginia","WI":"Wisconsin","WY":"Wyoming","DC":"Washington DC"}
 
-def page(path, title, description, body_html, jsonld=None):
+def page(path, title, description, body_html, jsonld=None, og_image=None):
     full = env.get_template("base").render(
         title=title, description=description, body=body_html,
-        canonical=f"{BASE_URL}{path}", base=BASE_URL, today=TODAY,
+        canonical=f"{BASE_URL}{path}", base=BASE_URL, today=TODAY, og_image=og_image,
         vintage=DATA_VINTAGE, jsonld=[json.dumps(x) for x in (jsonld or [])])
     d = os.path.join(OUT, path.strip("/"))
     os.makedirs(d, exist_ok=True)
     open(os.path.join(d, "index.html"), "w").write(full)
     return path
 
+
+try:
+    from PIL import Image, ImageDraw, ImageFont
+    HAVE_PIL = True
+except ImportError:
+    HAVE_PIL = False
+
+def _font(sz):
+    try:
+        return ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", sz)
+    except Exception:
+        return ImageFont.load_default()
+
+def make_og(fname, heading, stat, score=None, band=None):
+    if not HAVE_PIL:
+        return None
+    os.makedirs(os.path.join(OUT, "og"), exist_ok=True)
+    im = Image.new("RGB", (1200, 630), "#E9EDEF")
+    d = ImageDraw.Draw(im)
+    d.text((60, 48), "BRRRR", font=_font(38), fill="#14232B")
+    d.text((198, 48), "★", font=_font(38), fill="#C08A1E")
+    d.text((252, 48), "MARKETS", font=_font(38), fill="#14232B")
+    for i, line in enumerate(heading[:2]):
+        d.text((60, 180 + i * 78), line, font=_font(64), fill="#14232B")
+    d.text((60, 388), stat, font=_font(33), fill="#5E7278")
+    d.text((60, 540), "brrrrmarkets.com", font=_font(30), fill="#1E4E49")
+    if score is not None:
+        colors = {"b-green": "#2E6E4E", "b-gold": "#C08A1E", "b-mid": "#7D939B", "b-red": "#B5563F"}
+        cx, cy, rr = 1010, 300, 130
+        d.ellipse([cx-rr, cy-rr, cx+rr, cy+rr], fill=colors.get(band, "#C08A1E"))
+        d.text((cx, cy - 26), str(score), font=_font(84), fill="#FFFFFF", anchor="mm")
+        d.text((cx, cy + 52), "STAR SCORE", font=_font(22), fill="#FFFFFF", anchor="mm")
+    im.save(os.path.join(OUT, "og", fname), "PNG", optimize=True)
+    return f"{BASE_URL}/og/{fname}"
 
 US_OUTLINE = [(48.4,-124.7),(46.2,-124.0),(42.0,-124.4),(40.4,-124.4),(38.9,-123.7),
  (37.8,-122.5),(36.6,-121.9),(34.4,-120.5),(33.7,-118.3),(32.5,-117.1),(32.5,-114.8),
@@ -387,10 +477,10 @@ def svg_map(ranked, refs):
             continue
         x, y = _proj(m.lat, m.lng)
         if getattr(m, "ref", False) or m.slug in ("austin-tx","denver-co","chicago-il"):
-            marks.append(f'<a href="{BASE_URL}/rentals/{m.slug}/"><circle cx="{x:.0f}" cy="{y:.0f}" r="5" fill="#8FA3A8"><title>{m.name}: reference market</title></circle></a>')
+            marks.append(f'<a class="mk" data-s="{r["score"]}" data-y="{r["yield_pct"]}" data-v="{m.home_value}" href="{BASE_URL}/rentals/{m.slug}/"><circle cx="{x:.0f}" cy="{y:.0f}" r="5" fill="#8FA3A8"><title>{m.name}: reference market</title></circle></a>')
         else:
             sz = 14 + r["score"] / 100 * 22
-            marks.append(f'<a href="{BASE_URL}/rentals/{m.slug}/"><text x="{x:.0f}" y="{y + sz*0.36:.0f}" text-anchor="middle" font-size="{sz:.0f}" fill="#C08A1E" font-weight="700">\u2605<title>{m.name}: Star Score {r["score"]}</title></text></a>')
+            marks.append(f'<a class="mk" data-s="{r["score"]}" data-y="{r["yield_pct"]}" data-v="{m.home_value}" href="{BASE_URL}/rentals/{m.slug}/"><text x="{x:.0f}" y="{y + sz*0.36:.0f}" text-anchor="middle" font-size="{sz:.0f}" fill="#C08A1E" font-weight="700">\u2605<title>{m.name}: Star Score {r["score"]}</title></text></a>')
     return (f'<svg viewBox="0 0 944 520" role="img" aria-label="Map of US BRRRR rental markets by Star Score">'
             f'<path d="{d}" fill="#1E4E49" fill-opacity="0.13" stroke="#1E4E49" stroke-opacity="0.55" stroke-width="1.5" stroke-linejoin="round"/>'
             + "".join(marks) + "</svg>")
@@ -398,7 +488,8 @@ def svg_map(ranked, refs):
 def enrich(m):
     score, factors = compute("rentals", m)
     y = m["rent"] * 12 / m["home_value"] * 100
-    return {"m": type("M", (), m)(), "score": round(score), "factors": factors,
+    b = "b-green" if score >= 70 else "b-gold" if score >= 55 else "b-mid" if score >= 40 else "b-red"
+    return {"m": type("M", (), m)(), "score": round(score), "factors": factors, "band": b,
             "ratio": round(m["home_value"] / (m["rent"] * 12)),
             "yield_pct": round(y, 1), "star_str": stars(score)}
 
@@ -486,18 +577,21 @@ def main():
                  "description": f"Home value, rent, price-to-rent ratio and Star Score for the {m.name}, {m.state} metro.",
                  "temporalCoverage": str(year),
                  "creator": {"@type": "Organization", "name": "BRRRR Markets"}}
+        og = make_og(f"{m.slug}.png", [f"{m.name}, {m.state}", "Rental Market Data"],
+                     f"{r['yield_pct']}% gross yield  ·  ${m.home_value:,} typical home  ·  ratio {r['ratio']}",
+                     r["score"], r["band"])
         body = env.get_template("metro").render(
             m=m, base=BASE_URL, year=year, vintage=DATA_VINTAGE,
             ratio=r["ratio"], yield_pct=r["yield_pct"], score=r["score"],
             star_str=r["star_str"], rank=rank, total=total,
             factors=r["factors"], compares=compares, verdict=verdict,
             brrrr_answer=brrrr_answer, unlocked=(rank <= 15 or r not in ranked),
-            has_living=(m.slug in ctx))
+            has_living=(m.slug in ctx), band=r["band"])
         urls.append(page(
             f"/rentals/{m.slug}/",
             f"{m.name}, {m.state} BRRRR & Rental Market Data {year}: Prices, Rents, Star Score",
             f"{m.name} rental market {year}: typical home ${m.home_value:,}, rent ${m.rent:,}/mo, price-to-rent {r['ratio']}, Star Score {r['score']}/100.",
-            body, [faq_ld, ds_ld]))
+            body, [faq_ld, ds_ld], og_image=og))
 
     # --- comparison pages (top 10 pairs)
     for a, b in itertools.combinations(ranked[:15], 2):
@@ -628,6 +722,21 @@ def main():
     urls.append(page("/methodology/", "Star Score Methodology and Sources",
                      "How the Star Score index weights yield, entry price, landlord law, growth, taxes and risk.",
                      env.get_template("method").render(vintage=DATA_VINTAGE, today=TODAY)))
+
+    # --- shared assets: search index, favicon, default share card
+    sidx = [{"n": f"{x['m'].name}, {x['m'].state}", "u": f"/rentals/{x['m'].slug}/"} for x in everything]
+    sidx += [{"n": "Rankings — best BRRRR markets", "u": f"/rentals/best-rental-markets-{year}/"},
+             {"n": "Market finder (5-tap quiz)", "u": "/start/"},
+             {"n": "BRRRR & rehab calculator", "u": "/rentals/brrrr-calculator/"},
+             {"n": "Pro", "u": "/pro/"}]
+    json.dump(sidx, open(os.path.join(OUT, "search-index.json"), "w"))
+    open(os.path.join(OUT, "favicon.svg"), "w").write(
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">'
+        '<rect width="64" height="64" rx="12" fill="#14232B"/>'
+        '<text x="32" y="46" text-anchor="middle" font-size="40" fill="#C08A1E">\u2605</text></svg>')
+    make_og("default.png", ["242 US rental markets,", "ranked for BRRRR"],
+            f"The Star Score index  ·  {DATA_VINTAGE} Zillow data  ·  free market map",
+            None, None)
 
     # --- machine layer
     open(os.path.join(OUT, "robots.txt"), "w").write(
