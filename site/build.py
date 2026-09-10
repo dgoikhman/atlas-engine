@@ -98,6 +98,7 @@ METRO_BODY = """
 <table><tr><th>Factor</th><th class="n">Score</th><th class="n">Weight</th></tr>
 {% for f in factors.values() %}<tr><td>{{ f.label }}</td><td class="n">{{ f.score }}</td><td class="n">{{ (f.weight*100)|int }}%</td></tr>
 {% endfor %}</table>
+<p class="quick">More context: <a href="{{ base }}/rentals/{{ m.slug }}/living/">Living in {{ m.name }} — economy, industries &amp; affordability</a></p>
 <h2>Compare {{ m.name }}</h2>
 <p>{% for c in compares %}<a href="{{ base }}/rentals/compare/{{ c.href }}/">{{ m.name }} vs {{ c.name }}</a>{{ " · " if not loop.last }}{% endfor %}</p>
 <h2>What would a rehab cost here?</h2>
@@ -178,6 +179,25 @@ GUIDE_BODY = """
 <h2>Where the Star Score fits</h2>
 <p>The <a href="{{ base }}/methodology/">Star Score</a> ranks metros for this exact loop: yield, entry prices a normal budget can buy, landlord law, equity growth, taxes and insurance risk. Pick a market from the <a href="{{ base }}/">map</a>, then pressure-test your first deal in the <a href="{{ base }}/rentals/brrrr-calculator/">calculator</a>.</p>"""
 
+LIFE_BODY = """
+<nav class="crumbs"><a href="{{ base }}/">Atlas</a> › <a href="{{ base }}/rentals/{{ m.slug }}/">{{ m.name }}</a> › Living</nav>
+<h1>Living in {{ m.name }}, {{ m.state }} ({{ year }}): economy, work &amp; what renters pay</h1>
+<p class="lede">The {{ m.name }} metro is home to <b>{{ "{:,}".format(c.population) }}</b> people ({{ trend_txt }}), with a median household income of <b>${{ "{:,}".format(c.income) }}</b>. Typical rent of ${{ "{:,}".format(m.rent) }}/month works out to <b>{{ afford }}%</b> of the median household income — {{ afford_txt }} (Census ACS + Zillow, {{ vintage }}).</p>
+<h2>Who works here: industry mix</h2>
+<p>The share of {{ m.name }}'s workforce by sector — the base of tenant demand:</p>
+<table><tr><th>Sector</th><th class="n">% of workforce</th></tr>
+{% for label, pct in industries %}<tr><td>{{ label }}</td><td class="n">{{ pct }}%</td></tr>
+{% endfor %}</table>
+<p>{{ industry_read }}</p>
+<h2>What this means for renters and landlords</h2>
+<p>{{ takeaway }} Market pricing, yields and the Star Score live on the <a href="{{ base }}/rentals/{{ m.slug }}/">{{ m.name }} market page</a>; run a deal in the <a href="{{ base }}/rentals/brrrr-calculator/">calculator</a>.</p>
+<div class="faq"><h2>Frequently asked questions</h2>
+<h3>What salary do you need to rent comfortably in {{ m.name }}?</h3>
+<p>At the 30%-of-income affordability rule, typical rent of ${{ "{:,}".format(m.rent) }}/month suggests a household income around ${{ "{:,}".format(need) }}/year. The metro's median household income is ${{ "{:,}".format(c.income) }}.</p>
+<h3>What are the biggest industries in {{ m.name }}?</h3>
+<p>{{ ind_answer }}</p>
+</div>"""
+
 STATE_BODY = """
 <nav class="crumbs"><a href="{{ base }}/">Atlas</a> › <a href="{{ base }}/rentals/best-rental-markets-2026/">Rankings</a> › {{ state }}</nav>
 <h1>Best rental markets in {{ state_name }} ({{ year }})</h1>
@@ -226,7 +246,7 @@ function calc(){
 env = Environment(loader=DictLoader({
     "base": BASE, "metro": METRO_BODY, "rankings": RANKINGS_BODY,
     "compare": COMPARE_BODY, "index": INDEX_BODY, "method": METHOD_BODY,
-    "calc": CALC_BODY, "guide": GUIDE_BODY, "state": STATE_BODY,
+    "calc": CALC_BODY, "guide": GUIDE_BODY, "state": STATE_BODY, "life": LIFE_BODY,
 }))
 
 
@@ -392,6 +412,64 @@ def main():
         f"Best BRRRR & Cash-Flow Rental Markets in the US ({year}), Ranked by Star Score",
         f"{total} US metros ranked for cash-flow rental investing on {DATA_VINTAGE} Zillow data. {top['m'].name} leads at {top['score']}/100.",
         body))
+
+    # --- living pages (only when the Census context pipeline has run)
+    ctx_path = os.path.join(ROOT, "data", "metro_context.csv")
+    ctx = {}
+    if os.path.exists(ctx_path):
+        for row in csv.DictReader(open(ctx_path)):
+            ctx[row["slug"]] = row
+    for r in everything:
+        m = r["m"]
+        cr = ctx.get(m.slug)
+        if not cr:
+            continue
+        c = type("C", (), {"population": int(cr["population"]),
+                           "income": int(cr["income"])})()
+        trend = cr.get("pop_5yr_pct")
+        trend_txt = (f"up {trend}% over five years" if trend and float(trend) > 0
+                     else f"down {abs(float(trend))}% over five years" if trend
+                     else "population trend unavailable")
+        afford = round(m.rent * 12 / c.income * 100, 1)
+        afford_txt = ("comfortably below the 30% affordability threshold"
+                      if afford < 25 else
+                      "near the 30% affordability threshold" if afford <= 32
+                      else "above the 30% affordability threshold, a strain signal")
+        need = round(m.rent * 12 / 0.30 / 1000) * 1000
+        industries = [(cr[f"ind{i}"], cr[f"ind{i}_pct"]) for i in range(1, 6)
+                      if cr.get(f"ind{i}")]
+        top_label = industries[0][0] if industries else ""
+        industry_read = (f"{top_label} is the metro's largest employment base"
+                         + (" — sectors like education and health care are recession-resilient anchors for rental demand."
+                            if "health" in top_label.lower() or "Education" in top_label
+                            else "; a diversified mix beneath it spreads tenant-demand risk."))
+        takeaway = (f"Rents at {afford}% of median income leave "
+                    + ("room for rent growth without pricing out the median tenant."
+                       if afford < 25 else
+                       "moderate headroom; underwrite rent growth conservatively."
+                       if afford <= 32 else
+                       "little headroom — expect tenant price sensitivity."))
+        ind_answer = ("By workforce share: "
+                      + ", ".join(f"{l} ({p}%)" for l, p in industries[:3])
+                      + " (Census ACS 5-year).")
+        faq_ld = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+            {"@type": "Question",
+             "name": f"What salary do you need to rent comfortably in {m.name}?",
+             "acceptedAnswer": {"@type": "Answer",
+                "text": f"About ${need:,}/year at the 30% rule, against typical rent of ${m.rent:,}/month; median household income is ${c.income:,}."}},
+            {"@type": "Question",
+             "name": f"What are the biggest industries in {m.name}?",
+             "acceptedAnswer": {"@type": "Answer", "text": ind_answer}}]}
+        body = env.get_template("life").render(
+            m=m, c=c, base=BASE_URL, year=year, vintage=DATA_VINTAGE,
+            trend_txt=trend_txt, afford=afford, afford_txt=afford_txt,
+            need=need, industries=industries, industry_read=industry_read,
+            takeaway=takeaway, ind_answer=ind_answer)
+        urls.append(page(
+            f"/rentals/{m.slug}/living/",
+            f"Living in {m.name}, {m.state} ({year}): Economy, Industries & Rent Affordability",
+            f"{m.name} living guide for renters and investors: population {c.population:,}, median income ${c.income:,}, rent-to-income {afford}%, top industries from Census data.",
+            body, [faq_ld]))
 
     # --- state pages
     by_state = {}
