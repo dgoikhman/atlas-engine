@@ -21,14 +21,18 @@ jobs:
       - name: Refresh public data (non-fatal)
         id: refresh
         continue-on-error: true
-        run: python pipelines/public_data.py
+        run: |
+          set -o pipefail
+          python pipelines/public_data.py 2>&1 | tee data/last_refresh.log
       - name: Trigger repair agent if refresh failed
         if: steps.refresh.outcome == 'failure' && github.event_name == 'schedule'
         env: { GH_TOKEN: "${{ github.token }}" }
         run: gh workflow run agent-task.yml -f task=scraper_repair || true
       - name: Refresh Census living context (non-fatal)
         continue-on-error: true
-        run: python pipelines/context.py
+        run: |
+          set -o pipefail
+          python pipelines/context.py 2>&1 | tee -a data/last_refresh.log
       - name: Build site
         run: python site/build.py --base-url "${{ vars.BASE_URL || format('https://{0}.github.io/{1}', github.repository_owner, github.event.repository.name) }}"
       - uses: actions/upload-pages-artifact@v3
@@ -37,7 +41,8 @@ jobs:
         run: |
           git config user.name "atlas-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add -f data/metros_live.csv data/metro_context.csv || true
+          git add -f data/last_refresh.log
+          git add -f data/metros_live.csv data/metro_context.csv 2>/dev/null || true
           git diff --cached --quiet || git commit -m "data: refreshed metros dataset [skip ci]"
           git push || true
   deploy:

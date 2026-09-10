@@ -131,7 +131,7 @@ def main():
         v = row.get(latest_v); rent = rrow.get(latest_r) if rrow else None
         if not v or not rent:
             continue
-        state = (row.get("StateName") or row["RegionName"].split(",")[-1]).strip()[:2].upper()
+        state = row["RegionName"].rsplit(",", 1)[-1].strip().upper()[:2]
         if state not in S:
             continue
         v, rent = float(v), float(rent)
