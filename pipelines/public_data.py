@@ -89,7 +89,9 @@ def _coords():
         print(f"[gazetteer] unavailable ({e}) — metros will miss map coords")
         return {}
     out = {}
-    for row in csv.DictReader(io.StringIO(text), delimiter="\t"):
+    reader = csv.DictReader(io.StringIO(text), delimiter="\t")
+    reader.fieldnames = [f.strip() for f in reader.fieldnames]  # Census headers carry trailing spaces
+    for row in reader:
         name = row.get("NAME", "")
         try:
             place, st = name.rsplit(",", 1)

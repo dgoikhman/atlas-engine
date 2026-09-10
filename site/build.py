@@ -151,9 +151,9 @@ INDEX_BODY = """
 <p class="quick">Bigger star = better snowball math. New here? Start with the <a href="{{ base }}/rentals/brrrr-guide/">2-minute BRRRR guide</a>, then stress-test a deal in the <a href="{{ base }}/rentals/brrrr-calculator/">calculator</a>.</p>
 <h2>Leaderboard</h2>
 <table><tr><th>#</th><th>Market</th><th class="n">Yield</th><th class="n">Star Score</th></tr>
-{% for r in rows %}<tr><td>{{ loop.index }}</td><td><a href="{{ base }}/rentals/{{ r.m.slug }}/">{{ r.m.name }}, {{ r.m.state }}</a></td><td class="n">{{ r.yield_pct }}%</td><td class="n">{{ r.score }} <span class="stars">{{ r.star_str }}</span></td></tr>
+{% for r in rows[:25] %}<tr><td>{{ loop.index }}</td><td><a href="{{ base }}/rentals/{{ r.m.slug }}/">{{ r.m.name }}, {{ r.m.state }}</a></td><td class="n">{{ r.yield_pct }}%</td><td class="n">{{ r.score }} <span class="stars">{{ r.star_str }}</span></td></tr>
 {% endfor %}</table>
-<p><a href="{{ base }}/rentals/best-rental-markets-2026/">Full rankings with home values and rents →</a></p>"""
+<p><a href="{{ base }}/rentals/best-rental-markets-2026/">All {{ total }} ranked markets with home values and rents →</a></p>"""
 
 METHOD_BODY = """
 <h1>Star Score methodology</h1>
