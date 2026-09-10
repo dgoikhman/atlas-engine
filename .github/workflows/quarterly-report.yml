@@ -1,0 +1,25 @@
+name: Quarterly Star Score report
+on:
+  schedule:
+    - cron: "0 12 2 1,4,7,10 *"   # 2nd of Jan/Apr/Jul/Oct (after monthly refresh)
+  workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - run: npm install -g @anthropic-ai/claude-code
+      - run: pip install -r requirements.txt
+      - name: Write report
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GH_TOKEN: ${{ github.token }}
+        run: python agents/run_agent.py report_writer

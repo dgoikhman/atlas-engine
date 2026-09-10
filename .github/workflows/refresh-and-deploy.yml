@@ -1,0 +1,41 @@
+name: Refresh data and deploy site
+on:
+  schedule:
+    - cron: "0 6 1 * *"        # monthly, 1st at 06:00 UTC
+  workflow_dispatch:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  actions: write               # lets this workflow trigger the repair agent
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -r requirements.txt
+      - name: Refresh public data (non-fatal)
+        id: refresh
+        continue-on-error: true
+        run: python pipelines/public_data.py
+      - name: Trigger repair agent if refresh failed
+        if: steps.refresh.outcome == 'failure' && github.event_name == 'schedule'
+        env: { GH_TOKEN: "${{ github.token }}" }
+        run: gh workflow run agent-task.yml -f task=scraper_repair || true
+      - name: Build site
+        run: python site/build.py --base-url "${{ vars.BASE_URL || format('https://{0}.github.io/{1}', github.repository_owner, github.event.repository.name) }}"
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: out }
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

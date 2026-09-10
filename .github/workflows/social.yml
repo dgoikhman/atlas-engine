@@ -1,0 +1,56 @@
+name: Social content
+on:
+  schedule:
+    - cron: "0 13 * * 1"     # Mondays: agent drafts the week (PR for review)
+    - cron: "0 15 * * *"     # daily: post merged, due X items
+  workflow_dispatch:
+    inputs:
+      job:
+        description: "draft | post"
+        default: draft
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  draft:
+    if: github.event.schedule == '0 13 * * 1' || inputs.job == 'draft'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - run: npm install -g @anthropic-ai/claude-code
+      - run: pip install -r requirements.txt
+      - name: Draft weekly queue (opens PR)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GH_TOKEN: ${{ github.token }}
+        run: python agents/run_agent.py social_writer
+  post:
+    if: github.event.schedule == '0 15 * * *' || inputs.job == 'post'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install requests requests-oauthlib
+      - name: Post due approved items
+        env:
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+          X_API_SECRET: ${{ secrets.X_API_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_SECRET: ${{ secrets.X_ACCESS_SECRET }}
+      # NOTE: main-branch checkout means only MERGED queue items exist here —
+      # that is the approval gate.
+        run: python pipelines/social_post.py
+      - name: Commit posted moves
+        run: |
+          git config user.name "atlas-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add -A content/social
+          git diff --cached --quiet || git commit -m "social: mark posted $(date -u +%F)"
+          git push

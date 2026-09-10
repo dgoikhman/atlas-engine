@@ -1,0 +1,28 @@
+name: Run agent task
+on:
+  workflow_dispatch:
+    inputs:
+      task:
+        description: "Agent task (scraper_repair | fdd_qa | report_writer)"
+        default: scraper_repair
+        required: true
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  agent:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30        # hard cost/time guardrail
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - run: npm install -g @anthropic-ai/claude-code
+      - run: pip install -r requirements.txt
+      - name: Run agent
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GH_TOKEN: ${{ github.token }}
+        run: python agents/run_agent.py "${{ inputs.task }}"
