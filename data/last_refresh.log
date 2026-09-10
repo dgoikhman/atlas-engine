@@ -6,3 +6,4 @@
 [census] ACS 2023 profile
 [census] ACS 2018 profile
 [done] context for 241 metros -> /home/runner/work/atlas-engine/atlas-engine/data/metro_context.csv
+[done] mainstreet: 60 CO cities -> /home/runner/work/atlas-engine/atlas-engine/data/mainstreet_cities.csv
