@@ -40,6 +40,7 @@ jobs:
         continue-on-error: true
         env:
           RENTCAST_API_KEY: ${{ secrets.RENTCAST_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           LISTINGS_DAILY: ${{ vars.LISTINGS_DAILY }}
           LISTINGS_ROTATION_DAYS: ${{ vars.LISTINGS_ROTATION_DAYS }}
         run: |
@@ -62,6 +63,7 @@ jobs:
           git add -f data/metros_live.csv 2>/dev/null || true
           git add -f data/metro_context.csv 2>/dev/null || true
           git add -f data/star_opportunities.json 2>/dev/null || true
+          git add -f data/why_cache.json 2>/dev/null || true
           git diff --cached --quiet || git commit -m "data: refreshed metros dataset [skip ci]"
           git push || true
   deploy:

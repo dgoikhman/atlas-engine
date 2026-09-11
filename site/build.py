@@ -189,7 +189,7 @@ if(localStorage.getItem("bm_credit"))document.getElementById("bp-credit").value=
 {% for o in ops["items"] %}<div class="opp"><span class="a">{{ o.addr }}</span> <span style="float:right;color:var(--gold);font-weight:700">★ {{ o.score }}</span>
 <div class="p">${{ "{:,}".format(o.price) }} <span class="mline">· {{ o.beds }}bd {{ o.baths }}ba{% if o.sqft %} · {{ "{:,}".format(o.sqft) }} sqft{% endif %}</span></div>
 <div class="mline">est. {{ o.under_pct }}% under market · modeled rent ${{ "{:,}".format(o.est_rent) }}/mo ({{ o.yield_pct }}% yield)</div>
-<div>{% if o.cut_pct >= 4 %}<span class="sig">−{{ o.cut_pct }}% price cut</span>{% endif %}{% if o.dom >= 45 %}<span class="sig">{{ o.dom }} days on market</span>{% endif %}<a class="sig" style="text-decoration:none" href="https://www.google.com/search?q={{ o.addr | urlencode }}">find listing →</a></div>
+<div>{% if o.mot %}<span class="sig">Motivation {{ o.mot }} · {{ o.tag }}</span>{% endif %}{% if o.cut_pct >= 4 %}<span class="sig">−{{ o.cut_pct }}% price cut</span>{% endif %}{% if o.dom >= 45 %}<span class="sig">{{ o.dom }} days on market</span>{% endif %}<a class="sig" style="text-decoration:none" href="https://www.google.com/search?q={{ o.addr | urlencode }}">find listing →</a></div>
 <div style="margin-top:8px"><a href="{{ base }}/financing/"><button style="font-size:13px;padding:7px 12px;min-height:34px">Get financing for this deal</button></a> <a href="{{ base }}/rentals/brrrr-calculator/"><button class="secondary" style="font-size:13px;padding:7px 12px;min-height:34px;background:transparent;color:var(--ink)">Estimate the rehab</button></a></div>
 </div>{% endfor %}
 <p class="quick">Run one through the <a href="{{ base }}/rentals/brrrr-calculator/">BRRRR calculator</a>. Rent figures are modeled from metro data, not appraisals.</p>
@@ -245,7 +245,8 @@ INDEX_BODY = """
 <div class="steps"><div class="step"><b>1 · Scan</b>Every morning we sweep live listings in {{ tracked }} scored markets.</div><div class="step"><b>2 · Score</b>The Star Score (0-100) grades every market; every flagged deal gets a star rating.</div><div class="step"><b>3 · Buy under market</b>You underwrite the shortlist — calculator, financing and crews one tap away.</div></div>
 {% if top_deals %}<h2 style="margin-top:18px">Today's top Star Deals</h2>
 {% for o in top_deals %}<div class="opp"><span class="starpill">★ {{ o.score }}</span><span class="a">{{ o.addr }}</span>
-<div class="p">${{ "{:,}".format(o.price) }} <span class="underpill">est {{ o.under_pct }}% under</span> <span class="mline">· <a href="{{ base }}/rentals/{{ o.slug }}/">{{ o.metro }}, {{ o.st }}</a> · {{ o.yield_pct }}% yield</span></div></div>
+<div class="p">${{ "{:,}".format(o.price) }} <span class="underpill">est {{ o.under_pct }}% under</span> <span class="mline">· <a href="{{ base }}/rentals/{{ o.slug }}/">{{ o.metro }}, {{ o.st }}</a> · {{ o.yield_pct }}% yield</span></div>
+{% if o.why %}<div class="mline" style="margin-top:4px"><span class="underpill" style="background:#F3E7CE;color:#7A5A12">Motivation {{ o.mot }}</span> {{ o.why }}</div>{% endif %}</div>
 {% endfor %}<p class="quick"><b><a href="{{ base }}/deals/">See all {{ n_deals }} flagged deals — {{ n_locked }} unlock with membership →</a></b></p>{% endif %}
 <h2 id="map">Explore the markets behind the deals</h2>
 <div class="map-wrap"><div class="mapctl">
@@ -340,7 +341,7 @@ Every flagged deal nationwide, full addresses, plus instant buy-box email alerts
 <div id="locked-list">
 {% for d in locked %}<div class="opp locked"><div class="blurline"></div>
 <div class="p">~${{ "{:,}".format((d.price // 10000) * 10000) }}s <span class="mline">· {{ d.metro }}, {{ d.st }}</span> <span style="float:right;color:var(--gold);font-weight:700">★ {{ d.score }}</span></div>
-<div class="mline">{{ d.yield_pct }}% modeled yield · address unlocks with membership</div></div>
+<div class="mline">{{ d.yield_pct }}% modeled yield{% if d.mot %} · <b>Motivation {{ d.mot }} — {{ d.tag }}</b>{% endif %} · address &amp; the full "why it's available" diagnosis unlock with membership</div></div>
 {% endfor %}{% if n_locked > 24 %}<p class="quick">…and {{ n_locked - 24 }} more locked deals.</p>{% endif %}</div>
 <div class="explain"><b>Get your buy-box delivered.</b> Save these filters as an alert — when Pro opens, matching deals hit your inbox the morning they're flagged; free alerts get the weekly batch.
 {% if form_endpoint %}<form action="{{ form_endpoint }}" method="POST" style="margin-top:8px"><input type="email" name="email" required placeholder="you@email.com" style="padding:9px;border:1px solid var(--line);border-radius:4px;width:58%"><input type="hidden" name="buybox" id="d-seg"><button type="submit" style="margin-left:6px">Save my buy-box</button></form>
@@ -368,6 +369,7 @@ document.getElementById("d-count").textContent=f.length+" open deal"+(f.length==
   '<div class="opp"><span class="starpill">★ '+d.score+'</span><span class="a">'+d.addr+'</span>'+
   '<div class="p">'+fm(d.price)+' <span class="mline">· '+(d.beds||"?")+'bd '+(d.baths||"?")+'ba'+(d.sqft?" · "+d.sqft.toLocaleString()+" sqft":"")+'</span></div>'+
   '<div class="mline"><span class="underpill">est '+d.under_pct+'% under</span> <a href="{{ base }}/rentals/'+d.slug+'/">'+d.metro+", "+d.st+'</a> · modeled rent '+fm(d.est_rent)+'/mo ('+d.yield_pct+'% yield) · flagged '+d.as_of+'</div>'+
+  '<div class="mline" style="margin-top:5px">'+(d.mot?'<span class="underpill" style="background:#F3E7CE;color:#7A5A12">Motivation '+d.mot+' · '+d.tag+'</span> ':'')+(d.why?d.why:'')+'</div>'+
   '<div style="margin-top:8px"><a href="{{ base }}/financing/"><button style="font-size:13px;padding:6px 11px;min-height:32px">Get financing</button></a> <a href="{{ base }}/rentals/brrrr-calculator/"><button style="font-size:13px;padding:6px 11px;min-height:32px;background:transparent;color:var(--ink);border:1px solid var(--ink)">Estimate rehab</button></a> <a class="sig" style="text-decoration:none" href="https://www.google.com/search?q='+encodeURIComponent(d.addr)+'">find listing →</a></div></div>').join("");
 }
 ["d-st","d-p","d-b","d-y","d-sort"].forEach(i=>document.getElementById(i).addEventListener("change",draw));draw();
@@ -929,7 +931,8 @@ def main():
                      env.get_template("deals").render(base=BASE_URL, n_metros=len(pulse) or 1,
                          deals_free_n=len(free_deals), deals_json=json.dumps(free_deals),
                          locked_json=json.dumps([{"st": d["st"], "price": d["price"],
-                             "beds": d.get("beds") or 0, "yield_pct": d["yield_pct"]} for d in locked]),
+                             "beds": d.get("beds") or 0, "yield_pct": d["yield_pct"],
+                             "mot": d.get("mot"), "tag": d.get("tag")} for d in locked]),
                          locked=locked[:24], n_locked=len(locked), pulse=pulse[:20],
                          stripe=STRIPE_ANNUAL or (BASE_URL + "/pro/"),
                          form_endpoint=FORM_ENDPOINT)))

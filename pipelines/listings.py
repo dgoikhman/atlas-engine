@@ -56,6 +56,8 @@ def fetch(city, state, key):
 def score_metro(listings, metro_rent, metro_value):
     """Flag and score under-market candidates within one metro's batch."""
     cands = []
+    doms = sorted(l.get("daysOnMarket") or 0 for l in listings)
+    med_dom = doms[len(doms)//2] if doms else 30
     psf = [l["price"] / l["squareFootage"] for l in listings
            if l.get("price") and l.get("squareFootage") and l["squareFootage"] > 300]
     med_psf = statistics.median(psf) if len(psf) >= 10 else None
@@ -82,6 +84,19 @@ def score_metro(listings, metro_rent, metro_value):
             below = max(0.0, (1 - (price / sqft) / med_psf) * 100)
         if cut < 4 and dom < 45 and below < 15:
             continue                      # no under-market signal
+        cuts_n = max(0, len(prices) - 1) if len(prices) >= 2 and max(prices) > (prices[-1] if prices else 0) else (1 if cut >= 4 else 0)
+        dom_ratio = dom / max(med_dom, 7)
+        mot = round(min(100, cuts_n * 16 + cut * 2.2 + max(0, dom_ratio - 1) * 22 + below * 1.1))
+        if cut >= 8 and cuts_n >= 2:
+            tag = "Chasing the market"
+        elif dom_ratio >= 2.2:
+            tag = "Stale listing"
+        elif below >= 15:
+            tag = "Condition discount (hypothesis)"
+        elif dom_ratio >= 1.5:
+            tag = "Aging listing"
+        else:
+            tag = "Quiet mispricing"
         under = round(min(30.0, max(cut, below * 0.8)), 1)
         # modeled rent: metro typical rent scaled by size vs a 1,400 sqft ref
         est_rent = round(metro_rent * min(1.5, max(0.6, (sqft or 1400) / 1400)) / 10) * 10
@@ -93,7 +108,9 @@ def score_metro(listings, metro_rent, metro_value):
             "sqft": sqft, "dom": dom, "cut_pct": round(cut, 1),
             "under_pct": under, "est_rent": est_rent,
             "yield_pct": round(est_rent * 12 / price * 100, 1),
-            "score": round(s),
+            "score": round(s), "mot": mot, "tag": tag,
+            "sig": {"cuts": cuts_n, "cut_pct": round(cut, 1), "dom": dom,
+                    "dom_x": round(dom_ratio, 1), "psf_gap": round(below, 1)},
         })
     cands.sort(key=lambda c: -c["score"])
     return cands[:5]
@@ -111,6 +128,55 @@ def metro_stats(listings):
         if l.get("price") and prices and max(prices) > l["price"]:
             cuts += 1
     return {"active": n, "cut_share": round(cuts / n * 100, 1)}
+
+
+WHY_CACHE = os.path.join(ROOT, "data", "why_cache.json")
+
+def write_whys(out):
+    """Generate 'why it's available' notes for deals lacking one. Signals-only:
+    the model may not invent circumstances; condition is always a hypothesis."""
+    key = os.environ.get("ANTHROPIC_API_KEY")
+    if not key:
+        print("[why] no ANTHROPIC_API_KEY — skipping narratives")
+        return
+    try:
+        import anthropic
+        client = anthropic.Anthropic()
+    except Exception as e:
+        print(f"[why] sdk unavailable: {e}")
+        return
+    cache = json.load(open(WHY_CACHE)) if os.path.exists(WHY_CACHE) else {}
+    todo = []
+    for slug, entry in out.items():
+        for o in entry["items"]:
+            cid = o["addr"]
+            if cid in cache:
+                o["why"] = cache[cid]
+            else:
+                todo.append((cid, o))
+    for cid, o in todo[:80]:                      # cost guard per run
+        sig = o.get("sig", {})
+        prompt = (
+            "You are a real-estate deal analyst. In 1-2 plain sentences, explain why this "
+            "listing is likely available under market, using ONLY these observed signals — "
+            "never invent seller circumstances (no estates, divorces, foreclosures, urgency "
+            "you cannot see). If the price/sqft gap suggests condition, phrase it as a "
+            "hypothesis to verify at a showing. End with the single thing to verify first. "
+            f"Signals: {sig.get('cuts',0)} price cuts totaling {sig.get('cut_pct',0)}%; "
+            f"{sig.get('dom',0)} days on market ({sig.get('dom_x',1)}x the metro's typical); "
+            f"priced {sig.get('psf_gap',0)}% below the metro's per-sqft median; "
+            f"archetype: {o.get('tag','')}. No preamble.")
+        try:
+            r = client.messages.create(model="claude-haiku-4-5-20251001", max_tokens=120,
+                                       messages=[{"role": "user", "content": prompt}])
+            txt = "".join(b.text for b in r.content if b.type == "text").strip()
+            if txt:
+                o["why"] = cache[cid] = txt
+        except Exception as e:
+            print(f"[why] generation stopped: {e}")
+            break
+    json.dump(cache, open(WHY_CACHE, "w"))
+    print(f"[why] narratives: {len(cache)} cached, {min(len(todo),80)} written this run")
 
 
 def main():
@@ -149,6 +215,7 @@ def main():
             total += len(picks)
         print(f"[listings] {name}: {len(listings)} active, {len(picks)} flagged")
         time.sleep(0.4)
+    write_whys(out)
     json.dump(out, open(OUT, "w"))
     print(f"[listings] flagged {total} Star Opportunities across {len(out)} metros -> {OUT}")
 
