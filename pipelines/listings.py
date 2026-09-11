@@ -22,8 +22,8 @@ import requests
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 API = "https://api.rentcast.io/v1/listings/sale"
-N_DAILY = int(os.environ.get("LISTINGS_DAILY", os.environ.get("LISTINGS_METROS", "15")))
-ROT_DAYS = int(os.environ.get("LISTINGS_ROTATION_DAYS", "14"))
+N_DAILY = int(os.environ.get("LISTINGS_DAILY") or os.environ.get("LISTINGS_METROS") or "15")
+ROT_DAYS = int(os.environ.get("LISTINGS_ROTATION_DAYS") or "14")
 OUT = os.path.join(ROOT, "data", "star_opportunities.json")
 
 
