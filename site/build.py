@@ -336,7 +336,7 @@ DEALS_BODY = """
 <p class="quick" id="d-count"></p>
 <div id="d-list"></div>
 <div class="unlock"><b>Unlock all {{ n_locked + deals_free_n }} Star Deals — refreshed every morning</b><br>
-Every flagged deal nationwide, full addresses, plus instant buy-box email alerts the moment new ones land. Founding members: <b>$290/yr, locked for life</b> (first 20).<br>
+Every flagged deal nationwide, full addresses, plus instant buy-box email alerts the moment new ones land. Founding members: <b>$99/year, locked for life</b> — first 100 members, then $19/mo. One under-market house saves you $10-30K; this is 27 cents a day.<br>
 <a href="{{ stripe }}"><button style="margin-top:10px">Unlock Star Deals</button></a></div>
 <div id="locked-list">
 {% for d in locked %}<div class="opp locked"><div class="blurline"></div>
@@ -492,9 +492,9 @@ PRO_BODY = """
 <tr><td><b>Instant buy-box email alerts</b></td><td>—</td><td>✔</td></tr>
 <tr><td>Zip-level scores (rolling out)</td><td>—</td><td>✔</td></tr>
 <tr><td>Quarterly rankings deep-report + data export</td><td>—</td><td>✔</td></tr></table>
-{% if stripe_annual %}<p style="margin-top:16px"><a href="{{ stripe_annual }}"><button>Founding member — $290/yr (first 20, locked for life)</button></a></p>
+{% if stripe_annual %}<p style="margin-top:16px"><a href="{{ stripe_annual }}"><button>Founding member — $99/yr (first 20, locked for life)</button></a></p>
 {% if stripe_pass %}<p><a href="{{ stripe_pass }}"><button class="secondary" style="background:transparent;color:var(--ink)">7-day pass — $29</button></a></p>{% endif %}
-{% else %}<div class="explain"><b>Founding membership opens this week</b> — the first 20 members lock $290/yr for life (then $390). Pick your markets meanwhile with the <a href="{{ base }}/start/">market finder</a>.</div>{% endif %}
+{% else %}<div class="explain"><b>Founding membership opens this week</b> — the first 20 members lock $99/yr for life (then $390). Pick your markets meanwhile with the <a href="{{ base }}/start/">market finder</a>.</div>{% endif %}
 <p class="quick">Fair-dealing note: core market data on every page stays free forever — Pro is the tooling on top, not a ransom on public data.</p>"""
 
 GUIDE_BODY = """
