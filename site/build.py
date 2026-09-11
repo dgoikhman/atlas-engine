@@ -42,6 +42,7 @@ BASE = """<!DOCTYPE html>
 <title>{{ title }}</title>
 <meta name="description" content="{{ description }}">
 <link rel="canonical" href="{{ canonical }}">
+{% if noindex %}<meta name="robots" content="noindex, nofollow">{% endif %}
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <link rel="icon" href="{{ base }}/favicon.svg" type="image/svg+xml">
@@ -361,6 +362,41 @@ document.getElementById("d-count").textContent=f.length+" open deal"+(f.length==
 ["d-st","d-p","d-b","d-y","d-sort"].forEach(i=>document.getElementById(i).addEventListener("change",draw));draw();
 </script>"""
 
+MEMBERS_BODY = """
+<div class="hero" style="margin-top:8px"><h1>Founding member <span class="k">full feed</span></h1>
+<p>Every Star Deal, every address, every diagnosis — refreshed each morning. This page is your membership: private link, please don't share it.</p>
+<div><span class="stat"><b>{{ n }}</b> live deals</span><span class="stat">refreshed <b>{{ today }}</b></span><span class="stat">founding rate <b>locked</b></span></div></div>
+<div class="mapctl" style="border:1px solid var(--line);border-radius:6px;flex-wrap:wrap">
+<label>State <select id="d-st"><option value="">all</option></select></label>
+<label>Max price <select id="d-p"><option value="99999999">any</option><option value="100000">$100K</option><option value="150000">$150K</option><option value="250000">$250K</option><option value="400000">$400K</option></select></label>
+<label>Beds <select id="d-b"><option value="0">any</option><option value="2">2+</option><option value="3">3+</option><option value="4">4+</option></select></label>
+<label>Min yield <select id="d-y"><option value="0">any</option><option value="7">7%+</option><option value="8">8%+</option><option value="10">10%+</option></select></label>
+<label>Sort <select id="d-sort"><option value="score">star</option><option value="yield">yield</option><option value="price">price</option><option value="fresh">freshest</option></select></label>
+</div>
+<p class="quick" id="d-count"></p><div id="d-list"></div>
+<p class="quick">Buy-box email alerts are rolling out to founders first — reply to your welcome email with state, max price, beds, and min yield. Questions or a deal you closed? Reply to any email; founders get answers.</p>
+<script>
+var D={{ deals_json }};
+var ST=[...new Set(D.map(d=>d.st))].sort();
+document.getElementById("d-st").innerHTML+=ST.map(s=>"<option>"+s+"</option>").join("");
+function fm(x){return "$"+x.toLocaleString()}
+function draw(){
+ var st=document.getElementById("d-st").value,p=+document.getElementById("d-p").value,
+     b=+document.getElementById("d-b").value,y=+document.getElementById("d-y").value,
+     srt=document.getElementById("d-sort").value;
+ var f=D.filter(d=>(!st||d.st==st)&&d.price<=p&&(d.beds||0)>=b&&d.yield_pct>=y);
+ f.sort((a,c)=>srt=="yield"?c.yield_pct-a.yield_pct:srt=="price"?a.price-c.price:srt=="fresh"?(c.as_of>a.as_of?1:-1):c.score-a.score);
+ document.getElementById("d-count").textContent=f.length+" deals match your filters";
+ document.getElementById("d-list").innerHTML=f.slice(0,80).map(d=>
+  '<div class="opp"><span class="starpill">★ '+d.score+'</span><span class="a">'+d.addr+'</span>'+
+  '<div class="p">'+fm(d.price)+' <span class="mline">· '+(d.beds||"?")+'bd '+(d.baths||"?")+'ba'+(d.sqft?" · "+d.sqft.toLocaleString()+" sqft":"")+'</span></div>'+
+  '<div class="mline"><span class="underpill">est '+d.under_pct+'% under</span> <a href="{{ base }}/rentals/'+d.slug+'/">'+d.metro+", "+d.st+'</a> · modeled rent '+fm(d.est_rent)+'/mo ('+d.yield_pct+'% yield) · flagged '+d.as_of+'</div>'+
+  '<div class="mline" style="margin-top:5px">'+(d.mot?'<span class="underpill" style="background:#F3E7CE;color:#7A5A12">Motivation '+d.mot+' · '+d.tag+'</span> ':'')+(d.why||'')+'</div>'+
+  '<div style="margin-top:8px"><a href="{{ base }}/financing/"><button style="font-size:13px;padding:6px 11px;min-height:32px">Get financing</button></a> <a href="{{ base }}/rentals/brrrr-calculator/"><button style="font-size:13px;padding:6px 11px;min-height:32px;background:transparent;color:var(--ink);border:1px solid var(--ink)">Estimate rehab</button></a> <a class="sig" style="text-decoration:none" href="https://www.google.com/search?q='+encodeURIComponent(d.addr)+'">find listing →</a></div></div>').join("");
+}
+["d-st","d-p","d-b","d-y","d-sort"].forEach(i=>document.getElementById(i).addEventListener("change",draw));draw();
+</script>"""
+
 DEALS_BODY = """
 <nav class="crumbs"><a href="{{ base }}/">Atlas</a> › Star Deals</nav>
 <div class="hero" style="margin-top:8px"><h1>Today's <span class="k">Star Deals</span></h1>
@@ -583,16 +619,16 @@ function calc(){
 env = Environment(loader=DictLoader({
     "base": BASE, "metro": METRO_BODY, "rankings": RANKINGS_BODY,
     "compare": COMPARE_BODY, "index": INDEX_BODY, "method": METHOD_BODY,
-    "calc": CALC_BODY, "guide": GUIDE_BODY, "state": STATE_BODY, "life": LIFE_BODY, "quiz": QUIZ_BODY, "pro": PRO_BODY, "deals": DEALS_BODY, "dealsfeed": DEALS_FEED, "fin": FIN_BODY, "partners": PARTNERS_BODY, "ms_city": MS_CITY_BODY, "ms_index": MS_INDEX_BODY,
+    "calc": CALC_BODY, "guide": GUIDE_BODY, "state": STATE_BODY, "life": LIFE_BODY, "quiz": QUIZ_BODY, "pro": PRO_BODY, "deals": DEALS_BODY, "dealsfeed": DEALS_FEED, "members": MEMBERS_BODY, "fin": FIN_BODY, "partners": PARTNERS_BODY, "ms_city": MS_CITY_BODY, "ms_index": MS_INDEX_BODY,
 }))
 
 
 STATE_NAMES = {"AL":"Alabama","AK":"Alaska","AZ":"Arizona","AR":"Arkansas","CA":"California","CO":"Colorado","CT":"Connecticut","DE":"Delaware","FL":"Florida","GA":"Georgia","HI":"Hawaii","ID":"Idaho","IL":"Illinois","IN":"Indiana","IA":"Iowa","KS":"Kansas","KY":"Kentucky","LA":"Louisiana","ME":"Maine","MD":"Maryland","MA":"Massachusetts","MI":"Michigan","MN":"Minnesota","MS":"Mississippi","MO":"Missouri","MT":"Montana","NE":"Nebraska","NV":"Nevada","NH":"New Hampshire","NJ":"New Jersey","NM":"New Mexico","NY":"New York","NC":"North Carolina","ND":"North Dakota","OH":"Ohio","OK":"Oklahoma","OR":"Oregon","PA":"Pennsylvania","RI":"Rhode Island","SC":"South Carolina","SD":"South Dakota","TN":"Tennessee","TX":"Texas","UT":"Utah","VT":"Vermont","VA":"Virginia","WA":"Washington","WV":"West Virginia","WI":"Wisconsin","WY":"Wyoming","DC":"Washington DC"}
 
-def page(path, title, description, body_html, jsonld=None, og_image=None, brand=None):
+def page(path, title, description, body_html, jsonld=None, og_image=None, brand=None, noindex=False):
     full = env.get_template("base").render(
         title=title, description=description, body=body_html,
-        canonical=f"{BASE_URL}{path}", base=BASE_URL, today=TODAY, og_image=og_image, brand=brand, sidx_json=SIDX_JSON,
+        canonical=f"{BASE_URL}{path}", base=BASE_URL, today=TODAY, og_image=og_image, brand=brand, noindex=noindex, sidx_json=SIDX_JSON,
         vintage=DATA_VINTAGE, jsonld=[json.dumps(x) for x in (jsonld or [])])
     d = os.path.join(OUT, path.strip("/"))
     os.makedirs(d, exist_ok=True)
@@ -934,6 +970,13 @@ def main():
                      "Free covers core data on all markets and full depth on the top 15. Pro unlocks factor breakdowns, deal alerts and zip-level scores everywhere.",
                      env.get_template("pro").render(base=BASE_URL, total=total,
                          stripe_annual=STRIPE_ANNUAL, stripe_pass=STRIPE_PASS)))
+    mtok = os.environ.get("MEMBERS_TOKEN", "")
+    if mtok and deals:
+        page(f"/m/{mtok}/", "Founding Member Feed — BRRRR Markets",
+             "Members-only full Star Deals feed.",
+             env.get_template("members").render(base=BASE_URL, n=len(deals),
+                 today=TODAY, deals_json=json.dumps(deals)), noindex=True)
+        print(f"[build] members page: /m/{mtok[:4]}…/ ({len(deals)} deals)")
     urls.append(page("/deals/", f"Star Deals: Under-Market Rental Listings Nationwide ({year})",
                      f"{len(deals)} under-market flagged listings across {len(pulse)} US markets: price cuts, long DOM, below-comp pricing — filterable by state, price, beds and yield.",
                      env.get_template("deals").render(base=BASE_URL, n_metros=len(pulse) or 1,
