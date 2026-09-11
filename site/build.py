@@ -96,11 +96,15 @@ nav.crumbs{font-size:13px;color:var(--muted);margin-top:8px}
 .mk[hidden]{display:none}
 .opp{border:1px solid var(--line);border-left:3px solid var(--gold);background:#fff;border-radius:4px;padding:11px 12px;margin:10px 0}
 .opp .a{font-weight:700;font-size:14.5px} .opp .p{font-size:16px;font-weight:700;margin:2px 0}
-.opp .mline{font-size:13px;color:var(--muted)} .opp .sig{display:inline-block;font-size:12px;border:1px solid var(--gold);color:var(--gold);border-radius:3px;padding:1px 6px;margin:6px 6px 0 0;font-weight:600}
+.opp .mline{font-size:13px;color:var(--muted)} .opp.locked{opacity:.92;background:#FBFAF7}
+.opp .blurline{height:15px;width:62%;border-radius:3px;background:repeating-linear-gradient(90deg,#D8DEE1 0 22px,#C9D3D6 22px 44px);filter:blur(2.5px);margin:2px 0}
+.unlock{border:2px solid var(--gold);border-radius:6px;background:#fff;padding:16px;margin:16px 0;text-align:left}
+.unlock b{font-size:16px}
+.opp .sig{display:inline-block;font-size:12px;border:1px solid var(--gold);color:var(--gold);border-radius:3px;padding:1px 6px;margin:6px 6px 0 0;font-weight:600}
 svg text.star-label{pointer-events:none}
 </style></head><body><div class="wrap">
 <header><a href="{{ base }}/">{% if brand %}{{ brand }}{% else %}BRRRR <span>★</span> MARKETS{% endif %}</a>
-<div class="nav"><a href="{{ base }}/">Map</a><a href="{{ base }}/rentals/best-rental-markets-2026/">Rankings</a><a href="{{ base }}/deals/">Star Deals</a><a href="{{ base }}/start/">Market finder</a><a href="{{ base }}/rentals/brrrr-calculator/">Calculator</a><a href="{{ base }}/pro/">Pro</a></div>
+<div class="nav"><a href="{{ base }}/deals/"><b>Star Deals</b></a><a href="{{ base }}/">Map</a><a href="{{ base }}/rentals/best-rental-markets-2026/">Rankings</a><a href="{{ base }}/start/">Market finder</a><a href="{{ base }}/rentals/brrrr-calculator/">Calculator</a><a href="{{ base }}/pro/">Pro</a></div>
 <div class="srch"><input id="q" placeholder="Search 242 markets…" autocomplete="off"><div id="qr"></div></div></header>
 <script>
 var SIDX={{ sidx_json }};
@@ -217,6 +221,11 @@ COMPARE_BODY = """
 INDEX_BODY = """
 <h1>The best places in America to buy rental property — ranked, mapped, updated daily</h1>
 <p class="lede">We track <b>{{ tracked }}</b> US metros and score each 0-100 (the Star Score) on the numbers that decide whether a rental actually pays: home prices vs rents, landlord law, taxes, growth and risk — on {{ vintage }} Zillow data. Every morning our scanner also flags <a href="{{ base }}/deals/">live under-market listings</a>. Current #1: <b><a href="{{ base }}/rentals/{{ top.m.slug }}/">{{ top.m.name }}, {{ top.m.state }}</a></b> at <b>{{ top.score }}/100</b> with an {{ top.yield_pct }}% gross yield.</p>
+{% if top_deals %}<h2 style="margin-top:18px">Today's top Star Deals</h2>
+{% for o in top_deals %}<div class="opp"><span class="a">{{ o.addr }}</span> <span style="float:right;color:var(--gold);font-weight:700">★ {{ o.score }}</span>
+<div class="p">${{ "{:,}".format(o.price) }} <span class="mline">· <a href="{{ base }}/rentals/{{ o.slug }}/">{{ o.metro }}, {{ o.st }}</a> · est {{ o.under_pct }}% under · {{ o.yield_pct }}% yield</span></div></div>
+{% endfor %}<p class="quick"><b><a href="{{ base }}/deals/">See all {{ n_deals }} flagged deals — {{ n_locked }} unlock with membership →</a></b></p>{% endif %}
+<h2>Explore the markets behind the deals</h2>
 <div class="map-wrap"><div class="mapctl">
 <label>Min yield <select id="f-y"><option value="0">any</option><option value="6">6%+</option><option value="7">7%+</option><option value="8">8%+</option></select></label>
 <label>Max price <select id="f-v"><option value="99999999">any</option><option value="250000">$250K</option><option value="350000">$350K</option><option value="500000">$500K</option></select></label>
@@ -291,7 +300,7 @@ MS_INDEX_BODY = """
 DEALS_BODY = """
 <nav class="crumbs"><a href="{{ base }}/">Atlas</a> › Star Deals</nav>
 <h1>Star Deals: every under-market flag, nationwide</h1>
-<p class="lede">Every active listing our scanner flagged for under-market signals across {{ n_metros }} markets — price cuts, long days on market, below-comp pricing — in one filterable feed. <b>Free during launch</b>; founding members lock instant, buy-box-filtered alerts for life when Pro opens.</p>
+<p class="lede">Every morning our scanner sweeps live listings across {{ n_metros }} markets and flags the ones showing under-market signals — price cuts, long days on market, below-comp pricing. Today's top {{ deals_free_n }} are open below. <b>{{ n_locked }} more are waiting behind the unlock.</b></p>
 <div class="mapctl" style="border:1px solid var(--line);border-radius:6px;flex-wrap:wrap">
 <label>State <select id="d-st"><option value="">all</option></select></label>
 <label>Max price <select id="d-p"><option value="99999999">any</option><option value="100000">$100K</option><option value="150000">$150K</option><option value="250000">$250K</option><option value="400000">$400K</option></select></label>
@@ -301,6 +310,14 @@ DEALS_BODY = """
 </div>
 <p class="quick" id="d-count"></p>
 <div id="d-list"></div>
+<div class="unlock"><b>Unlock all {{ n_locked + deals_free_n }} Star Deals — refreshed every morning</b><br>
+Every flagged deal nationwide, full addresses, plus instant buy-box email alerts the moment new ones land. Founding members: <b>$290/yr, locked for life</b> (first 20).<br>
+<a href="{{ stripe }}"><button style="margin-top:10px">Unlock Star Deals</button></a></div>
+<div id="locked-list">
+{% for d in locked %}<div class="opp locked"><div class="blurline"></div>
+<div class="p">~${{ "{:,}".format((d.price // 10000) * 10000) }}s <span class="mline">· {{ d.metro }}, {{ d.st }}</span> <span style="float:right;color:var(--gold);font-weight:700">★ {{ d.score }}</span></div>
+<div class="mline">{{ d.yield_pct }}% modeled yield · address unlocks with membership</div></div>
+{% endfor %}{% if n_locked > 24 %}<p class="quick">…and {{ n_locked - 24 }} more locked deals.</p>{% endif %}</div>
 <div class="explain"><b>Get your buy-box delivered.</b> Save these filters as an alert — when Pro opens, matching deals hit your inbox the morning they're flagged; free alerts get the weekly batch.
 {% if form_endpoint %}<form action="{{ form_endpoint }}" method="POST" style="margin-top:8px"><input type="email" name="email" required placeholder="you@email.com" style="padding:9px;border:1px solid var(--line);border-radius:4px;width:58%"><input type="hidden" name="buybox" id="d-seg"><button type="submit" style="margin-left:6px">Save my buy-box</button></form>
 {% else %}<span style="color:var(--muted);font-size:13.5px">Alert signups open this week.</span>{% endif %}</div>
@@ -310,7 +327,7 @@ DEALS_BODY = """
 {% for s in pulse %}<tr><td><a href="{{ base }}/rentals/{{ s.slug }}/">{{ s.name }}, {{ s.state }}</a></td><td class="n">{{ "{:,}".format(s.active) }}</td><td class="n">{{ s.cut_share }}%</td><td class="n">{{ s.flagged }}</td></tr>
 {% endfor %}</table>
 <script>
-var D={{ deals_json }};
+var D={{ deals_json }};var L={{ locked_json }};
 var ST=[...new Set(D.map(d=>d.st))].sort();
 document.getElementById("d-st").innerHTML+=ST.map(s=>"<option>"+s+"</option>").join("");
 function fm(x){return "$"+x.toLocaleString()}
@@ -320,7 +337,8 @@ function draw(){
      srt=document.getElementById("d-sort").value;
  var f=D.filter(d=>(!st||d.st==st)&&d.price<=p&&(d.beds||0)>=b&&d.yield_pct>=y);
  f.sort((a,c)=>srt=="yield"?c.yield_pct-a.yield_pct:srt=="price"?a.price-c.price:srt=="fresh"?(c.as_of>a.as_of?1:-1):c.score-a.score);
- document.getElementById("d-count").textContent=f.length+" deals match";
+ var lm=L.filter(d=>(!st||d.st==st)&&d.price<=p&&(d.beds||0)>=b&&d.yield_pct>=y).length;
+document.getElementById("d-count").textContent=f.length+" open deal"+(f.length==1?"":"s")+" match · "+lm+" more locked";
  var seg=document.getElementById("d-seg"); if(seg)seg.value=JSON.stringify({st:st,p:p,b:b,y:y});
  document.getElementById("d-list").innerHTML=f.slice(0,60).map(d=>
   '<div class="opp"><span class="a">'+d.addr+'</span> <span style="float:right;color:var(--gold);font-weight:700">★ '+d.score+'</span>'+
@@ -444,7 +462,8 @@ PRO_BODY = """
 <tr><td>Market pages, rankings, living guides, map</td><td>All {{ total }}</td><td>All {{ total }}</td></tr>
 <tr><td>Full Star Score factor breakdowns</td><td>Top 15</td><td>All {{ total }}</td></tr>
 <tr><td>BRRRR &amp; rehab calculator</td><td>✔</td><td>✔</td></tr>
-<tr><td>Star Opportunity deal alerts (as markets onboard)</td><td>—</td><td>✔</td></tr>
+<tr><td><b>All Star Deals nationwide, full addresses, refreshed daily</b></td><td>Top 5</td><td>All</td></tr>
+<tr><td><b>Instant buy-box email alerts</b></td><td>—</td><td>✔</td></tr>
 <tr><td>Zip-level scores (rolling out)</td><td>—</td><td>✔</td></tr>
 <tr><td>Quarterly rankings deep-report + data export</td><td>—</td><td>✔</td></tr></table>
 {% if stripe_annual %}<p style="margin-top:16px"><a href="{{ stripe_annual }}"><button>Founding member — $290/yr (first 20, locked for life)</button></a></p>
@@ -676,6 +695,27 @@ def main():
               {"n": "BRRRR & rehab calculator", "u": "/rentals/brrrr-calculator/"},
               {"n": "Pro", "u": "/pro/"}]
     SIDX_JSON = json.dumps(_sidx)
+    deals = []
+    slug2m = {x["m"].slug: x["m"] for x in everything}
+    pulse = []
+    for slug, entry in star_ops.items():
+        mm = slug2m.get(slug)
+        if not mm:
+            continue
+        stt = entry.get("stats") or {}
+        if stt.get("active"):
+            pulse.append({"slug": slug, "name": mm.name, "state": mm.state,
+                          "active": stt["active"], "cut_share": stt.get("cut_share", 0),
+                          "flagged": len(entry["items"])})
+        for o in entry["items"]:
+            deals.append({**o, "slug": slug, "metro": mm.name, "st": mm.state,
+                          "as_of": entry["as_of"]})
+    pulse.sort(key=lambda x: -x["flagged"])
+    deals.sort(key=lambda d: -d["score"])
+    FREE_N = 5
+    free_deals = deals[:FREE_N]
+    locked = deals[FREE_N:]
+
     urls = []
     ops_path = os.path.join(ROOT, "data", "star_opportunities.json")
     star_ops = json.load(open(ops_path)) if os.path.exists(ops_path) else {}
@@ -842,6 +882,7 @@ def main():
     # --- index + methodology
     body = env.get_template("index").render(
         rows=ranked, top=top, total=total, tracked=len(everything),
+        top_deals=free_deals[:3], n_deals=len(deals), n_locked=len(locked),
         base=BASE_URL, vintage=DATA_VINTAGE,
         map_svg=svg_map(ranked, refs))
     urls.append(page("/", f"BRRRR Markets: US Rental Markets Ranked by Star Score",
@@ -859,26 +900,14 @@ def main():
                      "Free covers core data on all markets and full depth on the top 15. Pro unlocks factor breakdowns, deal alerts and zip-level scores everywhere.",
                      env.get_template("pro").render(base=BASE_URL, total=total,
                          stripe_annual=STRIPE_ANNUAL, stripe_pass=STRIPE_PASS)))
-    deals = []
-    slug2m = {x["m"].slug: x["m"] for x in everything}
-    pulse = []
-    for slug, entry in star_ops.items():
-        mm = slug2m.get(slug)
-        if not mm:
-            continue
-        stt = entry.get("stats") or {}
-        if stt.get("active"):
-            pulse.append({"slug": slug, "name": mm.name, "state": mm.state,
-                          "active": stt["active"], "cut_share": stt.get("cut_share", 0),
-                          "flagged": len(entry["items"])})
-        for o in entry["items"]:
-            deals.append({**o, "slug": slug, "metro": mm.name, "st": mm.state,
-                          "as_of": entry["as_of"]})
-    pulse.sort(key=lambda x: -x["flagged"])
     urls.append(page("/deals/", f"Star Deals: Under-Market Rental Listings Nationwide ({year})",
                      f"{len(deals)} under-market flagged listings across {len(pulse)} US markets: price cuts, long DOM, below-comp pricing — filterable by state, price, beds and yield.",
                      env.get_template("deals").render(base=BASE_URL, n_metros=len(pulse) or 1,
-                         deals_json=json.dumps(deals), pulse=pulse[:20],
+                         deals_free_n=len(free_deals), deals_json=json.dumps(free_deals),
+                         locked_json=json.dumps([{"st": d["st"], "price": d["price"],
+                             "beds": d.get("beds") or 0, "yield_pct": d["yield_pct"]} for d in locked]),
+                         locked=locked[:24], n_locked=len(locked), pulse=pulse[:20],
+                         stripe=STRIPE_ANNUAL or (BASE_URL + "/pro/"),
                          form_endpoint=FORM_ENDPOINT)))
     urls.append(page("/financing/", "Financing Under-Market Rental Deals: DSCR Basics",
                      "How investors finance BRRRR deals: DSCR loans qualify the property's rent, not your W-2. Lender matching coming.",
