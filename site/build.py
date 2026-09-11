@@ -25,6 +25,7 @@ sys.path.insert(0, ROOT)
 from engine.scoring import compute, stars  # noqa: E402
 
 OUT = os.path.join(ROOT, "out")
+SIDX_JSON = "[]"
 BASE_URL = "https://example.com"
 STRIPE_ANNUAL = os.environ.get("STRIPE_LINK_ANNUAL", "")
 STRIPE_PASS = os.environ.get("STRIPE_LINK_PASS", "")
@@ -102,13 +103,13 @@ svg text.star-label{pointer-events:none}
 <div class="nav"><a href="{{ base }}/">Map</a><a href="{{ base }}/rentals/best-rental-markets-2026/">Rankings</a><a href="{{ base }}/deals/">Star Deals</a><a href="{{ base }}/start/">Market finder</a><a href="{{ base }}/rentals/brrrr-calculator/">Calculator</a><a href="{{ base }}/pro/">Pro</a></div>
 <div class="srch"><input id="q" placeholder="Search 242 markets…" autocomplete="off"><div id="qr"></div></div></header>
 <script>
+var SIDX={{ sidx_json }};
 (function(){var idx=null,q=document.getElementById("q"),qr=document.getElementById("qr");
 function render(){var s=q.value.toLowerCase().trim();
 if(!s){qr.innerHTML="";return;}
-if(!idx){qr.innerHTML='<a>searching…</a>';return;}
 var hits=idx.filter(function(m){return m.n.toLowerCase().indexOf(s)>-1}).slice(0,8);
 qr.innerHTML=hits.length?hits.map(function(m){return '<a href="{{ base }}'+m.u+'">'+m.n+'</a>'}).join(""):'<a>no match — try a city or state</a>';}
-fetch("{{ base }}/search-index.json").then(function(r){return r.json()}).then(function(d){idx=d;render();}).catch(function(e){console.error("search index:",e);});
+idx=SIDX;
 q.addEventListener("input",render);
 q.addEventListener("focus",render);
 document.addEventListener("click",function(e){if(e.target&&e.target.closest&&!e.target.closest(".srch"))qr.innerHTML="";});})();
@@ -214,8 +215,8 @@ COMPARE_BODY = """
 <p>Full profiles: <a href="{{ base }}/rentals/{{ a.m.slug }}/">{{ a.m.name }}</a> · <a href="{{ base }}/rentals/{{ b.m.slug }}/">{{ b.m.name }}</a></p>"""
 
 INDEX_BODY = """
-<h1>US rental markets, scored for the equity snowball</h1>
-<p class="lede">The Star Score ranks {{ total }} US metros for buy-under-market, refinance-and-repeat investing, on {{ vintage }} Zillow home values and rents. Current leader: <b><a href="{{ base }}/rentals/{{ top.m.slug }}/">{{ top.m.name }}, {{ top.m.state }}</a></b> at <b>{{ top.score }}/100</b> with a {{ top.yield_pct }}% gross yield.</p>
+<h1>The best places in America to buy rental property — ranked, mapped, updated daily</h1>
+<p class="lede">We track <b>{{ tracked }}</b> US metros and score each 0-100 (the Star Score) on the numbers that decide whether a rental actually pays: home prices vs rents, landlord law, taxes, growth and risk — on {{ vintage }} Zillow data. Every morning our scanner also flags <a href="{{ base }}/deals/">live under-market listings</a>. Current #1: <b><a href="{{ base }}/rentals/{{ top.m.slug }}/">{{ top.m.name }}, {{ top.m.state }}</a></b> at <b>{{ top.score }}/100</b> with an {{ top.yield_pct }}% gross yield.</p>
 <div class="map-wrap"><div class="mapctl">
 <label>Min yield <select id="f-y"><option value="0">any</option><option value="6">6%+</option><option value="7">7%+</option><option value="8">8%+</option></select></label>
 <label>Max price <select id="f-v"><option value="99999999">any</option><option value="250000">$250K</option><option value="350000">$350K</option><option value="500000">$500K</option></select></label>
@@ -543,7 +544,7 @@ STATE_NAMES = {"AL":"Alabama","AK":"Alaska","AZ":"Arizona","AR":"Arkansas","CA":
 def page(path, title, description, body_html, jsonld=None, og_image=None, brand=None):
     full = env.get_template("base").render(
         title=title, description=description, body=body_html,
-        canonical=f"{BASE_URL}{path}", base=BASE_URL, today=TODAY, og_image=og_image, brand=brand,
+        canonical=f"{BASE_URL}{path}", base=BASE_URL, today=TODAY, og_image=og_image, brand=brand, sidx_json=SIDX_JSON,
         vintage=DATA_VINTAGE, jsonld=[json.dumps(x) for x in (jsonld or [])])
     d = os.path.join(OUT, path.strip("/"))
     os.makedirs(d, exist_ok=True)
@@ -659,6 +660,7 @@ def main():
         metros.append(m)
 
     year = datetime.date.today().year
+    global SIDX_JSON
     ranked = sorted([enrich(m) for m in metros if not m["ref"]],
                     key=lambda x: -x["score"])
     refs = sorted([enrich(m) for m in metros if m["ref"]], key=lambda x: -x["score"])
@@ -829,7 +831,8 @@ def main():
 
     # --- index + methodology
     body = env.get_template("index").render(
-        rows=ranked, top=top, total=total, base=BASE_URL, vintage=DATA_VINTAGE,
+        rows=ranked, top=top, total=total, tracked=len(everything),
+        base=BASE_URL, vintage=DATA_VINTAGE,
         map_svg=svg_map(ranked, refs))
     urls.append(page("/", f"BRRRR Markets: US Rental Markets Ranked by Star Score",
                      f"US rental markets scored 0-100 for buy-refinance-repeat investing. {top['m'].name} currently leads at {top['score']}/100.",
@@ -888,17 +891,7 @@ def main():
                      env.get_template("method").render(vintage=DATA_VINTAGE, today=TODAY)))
 
     # --- shared assets: search index, favicon, default share card
-    sidx = [{"n": f"{x['m'].name}, {x['m'].state}", "u": f"/rentals/{x['m'].slug}/"} for x in everything]
-    seen_states = sorted({x["m"].state for x in ranked})
-    sidx += [{"n": f"{STATE_NAMES.get(st, st)} ({st}) — best rental markets",
-              "u": f"/rentals/state/{STATE_NAMES.get(st, st).lower().replace(' ', '-')}/"}
-             for st in seen_states]
-    sidx += [{"n": "Star Deals — all flagged listings", "u": "/deals/"},
-             {"n": "Rankings — best BRRRR markets", "u": f"/rentals/best-rental-markets-{year}/"},
-             {"n": "Market finder (5-tap quiz)", "u": "/start/"},
-             {"n": "BRRRR & rehab calculator", "u": "/rentals/brrrr-calculator/"},
-             {"n": "Pro", "u": "/pro/"}]
-    json.dump(sidx, open(os.path.join(OUT, "search-index.json"), "w"))
+    json.dump(_sidx, open(os.path.join(OUT, "search-index.json"), "w"))
     open(os.path.join(OUT, "favicon.svg"), "w").write(
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">'
         '<rect width="64" height="64" rx="12" fill="#14232B"/>'
