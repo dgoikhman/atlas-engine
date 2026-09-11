@@ -6,8 +6,15 @@ as a Star Opportunity, and writes data/star_opportunities.json for the site
 builder. Runs in CI at build time; output is regenerated fresh each run and
 is NOT committed (licensed data is displayed, not redistributed).
 
+Freshness gradient: the top LISTINGS_DAILY metros scan every run; all
+remaining metros rotate through LISTINGS_ROTATION_DAYS buckets (each market
+refreshed once per cycle). Prior results carry forward with their as_of
+date. Defaults (15 daily / 14-day rotation) ≈ 1,000 calls/mo — fits
+RentCast's entry paid tier. Weekly rotation ≈ 1,900/mo; full national
+daily ≈ 9-12K/mo (their top tier). Set via repo variables.
+
 Env: RENTCAST_API_KEY (required; exits quietly without it)
-     LISTINGS_METROS  top-N metros to scan (default 15 — fits entry tiers)
+     LISTINGS_DAILY (default 15), LISTINGS_ROTATION_DAYS (default 14)
 Test: LISTINGS_LOCAL=data/test_fixtures python pipelines/listings.py
 """
 import csv, json, os, statistics, sys, time
@@ -15,7 +22,8 @@ import requests
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 API = "https://api.rentcast.io/v1/listings/sale"
-N_METROS = int(os.environ.get("LISTINGS_METROS", "15"))
+N_DAILY = int(os.environ.get("LISTINGS_DAILY", os.environ.get("LISTINGS_METROS", "15")))
+ROT_DAYS = int(os.environ.get("LISTINGS_ROTATION_DAYS", "14"))
 OUT = os.path.join(ROOT, "data", "star_opportunities.json")
 
 
@@ -24,15 +32,25 @@ def fetch(city, state, key):
     if local:
         p = os.path.join(local, f"rc_{city.lower().replace(' ', '')}.json")
         return json.load(open(p)) if os.path.exists(p) else []
-    r = requests.get(API, params={"city": city, "state": state,
-                                  "status": "Active", "limit": 500},
-                     headers={"X-Api-Key": key}, timeout=60)
-    if r.status_code == 401:
-        sys.exit("[listings] API key rejected by RentCast")
-    if not r.ok:
-        print(f"[listings] {city}: HTTP {r.status_code} — skipping")
-        return []
-    return r.json()
+    out = []
+    for offset in (0, 500):                  # up to 1,000 listings per metro
+        r = requests.get(API, params={"city": city, "state": state,
+                                      "status": "Active", "limit": 500,
+                                      "offset": offset},
+                         headers={"X-Api-Key": key}, timeout=60)
+        if r.status_code == 401:
+            sys.exit("[listings] API key rejected by RentCast")
+        if r.status_code == 429:
+            print(f"[listings] {city}: rate/quota limit hit — stopping this run")
+            return out
+        if not r.ok:
+            print(f"[listings] {city}: HTTP {r.status_code} — skipping")
+            return out
+        batch = r.json()
+        out.extend(batch)
+        if len(batch) < 500:
+            break
+    return out
 
 
 def score_metro(listings, metro_rent, metro_value):
@@ -91,13 +109,24 @@ def main():
         sc, _ = compute("rentals", d)
         metros.append((sc, m["slug"], m["name"], m["state"], d))
     metros.sort(reverse=True)
-    out, total = {}, 0
-    for sc, slug, name, state, d in metros[:N_METROS]:
+    import datetime as _dt
+    day = _dt.date.today().toordinal()
+    rest = metros[N_DAILY:]
+    todays_slice = [m for i, m in enumerate(rest) if i % ROT_DAYS == day % ROT_DAYS]
+    scan_list = metros[:N_DAILY] + todays_slice
+    out = json.load(open(OUT)) if os.path.exists(OUT) else {}
+    total = 0
+    print(f"[listings] scanning {len(scan_list)} metros "
+          f"({N_DAILY} daily + {len(todays_slice)} rotation of {len(rest)}, "
+          f"cycle {ROT_DAYS}d)")
+    for sc, slug, name, state, d in scan_list:
         listings = fetch(name, state, key)
         picks = score_metro(listings, d["rent"], d["home_value"])
         if picks:
             out[slug] = {"as_of": time.strftime("%Y-%m-%d"), "items": picks}
             total += len(picks)
+        elif slug in out and listings:
+            out.pop(slug)                    # scanned fresh, nothing qualifies now
         print(f"[listings] {name}: {len(listings)} active, {len(picks)} flagged")
         time.sleep(0.4)
     json.dump(out, open(OUT, "w"))
