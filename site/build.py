@@ -685,6 +685,13 @@ def main():
     refs = sorted([enrich(m) for m in metros if m["ref"]], key=lambda x: -x["score"])
     everything = ranked + refs
     total = len(ranked)
+    ops_path = os.path.join(ROOT, "data", "star_opportunities.json")
+    star_ops = json.load(open(ops_path)) if os.path.exists(ops_path) else {}
+    ctx_path = os.path.join(ROOT, "data", "metro_context.csv")
+    ctx = {}
+    if os.path.exists(ctx_path):
+        for row in csv.DictReader(open(ctx_path)):
+            ctx[row["slug"]] = row
     _sidx = [{"n": f"{x['m'].name}, {x['m'].state}", "u": f"/rentals/{x['m'].slug}/"} for x in everything]
     _sidx += [{"n": f"{STATE_NAMES.get(st, st)} ({st}) — best rental markets",
                "u": f"/rentals/state/{STATE_NAMES.get(st, st).lower().replace(' ', '-')}/"}
@@ -717,13 +724,6 @@ def main():
     locked = deals[FREE_N:]
 
     urls = []
-    ops_path = os.path.join(ROOT, "data", "star_opportunities.json")
-    star_ops = json.load(open(ops_path)) if os.path.exists(ops_path) else {}
-    ctx_path = os.path.join(ROOT, "data", "metro_context.csv")
-    ctx = {}
-    if os.path.exists(ctx_path):
-        for row in csv.DictReader(open(ctx_path)):
-            ctx[row["slug"]] = row
 
     # --- metro pages
     for i, r in enumerate(everything):
