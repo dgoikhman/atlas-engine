@@ -6,37 +6,3 @@
 [census] ACS 2023 profile
 [census] ACS 2018 profile
 [done] context for 241 metros -> /home/runner/work/atlas-engine/atlas-engine/data/metro_context.csv
-[listings] scanning 31 metros (15 daily + 16 rotation of 227, cycle 14d)
-[listings] Florence: 465 active, 5 flagged
-[listings] Montgomery: 1000 active, 5 flagged
-[listings] Mobile: 1000 active, 5 flagged
-[listings] Charleston: 293 active, 5 flagged
-[listings] Jackson: 519 active, 5 flagged
-[listings] Saginaw: 492 active, 5 flagged
-[listings] Macon: 1000 active, 5 flagged
-[listings] Columbus: 655 active, 5 flagged
-[listings] Huntington: 221 active, 5 flagged
-[listings] Terre Haute: 352 active, 5 flagged
-[listings] Brownsville: 770 active, 5 flagged
-[listings] Jackson: 662 active, 5 flagged
-[listings] El Paso: 1000 active, 5 flagged
-[listings] Tuscaloosa: 693 active, 5 flagged
-[listings] Peoria: 358 active, 5 flagged
-[listings] Kingsport: 495 active, 5 flagged
-[listings] Wichita: 1000 active, 5 flagged
-[listings] Yuma: 968 active, 5 flagged
-[listings] Indianapolis: 1000 active, 5 flagged
-[listings] Lansing: 586 active, 5 flagged
-[listings] Chicago: 1000 active, 5 flagged
-[listings] Charleston: 867 active, 5 flagged
-[listings] Cape Coral: 1000 active, 5 flagged
-[listings] Charlotte: 1000 active, 5 flagged
-[listings] Norwich: 122 active, 5 flagged
-[listings] Nashville: 1000 active, 5 flagged
-[listings] Las Vegas: 1000 active, 5 flagged
-[listings] Burlington: 131 active, 5 flagged
-[listings] Redding: 564 active, 5 flagged
-[listings] San Diego: 1000 active, 5 flagged
-[listings] Portland: 1000 active, 5 flagged
-[why] narratives: 155 cached, 0 written this run
-[listings] flagged 155 Star Opportunities across 31 metros -> /home/runner/work/atlas-engine/atlas-engine/data/star_opportunities.json
