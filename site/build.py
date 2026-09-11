@@ -238,8 +238,8 @@ COMPARE_BODY = """
 <p>Full profiles: <a href="{{ base }}/rentals/{{ a.m.slug }}/">{{ a.m.name }}</a> · <a href="{{ base }}/rentals/{{ b.m.slug }}/">{{ b.m.name }}</a></p>"""
 
 INDEX_BODY = """
-<div class="hero"><h1>Incredible rental deals, <span class="k">flagged every morning</span></h1>
-<p>Our scanner sweeps live listings across America, flags the ones priced under market — price cuts, motivated sellers, below-comp pricing — and scores every deal and every market. You see the best of it before anyone else is looking.</p>
+<div class="hero"><h1>Under-market rental deals, <span class="k">flagged every morning</span></h1>
+<p>Our scanner sweeps live listings across America and flags the ones priced under market — price cuts, motivated sellers, below-comp pricing — scored and ranked for the BRRRR playbook. Rehab it or rent it day one: you see the mispricing before anyone else is looking.</p>
 <div><span class="stat"><b>{{ n_deals }}</b> live Star Deals</span><span class="stat"><b>{{ tracked }}</b> markets scored</span><span class="stat">updated <b>daily</b></span><span class="stat">{{ vintage }} Zillow data</span></div>
 <div><a class="cta" href="{{ base }}/deals/">See today's Star Deals</a><a class="cta ghost" href="#map">Explore the map</a></div></div>
 <div class="steps"><div class="step"><b>1 · Scan</b>Every morning we sweep live listings in {{ tracked }} scored markets.</div><div class="step"><b>2 · Score</b>The Star Score (0-100) grades every market; every flagged deal gets a star rating.</div><div class="step"><b>3 · Buy under market</b>You underwrite the shortlist — calculator, financing and crews one tap away.</div></div>
