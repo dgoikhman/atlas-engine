@@ -35,6 +35,13 @@ jobs:
         run: |
           set -o pipefail
           python pipelines/context.py 2>&1 | tee -a data/last_refresh.log
+      - name: Scan Star Opportunities (non-fatal)
+        continue-on-error: true
+        env:
+          RENTCAST_API_KEY: ${{ secrets.RENTCAST_API_KEY }}
+        run: |
+          set -o pipefail
+          python pipelines/listings.py 2>&1 | tee -a data/last_refresh.log
       - name: Build site
         env:
           STRIPE_LINK_ANNUAL: ${{ vars.STRIPE_LINK_ANNUAL }}

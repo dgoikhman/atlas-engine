@@ -93,6 +93,9 @@ nav.crumbs{font-size:13px;color:var(--muted);margin-top:8px}
 .mapctl select{font:inherit;font-size:13px;padding:5px;border:1px solid var(--line);border-radius:4px;background:#fff}
 .mapctl button{min-height:30px;padding:4px 12px;font-size:14px}
 .mk[hidden]{display:none}
+.opp{border:1px solid var(--line);border-left:3px solid var(--gold);background:#fff;border-radius:4px;padding:11px 12px;margin:10px 0}
+.opp .a{font-weight:700;font-size:14.5px} .opp .p{font-size:16px;font-weight:700;margin:2px 0}
+.opp .mline{font-size:13px;color:var(--muted)} .opp .sig{display:inline-block;font-size:12px;border:1px solid var(--gold);color:var(--gold);border-radius:3px;padding:1px 6px;margin:6px 6px 0 0;font-weight:600}
 svg text.star-label{pointer-events:none}
 </style></head><body><div class="wrap">
 <header><a href="{{ base }}/">{% if brand %}{{ brand }}{% else %}BRRRR <span>★</span> MARKETS{% endif %}</a>
@@ -154,7 +157,15 @@ if(localStorage.getItem("bm_credit"))document.getElementById("bp-credit").value=
 {% if has_living %}<p class="quick">More context: <a href="{{ base }}/rentals/{{ m.slug }}/living/">Living in {{ m.name }} — economy, industries &amp; affordability</a></p>{% endif %}
 {% if compares %}<h2>Compare {{ m.name }}</h2>
 <p>{% for c in compares %}<a href="{{ base }}/rentals/compare/{{ c.href }}/">{{ m.name }} vs {{ c.name }}</a>{{ " · " if not loop.last }}{% endfor %}</p>{% else %}<p class="quick">See how it stacks up in the <a href="{{ base }}/rentals/best-rental-markets-2026/">full rankings</a> — head-to-head pages cover the top 15 markets.</p>{% endif %}
-<h2>What would a rehab cost here?</h2>
+{% if ops %}<h2>Star Opportunities in {{ m.name }} <span style="font-size:13px;color:var(--muted);font-weight:400">flagged {{ ops.as_of }}</span></h2>
+<p>Active listings our scanner flagged for under-market signals — price cuts, long days on market, below-comp pricing. Leads to underwrite, not appraisals; verify everything locally.</p>
+{% for o in ops["items"] %}<div class="opp"><span class="a">{{ o.addr }}</span> <span style="float:right;color:var(--gold);font-weight:700">★ {{ o.score }}</span>
+<div class="p">${{ "{:,}".format(o.price) }} <span class="mline">· {{ o.beds }}bd {{ o.baths }}ba{% if o.sqft %} · {{ "{:,}".format(o.sqft) }} sqft{% endif %}</span></div>
+<div class="mline">est. {{ o.under_pct }}% under market · modeled rent ${{ "{:,}".format(o.est_rent) }}/mo ({{ o.yield_pct }}% yield)</div>
+<div>{% if o.cut_pct >= 4 %}<span class="sig">−{{ o.cut_pct }}% price cut</span>{% endif %}{% if o.dom >= 45 %}<span class="sig">{{ o.dom }} days on market</span>{% endif %}<a class="sig" style="text-decoration:none" href="https://www.google.com/search?q={{ o.addr | urlencode }}">find listing →</a></div>
+</div>{% endfor %}
+<p class="quick">Run one through the <a href="{{ base }}/rentals/brrrr-calculator/">BRRRR calculator</a>. Rent figures are modeled from metro data, not appraisals.</p>
+{% endif %}<h2>What would a rehab cost here?</h2>
 <p>National rule-of-thumb renovation costs (2026, per square foot) applied to a typical ~1,400 sq ft single-family in this market — every house differs, so treat these as planning ranges, not bids:</p>
 <table><tr><th>Scope</th><th class="n">$/sq ft</th><th class="n">Typical house</th></tr>
 <tr><td>Paint &amp; refresh (cosmetic light)</td><td class="n">$15–25</td><td class="n">$21K–35K</td></tr>
@@ -561,6 +572,8 @@ def main():
     everything = ranked + refs
     total = len(ranked)
     urls = []
+    ops_path = os.path.join(ROOT, "data", "star_opportunities.json")
+    star_ops = json.load(open(ops_path)) if os.path.exists(ops_path) else {}
     ctx_path = os.path.join(ROOT, "data", "metro_context.csv")
     ctx = {}
     if os.path.exists(ctx_path):
@@ -615,7 +628,7 @@ def main():
             star_str=r["star_str"], rank=rank, total=total,
             factors=r["factors"], compares=compares, verdict=verdict,
             brrrr_answer=brrrr_answer, unlocked=(rank <= 15 or r not in ranked),
-            has_living=(m.slug in ctx), band=r["band"])
+            has_living=(m.slug in ctx), band=r["band"], ops=star_ops.get(m.slug))
         urls.append(page(
             f"/rentals/{m.slug}/",
             f"{m.name}, {m.state} BRRRR & Rental Market Data {year}: Prices, Rents, Star Score",
