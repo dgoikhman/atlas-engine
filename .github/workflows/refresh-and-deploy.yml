@@ -52,6 +52,7 @@ jobs:
           python pipelines/listings.py 2>&1 | tee -a data/last_refresh.log
       - name: Build site
         env:
+          MEMBERS_TOKEN: ${{ secrets.MEMBERS_TOKEN }}
           STRIPE_LINK_ANNUAL: ${{ vars.STRIPE_LINK_ANNUAL }}
           STRIPE_LINK_PASS: ${{ vars.STRIPE_LINK_PASS }}
           FORM_ENDPOINT: ${{ vars.FORM_ENDPOINT }}
