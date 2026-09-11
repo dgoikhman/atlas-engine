@@ -492,9 +492,9 @@ PRO_BODY = """
 <tr><td><b>Instant buy-box email alerts</b></td><td>—</td><td>✔</td></tr>
 <tr><td>Zip-level scores (rolling out)</td><td>—</td><td>✔</td></tr>
 <tr><td>Quarterly rankings deep-report + data export</td><td>—</td><td>✔</td></tr></table>
-{% if stripe_annual %}<p style="margin-top:16px"><a href="{{ stripe_annual }}"><button>Founding member — $99/yr (first 20, locked for life)</button></a></p>
+{% if stripe_annual %}<p style="margin-top:16px"><a href="{{ stripe_annual }}"><button>Founding member — $99/yr (first 100, locked for life)</button></a></p>
 {% if stripe_pass %}<p><a href="{{ stripe_pass }}"><button class="secondary" style="background:transparent;color:var(--ink)">7-day pass — $29</button></a></p>{% endif %}
-{% else %}<div class="explain"><b>Founding membership opens this week</b> — the first 20 members lock $99/yr for life (then $390). Pick your markets meanwhile with the <a href="{{ base }}/start/">market finder</a>.</div>{% endif %}
+{% else %}<div class="explain"><b>Founding membership opens this week</b> — the first 100 members lock $99/yr for life (then $390). Pick your markets meanwhile with the <a href="{{ base }}/start/">market finder</a>.</div>{% endif %}
 <p class="quick">Fair-dealing note: core market data on every page stays free forever — Pro is the tooling on top, not a ransom on public data.</p>"""
 
 GUIDE_BODY = """
