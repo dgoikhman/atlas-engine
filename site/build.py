@@ -666,6 +666,16 @@ def main():
     refs = sorted([enrich(m) for m in metros if m["ref"]], key=lambda x: -x["score"])
     everything = ranked + refs
     total = len(ranked)
+    _sidx = [{"n": f"{x['m'].name}, {x['m'].state}", "u": f"/rentals/{x['m'].slug}/"} for x in everything]
+    _sidx += [{"n": f"{STATE_NAMES.get(st, st)} ({st}) — best rental markets",
+               "u": f"/rentals/state/{STATE_NAMES.get(st, st).lower().replace(' ', '-')}/"}
+              for st in sorted({x["m"].state for x in ranked})]
+    _sidx += [{"n": "Star Deals — all flagged listings", "u": "/deals/"},
+              {"n": "Rankings — best BRRRR markets", "u": f"/rentals/best-rental-markets-{year}/"},
+              {"n": "Market finder (5-tap quiz)", "u": "/start/"},
+              {"n": "BRRRR & rehab calculator", "u": "/rentals/brrrr-calculator/"},
+              {"n": "Pro", "u": "/pro/"}]
+    SIDX_JSON = json.dumps(_sidx)
     urls = []
     ops_path = os.path.join(ROOT, "data", "star_opportunities.json")
     star_ops = json.load(open(ops_path)) if os.path.exists(ops_path) else {}
