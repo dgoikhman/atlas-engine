@@ -103,12 +103,15 @@ svg text.star-label{pointer-events:none}
 <div class="srch"><input id="q" placeholder="Search 242 markets…" autocomplete="off"><div id="qr"></div></div></header>
 <script>
 (function(){var idx=null,q=document.getElementById("q"),qr=document.getElementById("qr");
-function load(cb){if(idx)return cb();fetch("{{ base }}/search-index.json").then(r=>r.json()).then(d=>{idx=d;cb();}).catch(function(){});}
-q.addEventListener("focus",function(){load(function(){})});
-q.addEventListener("input",function(){var s=q.value.toLowerCase().trim();if(!s||!idx){qr.innerHTML="";return;}
-var hits=idx.filter(m=>m.n.toLowerCase().indexOf(s)>-1).slice(0,8);
-qr.innerHTML=hits.map(m=>'<a href="{{ base }}'+m.u+'">'+m.n+'</a>').join("");});
-document.addEventListener("click",function(e){if(!e.target.closest(".srch"))qr.innerHTML="";});})();
+function render(){var s=q.value.toLowerCase().trim();
+if(!s){qr.innerHTML="";return;}
+if(!idx){qr.innerHTML='<a>searching…</a>';return;}
+var hits=idx.filter(function(m){return m.n.toLowerCase().indexOf(s)>-1}).slice(0,8);
+qr.innerHTML=hits.length?hits.map(function(m){return '<a href="{{ base }}'+m.u+'">'+m.n+'</a>'}).join(""):'<a>no match — try a city or state</a>';}
+fetch("{{ base }}/search-index.json").then(function(r){return r.json()}).then(function(d){idx=d;render();}).catch(function(e){console.error("search index:",e);});
+q.addEventListener("input",render);
+q.addEventListener("focus",render);
+document.addEventListener("click",function(e){if(e.target&&e.target.closest&&!e.target.closest(".srch"))qr.innerHTML="";});})();
 </script>
 {{ body }}
 <div class="meta">
