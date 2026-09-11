@@ -5,7 +5,17 @@
 [done] 242 metros -> /home/runner/work/atlas-engine/atlas-engine/data/metros_live.csv (values 2026-07-31, rents 2026-07-31, growth vs 2021-07-31)
 [census] ACS 2023 profile
 [census] ACS 2018 profile
-[done] context for 241 metros -> /home/runner/work/atlas-engine/atlas-engine/data/metro_context.csv
+Traceback (most recent call last):
+  File "/home/runner/work/atlas-engine/atlas-engine/pipelines/context.py", line 118, in <module>
+    main()
+  File "/home/runner/work/atlas-engine/atlas-engine/pipelines/context.py", line 75, in main
+    old = _index(_get(2018, ["DP05_0001E"]), ["DP05_0001E"])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/atlas-engine/atlas-engine/pipelines/context.py", line 42, in _get
+    r.raise_for_status()
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/requests/models.py", line 1167, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 503 Server Error: Service Unavailable for url: https://api.census.gov/data/2018/acs/acs5/profile?get=NAME,DP05_0001E&for=metropolitan%20statistical%20area/micropolitan%20statistical%20area:*&key=a7f536a7dce1807076bd739354bc93e69d0e0fad
 [listings] scanning 31 metros (15 daily + 16 rotation of 227, cycle 14d)
 [listings] Florence: 465 active, 5 flagged
 [listings] Montgomery: 1000 active, 5 flagged
@@ -38,5 +48,5 @@
 [listings] Redding: 564 active, 5 flagged
 [listings] San Diego: 1000 active, 5 flagged
 [listings] Portland: 1000 active, 5 flagged
-[why] narratives: 155 cached, 75 written this run
+[why] narratives: 155 cached, 0 written this run
 [listings] flagged 155 Star Opportunities across 31 metros -> /home/runner/work/atlas-engine/atlas-engine/data/star_opportunities.json
