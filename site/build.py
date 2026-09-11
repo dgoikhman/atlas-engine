@@ -99,7 +99,7 @@ nav.crumbs{font-size:13px;color:var(--muted);margin-top:8px}
 svg text.star-label{pointer-events:none}
 </style></head><body><div class="wrap">
 <header><a href="{{ base }}/">{% if brand %}{{ brand }}{% else %}BRRRR <span>★</span> MARKETS{% endif %}</a>
-<div class="nav"><a href="{{ base }}/">Map</a><a href="{{ base }}/rentals/best-rental-markets-2026/">Rankings</a><a href="{{ base }}/start/">Market finder</a><a href="{{ base }}/rentals/brrrr-calculator/">Calculator</a><a href="{{ base }}/pro/">Pro</a></div>
+<div class="nav"><a href="{{ base }}/">Map</a><a href="{{ base }}/rentals/best-rental-markets-2026/">Rankings</a><a href="{{ base }}/deals/">Star Deals</a><a href="{{ base }}/start/">Market finder</a><a href="{{ base }}/rentals/brrrr-calculator/">Calculator</a><a href="{{ base }}/pro/">Pro</a></div>
 <div class="srch"><input id="q" placeholder="Search 242 markets…" autocomplete="off"><div id="qr"></div></div></header>
 <script>
 (function(){var idx=null,q=document.getElementById("q"),qr=document.getElementById("qr");
@@ -157,15 +157,17 @@ if(localStorage.getItem("bm_credit"))document.getElementById("bp-credit").value=
 {% if has_living %}<p class="quick">More context: <a href="{{ base }}/rentals/{{ m.slug }}/living/">Living in {{ m.name }} — economy, industries &amp; affordability</a></p>{% endif %}
 {% if compares %}<h2>Compare {{ m.name }}</h2>
 <p>{% for c in compares %}<a href="{{ base }}/rentals/compare/{{ c.href }}/">{{ m.name }} vs {{ c.name }}</a>{{ " · " if not loop.last }}{% endfor %}</p>{% else %}<p class="quick">See how it stacks up in the <a href="{{ base }}/rentals/best-rental-markets-2026/">full rankings</a> — head-to-head pages cover the top 15 markets.</p>{% endif %}
-{% if ops %}<h2>Star Opportunities in {{ m.name }} <span style="font-size:13px;color:var(--muted);font-weight:400">flagged {{ ops.as_of }}</span></h2>
+{% if ops and ops["items"] %}<h2>Star Opportunities in {{ m.name }} <span style="font-size:13px;color:var(--muted);font-weight:400">flagged {{ ops.as_of }}</span></h2>
 <p>Active listings our scanner flagged for under-market signals — price cuts, long days on market, below-comp pricing. Leads to underwrite, not appraisals; verify everything locally.</p>
 {% for o in ops["items"] %}<div class="opp"><span class="a">{{ o.addr }}</span> <span style="float:right;color:var(--gold);font-weight:700">★ {{ o.score }}</span>
 <div class="p">${{ "{:,}".format(o.price) }} <span class="mline">· {{ o.beds }}bd {{ o.baths }}ba{% if o.sqft %} · {{ "{:,}".format(o.sqft) }} sqft{% endif %}</span></div>
 <div class="mline">est. {{ o.under_pct }}% under market · modeled rent ${{ "{:,}".format(o.est_rent) }}/mo ({{ o.yield_pct }}% yield)</div>
 <div>{% if o.cut_pct >= 4 %}<span class="sig">−{{ o.cut_pct }}% price cut</span>{% endif %}{% if o.dom >= 45 %}<span class="sig">{{ o.dom }} days on market</span>{% endif %}<a class="sig" style="text-decoration:none" href="https://www.google.com/search?q={{ o.addr | urlencode }}">find listing →</a></div>
+<div style="margin-top:8px"><a href="{{ base }}/financing/"><button style="font-size:13px;padding:7px 12px;min-height:34px">Get financing for this deal</button></a> <a href="{{ base }}/rentals/brrrr-calculator/"><button class="secondary" style="font-size:13px;padding:7px 12px;min-height:34px;background:transparent;color:var(--ink)">Estimate the rehab</button></a></div>
 </div>{% endfor %}
 <p class="quick">Run one through the <a href="{{ base }}/rentals/brrrr-calculator/">BRRRR calculator</a>. Rent figures are modeled from metro data, not appraisals.</p>
-{% endif %}<h2>What would a rehab cost here?</h2>
+{% endif %}<p class="quick" style="border:1px dashed var(--line);border-radius:5px;padding:8px 10px">Investor-friendly agent working {{ m.name }}? <a href="{{ base }}/partners/">Become this market's Featured Agent →</a></p>
+<h2>What would a rehab cost here?</h2>
 <p>National rule-of-thumb renovation costs (2026, per square foot) applied to a typical ~1,400 sq ft single-family in this market — every house differs, so treat these as planning ranges, not bids:</p>
 <table><tr><th>Scope</th><th class="n">$/sq ft</th><th class="n">Typical house</th></tr>
 <tr><td>Paint &amp; refresh (cosmetic light)</td><td class="n">$15–25</td><td class="n">$21K–35K</td></tr>
@@ -281,6 +283,69 @@ MS_INDEX_BODY = """
 {% endfor %}</table>
 <h2>What this is</h2>
 <p>The Succession Score (0-100) weighs the share of businesses aged 20+ years (45%), 30+ years (25%), and the absolute depth of aged businesses (30%) — all from public registry filing dates. It is research about market structure, not claims about any owner's plans. More states, business-level signals, and broker-partnered listings are on the roadmap; brokers who want their deals distributed here can reach out.</p>"""
+
+DEALS_BODY = """
+<nav class="crumbs"><a href="{{ base }}/">Atlas</a> › Star Deals</nav>
+<h1>Star Deals: every under-market flag, nationwide</h1>
+<p class="lede">Every active listing our scanner flagged for under-market signals across {{ n_metros }} markets — price cuts, long days on market, below-comp pricing — in one filterable feed. <b>Free during launch</b>; founding members lock instant, buy-box-filtered alerts for life when Pro opens.</p>
+<div class="mapctl" style="border:1px solid var(--line);border-radius:6px;flex-wrap:wrap">
+<label>State <select id="d-st"><option value="">all</option></select></label>
+<label>Max price <select id="d-p"><option value="99999999">any</option><option value="100000">$100K</option><option value="150000">$150K</option><option value="250000">$250K</option><option value="400000">$400K</option></select></label>
+<label>Beds <select id="d-b"><option value="0">any</option><option value="2">2+</option><option value="3">3+</option><option value="4">4+</option></select></label>
+<label>Min yield <select id="d-y"><option value="0">any</option><option value="7">7%+</option><option value="8">8%+</option><option value="10">10%+</option></select></label>
+<label>Sort <select id="d-sort"><option value="score">star</option><option value="yield">yield</option><option value="price">price</option><option value="fresh">freshest</option></select></label>
+</div>
+<p class="quick" id="d-count"></p>
+<div id="d-list"></div>
+<div class="explain"><b>Get your buy-box delivered.</b> Save these filters as an alert — when Pro opens, matching deals hit your inbox the morning they're flagged; free alerts get the weekly batch.
+{% if form_endpoint %}<form action="{{ form_endpoint }}" method="POST" style="margin-top:8px"><input type="email" name="email" required placeholder="you@email.com" style="padding:9px;border:1px solid var(--line);border-radius:4px;width:58%"><input type="hidden" name="buybox" id="d-seg"><button type="submit" style="margin-left:6px">Save my buy-box</button></form>
+{% else %}<span style="color:var(--muted);font-size:13.5px">Alert signups open this week.</span>{% endif %}</div>
+<h2>Deal-flow pulse</h2>
+<p>Market-level signals from today's scan — the analysis layer nobody else publishes because nobody else scores:</p>
+<table><tr><th>Market</th><th class="n">Active listings scanned</th><th class="n">% with price cuts</th><th class="n">Flagged deals</th></tr>
+{% for s in pulse %}<tr><td><a href="{{ base }}/rentals/{{ s.slug }}/">{{ s.name }}, {{ s.state }}</a></td><td class="n">{{ "{:,}".format(s.active) }}</td><td class="n">{{ s.cut_share }}%</td><td class="n">{{ s.flagged }}</td></tr>
+{% endfor %}</table>
+<script>
+var D={{ deals_json }};
+var ST=[...new Set(D.map(d=>d.st))].sort();
+document.getElementById("d-st").innerHTML+=ST.map(s=>"<option>"+s+"</option>").join("");
+function fm(x){return "$"+x.toLocaleString()}
+function draw(){
+ var st=document.getElementById("d-st").value,p=+document.getElementById("d-p").value,
+     b=+document.getElementById("d-b").value,y=+document.getElementById("d-y").value,
+     srt=document.getElementById("d-sort").value;
+ var f=D.filter(d=>(!st||d.st==st)&&d.price<=p&&(d.beds||0)>=b&&d.yield_pct>=y);
+ f.sort((a,c)=>srt=="yield"?c.yield_pct-a.yield_pct:srt=="price"?a.price-c.price:srt=="fresh"?(c.as_of>a.as_of?1:-1):c.score-a.score);
+ document.getElementById("d-count").textContent=f.length+" deals match";
+ var seg=document.getElementById("d-seg"); if(seg)seg.value=JSON.stringify({st:st,p:p,b:b,y:y});
+ document.getElementById("d-list").innerHTML=f.slice(0,60).map(d=>
+  '<div class="opp"><span class="a">'+d.addr+'</span> <span style="float:right;color:var(--gold);font-weight:700">★ '+d.score+'</span>'+
+  '<div class="p">'+fm(d.price)+' <span class="mline">· '+(d.beds||"?")+'bd '+(d.baths||"?")+'ba'+(d.sqft?" · "+d.sqft.toLocaleString()+" sqft":"")+'</span></div>'+
+  '<div class="mline"><a href="{{ base }}/rentals/'+d.slug+'/">'+d.metro+", "+d.st+'</a> · est '+d.under_pct+'% under · modeled rent '+fm(d.est_rent)+'/mo ('+d.yield_pct+'% yield) · flagged '+d.as_of+'</div>'+
+  '<div style="margin-top:8px"><a href="{{ base }}/financing/"><button style="font-size:13px;padding:6px 11px;min-height:32px">Get financing</button></a> <a href="{{ base }}/rentals/brrrr-calculator/"><button style="font-size:13px;padding:6px 11px;min-height:32px;background:transparent;color:var(--ink);border:1px solid var(--ink)">Estimate rehab</button></a> <a class="sig" style="text-decoration:none" href="https://www.google.com/search?q='+encodeURIComponent(d.addr)+'">find listing →</a></div></div>').join("");
+}
+["d-st","d-p","d-b","d-y","d-sort"].forEach(i=>document.getElementById(i).addEventListener("change",draw));draw();
+</script>"""
+
+FIN_BODY = """
+<nav class="crumbs"><a href="{{ base }}/">Atlas</a> › Financing</nav>
+<h1>Financing the deal you just found</h1>
+<p class="lede">Most Star Opportunities get bought with DSCR loans: the lender qualifies the <b>property's rent</b>, not your W-2 — typically 20-25% down, and the standard tool for buy-refinance-repeat investors. HELOCs and investor credit lines routinely cover down payments and rehab.</p>
+{% if lender_link %}<p><a href="{{ lender_link }}"><button>Get matched with an investor lender</button></a></p>
+{% else %}<div class="explain"><b>Lender matching opens shortly.</b> We're onboarding DSCR and HELOC-friendly lenders who work these exact markets. Meanwhile: run your numbers in the <a href="{{ base }}/rentals/brrrr-calculator/">calculator</a>, and the <a href="{{ base }}/start/">market finder</a> captures your financing needs so you're first in line.</div>{% endif %}
+<p class="quick">Education, not lending advice — terms vary by lender, property and borrower.</p>"""
+
+PARTNERS_BODY = """
+<nav class="crumbs"><a href="{{ base }}/">Atlas</a> › Partners</nav>
+<h1>Own your market's investor deal flow</h1>
+<p class="lede">Every day our scanner flags under-market listings across {{ total }} US markets, and investors land on those pages ready to act. One <b>Featured Agent</b> per market receives the buyer inquiries Star Opportunities generate there — exclusive, month to month.</p>
+<table><tr><th>What you get</th></tr>
+<tr><td>Exclusive Featured Agent placement on your market's pages and deal cards</td></tr>
+<tr><td>Buyer leads from that market's Star Opportunities and market-finder matches</td></tr>
+<tr><td>Your market's Deal-flow Pulse data for your own marketing</td></tr></table>
+<p><b>$199/month per market</b> — founding partners lock their market at $149 for life. One agent per market; first claim wins.</p>
+{% if form_endpoint %}<form action="{{ form_endpoint }}" method="POST"><input type="email" name="email" required placeholder="you@brokerage.com" style="padding:9px;border:1px solid var(--line);border-radius:4px;width:52%"><input type="text" name="market" required placeholder="Market (e.g. Toledo, OH)" style="padding:9px;border:1px solid var(--line);border-radius:4px;width:38%;margin-left:4px"><button type="submit" style="margin-top:8px">Claim my market</button></form>
+{% else %}<div class="explain">Claims open this week — check back or watch @BRRRRmarkets.</div>{% endif %}"""
 
 QUIZ_BODY = """
 <nav class="crumbs"><a href="{{ base }}/">Atlas</a> › Find your market</nav>
@@ -441,7 +506,7 @@ function calc(){
 env = Environment(loader=DictLoader({
     "base": BASE, "metro": METRO_BODY, "rankings": RANKINGS_BODY,
     "compare": COMPARE_BODY, "index": INDEX_BODY, "method": METHOD_BODY,
-    "calc": CALC_BODY, "guide": GUIDE_BODY, "state": STATE_BODY, "life": LIFE_BODY, "quiz": QUIZ_BODY, "pro": PRO_BODY, "ms_city": MS_CITY_BODY, "ms_index": MS_INDEX_BODY,
+    "calc": CALC_BODY, "guide": GUIDE_BODY, "state": STATE_BODY, "life": LIFE_BODY, "quiz": QUIZ_BODY, "pro": PRO_BODY, "deals": DEALS_BODY, "fin": FIN_BODY, "partners": PARTNERS_BODY, "ms_city": MS_CITY_BODY, "ms_index": MS_INDEX_BODY,
 }))
 
 
@@ -753,6 +818,35 @@ def main():
                      "Free covers core data on all markets and full depth on the top 15. Pro unlocks factor breakdowns, deal alerts and zip-level scores everywhere.",
                      env.get_template("pro").render(base=BASE_URL, total=total,
                          stripe_annual=STRIPE_ANNUAL, stripe_pass=STRIPE_PASS)))
+    deals = []
+    slug2m = {x["m"].slug: x["m"] for x in everything}
+    pulse = []
+    for slug, entry in star_ops.items():
+        mm = slug2m.get(slug)
+        if not mm:
+            continue
+        stt = entry.get("stats") or {}
+        if stt.get("active"):
+            pulse.append({"slug": slug, "name": mm.name, "state": mm.state,
+                          "active": stt["active"], "cut_share": stt.get("cut_share", 0),
+                          "flagged": len(entry["items"])})
+        for o in entry["items"]:
+            deals.append({**o, "slug": slug, "metro": mm.name, "st": mm.state,
+                          "as_of": entry["as_of"]})
+    pulse.sort(key=lambda x: -x["flagged"])
+    urls.append(page("/deals/", f"Star Deals: Under-Market Rental Listings Nationwide ({year})",
+                     f"{len(deals)} under-market flagged listings across {len(pulse)} US markets: price cuts, long DOM, below-comp pricing — filterable by state, price, beds and yield.",
+                     env.get_template("deals").render(base=BASE_URL, n_metros=len(pulse) or 1,
+                         deals_json=json.dumps(deals), pulse=pulse[:20],
+                         form_endpoint=FORM_ENDPOINT)))
+    urls.append(page("/financing/", "Financing Under-Market Rental Deals: DSCR Basics",
+                     "How investors finance BRRRR deals: DSCR loans qualify the property's rent, not your W-2. Lender matching coming.",
+                     env.get_template("fin").render(base=BASE_URL,
+                         lender_link=os.environ.get("REFERRAL_LINK_LENDER", ""))))
+    urls.append(page("/partners/", "Featured Agent Program — BRRRR Markets",
+                     "One investor-friendly agent per market receives the buyer leads Star Opportunities generate there. $199/month, exclusive.",
+                     env.get_template("partners").render(base=BASE_URL, total=total,
+                         form_endpoint=FORM_ENDPOINT)))
     urls.append(page("/rentals/brrrr-guide/",
                      f"What Is the BRRRR Strategy? Beginner's Guide ({year})",
                      "BRRRR means Buy, Rehab, Rent, Refinance, Repeat — the rental snowball strategy explained in plain English, with the three numbers that matter.",
@@ -767,7 +861,12 @@ def main():
 
     # --- shared assets: search index, favicon, default share card
     sidx = [{"n": f"{x['m'].name}, {x['m'].state}", "u": f"/rentals/{x['m'].slug}/"} for x in everything]
-    sidx += [{"n": "Rankings — best BRRRR markets", "u": f"/rentals/best-rental-markets-{year}/"},
+    seen_states = sorted({x["m"].state for x in ranked})
+    sidx += [{"n": f"{STATE_NAMES.get(st, st)} ({st}) — best rental markets",
+              "u": f"/rentals/state/{STATE_NAMES.get(st, st).lower().replace(' ', '-')}/"}
+             for st in seen_states]
+    sidx += [{"n": "Star Deals — all flagged listings", "u": "/deals/"},
+             {"n": "Rankings — best BRRRR markets", "u": f"/rentals/best-rental-markets-{year}/"},
              {"n": "Market finder (5-tap quiz)", "u": "/start/"},
              {"n": "BRRRR & rehab calculator", "u": "/rentals/brrrr-calculator/"},
              {"n": "Pro", "u": "/pro/"}]

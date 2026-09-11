@@ -99,6 +99,20 @@ def score_metro(listings, metro_rent, metro_value):
     return cands[:5]
 
 
+def metro_stats(listings):
+    """Deal-flow pulse: aggregates nobody else publishes because nobody scores."""
+    n = len(listings)
+    if not n:
+        return {}
+    cuts = 0
+    for l in listings:
+        hist = l.get("history") or {}
+        prices = [e.get("price") for e in hist.values() if e.get("price")]
+        if l.get("price") and prices and max(prices) > l["price"]:
+            cuts += 1
+    return {"active": n, "cut_share": round(cuts / n * 100, 1)}
+
+
 def main():
     key = os.environ.get("RENTCAST_API_KEY", "")
     if not key and not os.environ.get("LISTINGS_LOCAL"):
@@ -129,11 +143,10 @@ def main():
     for sc, slug, name, state, d in scan_list:
         listings = fetch(name, state, key)
         picks = score_metro(listings, d["rent"], d["home_value"])
-        if picks:
-            out[slug] = {"as_of": time.strftime("%Y-%m-%d"), "items": picks}
+        if listings:
+            out[slug] = {"as_of": time.strftime("%Y-%m-%d"), "items": picks,
+                         "stats": metro_stats(listings)}
             total += len(picks)
-        elif slug in out and listings:
-            out.pop(slug)                    # scanned fresh, nothing qualifies now
         print(f"[listings] {name}: {len(listings)} active, {len(picks)} flagged")
         time.sleep(0.4)
     json.dump(out, open(OUT, "w"))
