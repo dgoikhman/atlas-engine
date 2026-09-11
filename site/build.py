@@ -27,7 +27,7 @@ from engine.scoring import compute, stars  # noqa: E402
 OUT = os.path.join(ROOT, "out")
 SIDX_JSON = "[]"
 BASE_URL = "https://example.com"
-STRIPE_ANNUAL = os.environ.get("STRIPE_LINK_ANNUAL", "")
+STRIPE_ANNUAL = os.environ.get("STRIPE_LINK_ANNUAL") or "https://8089614199003.gumroad.com/l/brrrrfounder"
 STRIPE_PASS = os.environ.get("STRIPE_LINK_PASS", "")
 FORM_ENDPOINT = os.environ.get("FORM_ENDPOINT", "")
 if "--base-url" in sys.argv:
