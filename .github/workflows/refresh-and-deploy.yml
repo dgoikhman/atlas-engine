@@ -41,6 +41,7 @@ jobs:
           set -o pipefail
           python pipelines/context.py 2>&1 | tee -a data/last_refresh.log
       - name: Scan Star Opportunities (non-fatal)
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         continue-on-error: true
         env:
           RENTCAST_API_KEY: ${{ secrets.RENTCAST_API_KEY }}

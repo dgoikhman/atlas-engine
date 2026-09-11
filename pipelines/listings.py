@@ -22,9 +22,11 @@ import requests
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 API = "https://api.rentcast.io/v1/listings/sale"
-N_DAILY = int(os.environ.get("LISTINGS_DAILY") or os.environ.get("LISTINGS_METROS") or "15")
-ROT_DAYS = int(os.environ.get("LISTINGS_ROTATION_DAYS") or "14")
+N_DAILY = int(os.environ.get("LISTINGS_DAILY") or os.environ.get("LISTINGS_METROS") or "10")
+ROT_DAYS = int(os.environ.get("LISTINGS_ROTATION_DAYS") or "21")
 OUT = os.path.join(ROOT, "data", "star_opportunities.json")
+MAX_CALLS = int(os.environ.get("LISTINGS_MAX_CALLS") or "70")   # hard per-run budget
+CALLS = {"n": 0}
 
 
 def fetch(city, state, key):
@@ -33,7 +35,11 @@ def fetch(city, state, key):
         p = os.path.join(local, f"rc_{city.lower().replace(' ', '')}.json")
         return json.load(open(p)) if os.path.exists(p) else []
     out = []
-    for offset in (0, 500):                  # up to 1,000 listings per metro
+    for offset in (0, 500):
+        if CALLS["n"] >= MAX_CALLS:
+            print(f"[listings] call budget ({MAX_CALLS}) reached — stopping cleanly")
+            return out
+        CALLS["n"] += 1                  # up to 1,000 listings per metro
         r = requests.get(API, params={"city": city, "state": state,
                                       "status": "Active", "limit": 500,
                                       "offset": offset},
@@ -202,6 +208,11 @@ def main():
     todays_slice = [m for i, m in enumerate(rest) if i % ROT_DAYS == day % ROT_DAYS]
     scan_list = metros[:N_DAILY] + todays_slice
     out = json.load(open(OUT)) if os.path.exists(OUT) else {}
+    today_s = time.strftime("%Y-%m-%d")
+    if out and os.environ.get("LISTINGS_FORCE") != "1" and        any(e.get("as_of") == today_s for e in out.values()):
+        print(f"[listings] already scanned today ({today_s}) — skipping "
+              "(set LISTINGS_FORCE=1 to override); 0 API calls spent")
+        return
     total = 0
     print(f"[listings] scanning {len(scan_list)} metros "
           f"({N_DAILY} daily + {len(todays_slice)} rotation of {len(rest)}, "
@@ -218,6 +229,8 @@ def main():
     write_whys(out)
     json.dump(out, open(OUT, "w"))
     print(f"[listings] flagged {total} Star Opportunities across {len(out)} metros -> {OUT}")
+    print(f"[listings] API calls this run: {CALLS['n']} (budget {MAX_CALLS}) — "
+          f"monthly pace ≈ {CALLS['n'] * 30:,}")
 
 
 if __name__ == "__main__":
