@@ -174,7 +174,7 @@ if(localStorage.getItem("bm_credit"))document.getElementById("bp-credit").value=
 <tr><td>Cosmetic full (floors, kitchen refresh, baths)</td><td class="n">$25–45</td><td class="n">$35K–63K</td></tr>
 <tr><td>Full renovation (systems + finishes)</td><td class="n">$45–75</td><td class="n">$63K–105K</td></tr>
 <tr><td>Gut / structural</td><td class="n">$75–120</td><td class="n">$105K–168K</td></tr></table>
-<p class="quick">Run your own numbers for {{ m.name }} in the <a href="{{ base }}/rentals/brrrr-calculator/">BRRRR &amp; rehab calculator</a>.</p>
+<p class="quick">Run your own numbers for {{ m.name }} in the <a href="{{ base }}/rentals/brrrr-calculator/">BRRRR &amp; rehab calculator</a>. Run a rehab crew in {{ m.name }}? <a href="{{ base }}/partners/#crews">Founding crews list free →</a></p>
 <div class="faq"><h2>Frequently asked questions</h2>
 <h3>Is {{ m.name }} a good market for rental property in {{ year }}?</h3>
 <p>{{ m.name }} scores {{ score }}/100 on the Star Score index (#{{ rank }} of {{ total }} tracked markets), with a gross rental yield of {{ yield_pct }}% at {{ vintage }} prices. {{ verdict }}</p>
@@ -333,19 +333,44 @@ FIN_BODY = """
 <p class="lede">Most Star Opportunities get bought with DSCR loans: the lender qualifies the <b>property's rent</b>, not your W-2 — typically 20-25% down, and the standard tool for buy-refinance-repeat investors. HELOCs and investor credit lines routinely cover down payments and rehab.</p>
 {% if lender_link %}<p><a href="{{ lender_link }}"><button>Get matched with an investor lender</button></a></p>
 {% else %}<div class="explain"><b>Lender matching opens shortly.</b> We're onboarding DSCR and HELOC-friendly lenders who work these exact markets. Meanwhile: run your numbers in the <a href="{{ base }}/rentals/brrrr-calculator/">calculator</a>, and the <a href="{{ base }}/start/">market finder</a> captures your financing needs so you're first in line.</div>{% endif %}
-<p class="quick">Education, not lending advice — terms vary by lender, property and borrower.</p>"""
+<p class="quick">Education, not lending advice — terms vary by lender, property and borrower. <b>Are you a lender?</b> <a href="{{ base }}/partners/#lenders">Apply to receive matched borrowers →</a></p>"""
 
 PARTNERS_BODY = """
 <nav class="crumbs"><a href="{{ base }}/">Atlas</a> › Partners</nav>
-<h1>Own your market's investor deal flow</h1>
-<p class="lede">Every day our scanner flags under-market listings across {{ total }} US markets, and investors land on those pages ready to act. One <b>Featured Agent</b> per market receives the buyer inquiries Star Opportunities generate there — exclusive, month to month.</p>
-<table><tr><th>What you get</th></tr>
-<tr><td>Exclusive Featured Agent placement on your market's pages and deal cards</td></tr>
-<tr><td>Buyer leads from that market's Star Opportunities and market-finder matches</td></tr>
-<tr><td>Your market's Deal-flow Pulse data for your own marketing</td></tr></table>
-<p><b>$199/month per market</b> — founding partners lock their market at $149 for life. One agent per market; first claim wins.</p>
-{% if form_endpoint %}<form action="{{ form_endpoint }}" method="POST"><input type="email" name="email" required placeholder="you@brokerage.com" style="padding:9px;border:1px solid var(--line);border-radius:4px;width:52%"><input type="text" name="market" required placeholder="Market (e.g. Toledo, OH)" style="padding:9px;border:1px solid var(--line);border-radius:4px;width:38%;margin-left:4px"><button type="submit" style="margin-top:8px">Claim my market</button></form>
-{% else %}<div class="explain">Claims open this week — check back or watch @BRRRRmarkets.</div>{% endif %}"""
+<h1>Get featured where investors find their next deal</h1>
+<p class="lede">Our scanner flags under-market listings across {{ total }} US markets every morning, and the investors reading those pages need three things to close: an agent, a crew, and a lender. One featured partner per market, per category. Apply below — founding partners lock founding terms for life.</p>
+
+<h2 id="agents">Featured Agents — own your market's buyer leads</h2>
+<p>Exclusive placement on your market's pages and deal cards; you receive that market's Star Opportunity inquiries and market-finder matches. <b>$199/month per market</b> (founding: $149 locked). One agent per market; first qualified claim wins.</p>
+{% if form_endpoint %}<form action="{{ form_endpoint }}" method="POST">
+<input type="hidden" name="partner_type" value="agent">
+<input type="email" name="email" required placeholder="you@brokerage.com" style="padding:9px;border:1px solid var(--line);border-radius:4px;width:49%">
+<input type="text" name="market" required placeholder="Market (e.g. Toledo, OH)" style="padding:9px;border:1px solid var(--line);border-radius:4px;width:46%;margin-left:4px">
+<input type="text" name="detail" placeholder="Brokerage + years working with investors" style="padding:9px;border:1px solid var(--line);border-radius:4px;width:96%;margin-top:6px">
+<button type="submit" style="margin-top:8px">Apply as Featured Agent</button></form>
+{% else %}<div class="explain">Applications open this week.</div>{% endif %}
+
+<h2 id="crews">Rehab crews & contractors — jobs, not leads you chase</h2>
+<p>Investors buying flagged deals need renovation bids fast. Founding crews get listed <b>free</b> on their market's pages; a per-booked-job fee applies once work starts flowing. Bring license/insurance info when we verify.</p>
+{% if form_endpoint %}<form action="{{ form_endpoint }}" method="POST">
+<input type="hidden" name="partner_type" value="crew">
+<input type="email" name="email" required placeholder="you@yourcompany.com" style="padding:9px;border:1px solid var(--line);border-radius:4px;width:49%">
+<input type="text" name="market" required placeholder="Market(s) you serve" style="padding:9px;border:1px solid var(--line);border-radius:4px;width:46%;margin-left:4px">
+<input type="text" name="detail" placeholder="Trade/specialty (full rehab, roofing, systems…) + company" style="padding:9px;border:1px solid var(--line);border-radius:4px;width:96%;margin-top:6px">
+<button type="submit" style="margin-top:8px">Apply as a founding crew</button></form>
+{% else %}<div class="explain">Applications open this week.</div>{% endif %}
+
+<h2 id="lenders">Lenders — borrowers who arrive with the deal attached</h2>
+<p>Every deal card carries a "Get financing" button; the market finder captures financing needs by market and buy-box. DSCR, HELOC-friendly, and hard-money lenders: referrals route to matched partners on a per-funded basis.</p>
+{% if form_endpoint %}<form action="{{ form_endpoint }}" method="POST">
+<input type="hidden" name="partner_type" value="lender">
+<input type="email" name="email" required placeholder="you@lender.com" style="padding:9px;border:1px solid var(--line);border-radius:4px;width:49%">
+<input type="text" name="market" required placeholder="States covered" style="padding:9px;border:1px solid var(--line);border-radius:4px;width:46%;margin-left:4px">
+<input type="text" name="detail" placeholder="Products (DSCR / HELOC / hard money) + company" style="padding:9px;border:1px solid var(--line);border-radius:4px;width:96%;margin-top:6px">
+<button type="submit" style="margin-top:8px">Apply as a lending partner</button></form>
+{% else %}<div class="explain">Applications open this week.</div>{% endif %}
+
+<p class="quick">All partners are verified before featuring; exclusivity is per market per category; month to month, no lock-ins. Investor trust is the product — partners who protect it keep their markets.</p>"""
 
 QUIZ_BODY = """
 <nav class="crumbs"><a href="{{ base }}/">Atlas</a> › Find your market</nav>
