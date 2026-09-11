@@ -59,8 +59,15 @@ def score_metro(listings, metro_rent, metro_value):
     psf = [l["price"] / l["squareFootage"] for l in listings
            if l.get("price") and l.get("squareFootage") and l["squareFootage"] > 300]
     med_psf = statistics.median(psf) if len(psf) >= 10 else None
+    OK_TYPES = ("single family", "multi-family", "multi family", "condo",
+                "townhouse", "duplex", "triplex", "quadplex", "apartment")
     for l in listings:
         price, sqft = l.get("price"), l.get("squareFootage")
+        ptype = (l.get("propertyType") or "").lower()
+        if ptype and not any(t in ptype for t in OK_TYPES):
+            continue                      # land, lots, mobile, commercial: out
+        if not l.get("bedrooms") or not sqft or sqft < 400:
+            continue                      # must be an actual dwelling
         if not price or price < 40000 or price > metro_value * 1.2:
             continue
         dom = l.get("daysOnMarket") or 0
