@@ -6,3 +6,19 @@
 [census] ACS 2023 profile
 [census] ACS 2018 profile
 [done] context for 241 metros -> /home/runner/work/atlas-engine/atlas-engine/data/metro_context.csv
+[listings] Florence: 465 active, 5 flagged
+[listings] Montgomery: 500 active, 5 flagged
+[listings] Mobile: 500 active, 5 flagged
+[listings] Charleston: 293 active, 5 flagged
+[listings] Jackson: 500 active, 5 flagged
+[listings] Saginaw: 492 active, 5 flagged
+[listings] Macon: 500 active, 5 flagged
+[listings] Columbus: 500 active, 5 flagged
+[listings] Huntington: 221 active, 5 flagged
+[listings] Terre Haute: 352 active, 5 flagged
+[listings] Brownsville: 500 active, 5 flagged
+[listings] Jackson: 500 active, 5 flagged
+[listings] El Paso: 500 active, 5 flagged
+[listings] Tuscaloosa: 500 active, 5 flagged
+[listings] Peoria: 358 active, 5 flagged
+[listings] flagged 75 Star Opportunities across 15 metros -> /home/runner/work/atlas-engine/atlas-engine/data/star_opportunities.json
