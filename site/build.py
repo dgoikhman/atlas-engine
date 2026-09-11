@@ -241,13 +241,11 @@ INDEX_BODY = """
 <div class="hero"><h1>Under-market rental deals, <span class="k">flagged every morning</span></h1>
 <p>Our scanner sweeps live listings across America and flags the ones priced under market — price cuts, motivated sellers, below-comp pricing — scored and ranked for the BRRRR playbook. Rehab it or rent it day one: you see the mispricing before anyone else is looking.</p>
 <div><span class="stat"><b>{{ n_deals }}</b> live Star Deals</span><span class="stat"><b>{{ tracked }}</b> markets scored</span><span class="stat">updated <b>daily</b></span><span class="stat">{{ vintage }} Zillow data</span></div>
-<div><a class="cta" href="{{ base }}/deals/">See today's Star Deals</a><a class="cta ghost" href="#map">Explore the map</a></div></div>
+<div><a class="cta" href="#deals">See today's Star Deals</a><a class="cta ghost" href="#map">Explore the map</a></div></div>
 <div class="steps"><div class="step"><b>1 · Scan</b>Every morning we sweep live listings in {{ tracked }} scored markets.</div><div class="step"><b>2 · Score</b>The Star Score (0-100) grades every market; every flagged deal gets a star rating.</div><div class="step"><b>3 · Buy under market</b>You underwrite the shortlist — calculator, financing and crews one tap away.</div></div>
-{% if top_deals %}<h2 style="margin-top:18px">Today's top Star Deals</h2>
-{% for o in top_deals %}<div class="opp"><span class="starpill">★ {{ o.score }}</span><span class="a">{{ o.addr }}</span>
-<div class="p">${{ "{:,}".format(o.price) }} <span class="underpill">est {{ o.under_pct }}% under</span> <span class="mline">· <a href="{{ base }}/rentals/{{ o.slug }}/">{{ o.metro }}, {{ o.st }}</a> · {{ o.yield_pct }}% yield</span></div>
-{% if o.why %}<div class="mline" style="margin-top:4px"><span class="underpill" style="background:#F3E7CE;color:#7A5A12">Motivation {{ o.mot }}</span> {{ o.why }}</div>{% endif %}</div>
-{% endfor %}<p class="quick"><b><a href="{{ base }}/deals/">See all {{ n_deals }} flagged deals — {{ n_locked }} unlock with membership →</a></b></p>{% endif %}
+<h2 id="deals" style="margin-top:18px">Today's Star Deals</h2>
+{% include 'dealsfeed' %}
+<p class="quick"><a href="{{ base }}/deals/">Deal-flow pulse by market &amp; buy-box alerts →</a></p>
 <h2 id="map">Explore the markets behind the deals</h2>
 <div class="map-wrap"><div class="mapctl">
 <label>Min yield <select id="f-y"><option value="0">any</option><option value="6">6%+</option><option value="7">7%+</option><option value="8">8%+</option></select></label>
@@ -320,12 +318,7 @@ MS_INDEX_BODY = """
 <h2>What this is</h2>
 <p>The Succession Score (0-100) weighs the share of businesses aged 20+ years (45%), 30+ years (25%), and the absolute depth of aged businesses (30%) — all from public registry filing dates. It is research about market structure, not claims about any owner's plans. More states, business-level signals, and broker-partnered listings are on the roadmap; brokers who want their deals distributed here can reach out.</p>"""
 
-DEALS_BODY = """
-<nav class="crumbs"><a href="{{ base }}/">Atlas</a> › Star Deals</nav>
-<div class="hero" style="margin-top:8px"><h1>Today's <span class="k">Star Deals</span></h1>
-<p>Fresh from this morning's sweep: the listings showing real under-market signals, scored and ranked.</p>
-<div><span class="stat"><b>{{ deals_free_n }}</b> open now</span><span class="stat"><b>{{ n_locked }}</b> behind the unlock</span><span class="stat">refreshed <b>daily</b></span></div></div>
-<p class="lede">Every morning our scanner sweeps live listings across {{ n_metros }} markets and flags the ones showing under-market signals — price cuts, long days on market, below-comp pricing. Today's top {{ deals_free_n }} are open below. <b>{{ n_locked }} more are waiting behind the unlock.</b></p>
+DEALS_FEED = """
 <div class="mapctl" style="border:1px solid var(--line);border-radius:6px;flex-wrap:wrap">
 <label>State <select id="d-st"><option value="">all</option></select></label>
 <label>Max price <select id="d-p"><option value="99999999">any</option><option value="100000">$100K</option><option value="150000">$150K</option><option value="250000">$250K</option><option value="400000">$400K</option></select></label>
@@ -343,14 +336,7 @@ Every flagged deal nationwide, full addresses, plus instant buy-box email alerts
 <div class="p">~${{ "{:,}".format((d.price // 10000) * 10000) }}s <span class="mline">· {{ d.metro }}, {{ d.st }}</span> <span style="float:right;color:var(--gold);font-weight:700">★ {{ d.score }}</span></div>
 <div class="mline">{{ d.yield_pct }}% modeled yield{% if d.mot %} · <b>Motivation {{ d.mot }} — {{ d.tag }}</b>{% endif %} · address &amp; the full "why it's available" diagnosis unlock with membership</div></div>
 {% endfor %}{% if n_locked > 24 %}<p class="quick">…and {{ n_locked - 24 }} more locked deals.</p>{% endif %}</div>
-<div class="explain"><b>Get your buy-box delivered.</b> Save these filters as an alert — when Pro opens, matching deals hit your inbox the morning they're flagged; free alerts get the weekly batch.
-{% if form_endpoint %}<form action="{{ form_endpoint }}" method="POST" style="margin-top:8px"><input type="email" name="email" required placeholder="you@email.com" style="padding:9px;border:1px solid var(--line);border-radius:4px;width:58%"><input type="hidden" name="buybox" id="d-seg"><button type="submit" style="margin-left:6px">Save my buy-box</button></form>
-{% else %}<span style="color:var(--muted);font-size:13.5px">Alert signups open this week.</span>{% endif %}</div>
-<h2>Deal-flow pulse</h2>
-<p>Market-level signals from today's scan — the analysis layer nobody else publishes because nobody else scores:</p>
-<table><tr><th>Market</th><th class="n">Active listings scanned</th><th class="n">% with price cuts</th><th class="n">Flagged deals</th></tr>
-{% for s in pulse %}<tr><td><a href="{{ base }}/rentals/{{ s.slug }}/">{{ s.name }}, {{ s.state }}</a></td><td class="n">{{ "{:,}".format(s.active) }}</td><td class="n">{{ s.cut_share }}%</td><td class="n">{{ s.flagged }}</td></tr>
-{% endfor %}</table>
+
 <script>
 var D={{ deals_json }};var L={{ locked_json }};
 var ST=[...new Set(D.map(d=>d.st))].sort();
@@ -374,6 +360,23 @@ document.getElementById("d-count").textContent=f.length+" open deal"+(f.length==
 }
 ["d-st","d-p","d-b","d-y","d-sort"].forEach(i=>document.getElementById(i).addEventListener("change",draw));draw();
 </script>"""
+
+DEALS_BODY = """
+<nav class="crumbs"><a href="{{ base }}/">Atlas</a> › Star Deals</nav>
+<div class="hero" style="margin-top:8px"><h1>Today's <span class="k">Star Deals</span></h1>
+<p>Fresh from this morning's sweep: the listings showing real under-market signals, scored and ranked.</p>
+<div><span class="stat"><b>{{ deals_free_n }}</b> open now</span><span class="stat"><b>{{ n_locked }}</b> behind the unlock</span><span class="stat">refreshed <b>daily</b></span></div></div>
+<p class="lede">Every morning our scanner sweeps live listings across {{ n_metros }} markets and flags the ones showing under-market signals — price cuts, long days on market, below-comp pricing. Today's top {{ deals_free_n }} are open below. <b>{{ n_locked }} more are waiting behind the unlock.</b></p>
+{% include 'dealsfeed' %}
+<div class="explain"><b>Get your buy-box delivered.</b> Save these filters as an alert — when Pro opens, matching deals hit your inbox the morning they're flagged; free alerts get the weekly batch.
+{% if form_endpoint %}<form action="{{ form_endpoint }}" method="POST" style="margin-top:8px"><input type="email" name="email" required placeholder="you@email.com" style="padding:9px;border:1px solid var(--line);border-radius:4px;width:58%"><input type="hidden" name="buybox" id="d-seg"><button type="submit" style="margin-left:6px">Save my buy-box</button></form>
+{% else %}<span style="color:var(--muted);font-size:13.5px">Alert signups open this week.</span>{% endif %}</div>
+<h2>Deal-flow pulse</h2>
+<p>Market-level signals from today's scan — the analysis layer nobody else publishes because nobody else scores:</p>
+<table><tr><th>Market</th><th class="n">Active listings scanned</th><th class="n">% with price cuts</th><th class="n">Flagged deals</th></tr>
+{% for s in pulse %}<tr><td><a href="{{ base }}/rentals/{{ s.slug }}/">{{ s.name }}, {{ s.state }}</a></td><td class="n">{{ "{:,}".format(s.active) }}</td><td class="n">{{ s.cut_share }}%</td><td class="n">{{ s.flagged }}</td></tr>
+{% endfor %}</table>
+"""
 
 FIN_BODY = """
 <nav class="crumbs"><a href="{{ base }}/">Atlas</a> › Financing</nav>
@@ -580,7 +583,7 @@ function calc(){
 env = Environment(loader=DictLoader({
     "base": BASE, "metro": METRO_BODY, "rankings": RANKINGS_BODY,
     "compare": COMPARE_BODY, "index": INDEX_BODY, "method": METHOD_BODY,
-    "calc": CALC_BODY, "guide": GUIDE_BODY, "state": STATE_BODY, "life": LIFE_BODY, "quiz": QUIZ_BODY, "pro": PRO_BODY, "deals": DEALS_BODY, "fin": FIN_BODY, "partners": PARTNERS_BODY, "ms_city": MS_CITY_BODY, "ms_index": MS_INDEX_BODY,
+    "calc": CALC_BODY, "guide": GUIDE_BODY, "state": STATE_BODY, "life": LIFE_BODY, "quiz": QUIZ_BODY, "pro": PRO_BODY, "deals": DEALS_BODY, "dealsfeed": DEALS_FEED, "fin": FIN_BODY, "partners": PARTNERS_BODY, "ms_city": MS_CITY_BODY, "ms_index": MS_INDEX_BODY,
 }))
 
 
@@ -908,7 +911,12 @@ def main():
     # --- index + methodology
     body = env.get_template("index").render(
         rows=ranked, top=top, total=total, tracked=len(everything),
-        top_deals=free_deals[:3], n_deals=len(deals), n_locked=len(locked),
+        n_deals=len(deals), n_locked=len(locked), deals_free_n=len(free_deals),
+        deals_json=json.dumps(free_deals),
+        locked_json=json.dumps([{"st": d["st"], "price": d["price"],
+            "beds": d.get("beds") or 0, "yield_pct": d["yield_pct"],
+            "mot": d.get("mot"), "tag": d.get("tag")} for d in locked]),
+        locked=locked[:24], stripe=STRIPE_ANNUAL or (BASE_URL + "/pro/"),
         base=BASE_URL, vintage=DATA_VINTAGE,
         map_svg=svg_map(ranked, refs))
     urls.append(page("/", f"BRRRR Markets: US Rental Markets Ranked by Star Score",
