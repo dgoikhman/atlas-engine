@@ -42,6 +42,8 @@ BASE = """<!DOCTYPE html>
 <title>{{ title }}</title>
 <meta name="description" content="{{ description }}">
 <link rel="canonical" href="{{ canonical }}">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <link rel="icon" href="{{ base }}/favicon.svg" type="image/svg+xml">
 <meta property="og:title" content="{{ title }}"><meta property="og:description" content="{{ description }}">
 <meta property="og:url" content="{{ canonical }}"><meta property="og:site_name" content="BRRRR Markets">
@@ -50,10 +52,11 @@ BASE = """<!DOCTYPE html>
 {% endfor %}<style>
 :root{--paper:#E9EDEF;--ink:#14232B;--muted:#5E7278;--line:#C9D3D6;--gold:#C08A1E;--land:#1E4E49}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--paper);color:var(--ink);font-family:"Avenir Next","Segoe UI",system-ui,sans-serif;line-height:1.55;font-variant-numeric:tabular-nums}
+body{background:var(--paper);color:var(--ink);font-family:Inter,"Avenir Next","Segoe UI",system-ui,sans-serif;line-height:1.55;font-variant-numeric:tabular-nums}
 .wrap{max-width:760px;margin:0 auto;padding:20px 16px 60px}
 header a{color:var(--ink);text-decoration:none;font-weight:700;letter-spacing:.04em;font-size:14px}
 header span{color:var(--gold)}
+h1,h2,header a{font-family:'Space Grotesk',Inter,sans-serif}
 h1{font-size:clamp(24px,5.5vw,34px);line-height:1.15;margin:14px 0 10px;max-width:26ch}
 h2{font-size:19px;margin:26px 0 8px}
 p{margin:10px 0;max-width:64ch}
@@ -94,6 +97,22 @@ nav.crumbs{font-size:13px;color:var(--muted);margin-top:8px}
 .mapctl select{font:inherit;font-size:13px;padding:5px;border:1px solid var(--line);border-radius:4px;background:#fff}
 .mapctl button{min-height:30px;padding:4px 12px;font-size:14px}
 .mk[hidden]{display:none}
+.hero{background:linear-gradient(160deg,#14232B 0%,#1B3038 70%,#1E4E49 100%);color:#F3EFE6;margin:12px -16px 20px;padding:30px 18px 26px}
+.hero h1{color:#fff;margin-top:0;max-width:22ch}
+.hero .k{color:var(--gold)}
+.hero p{color:#D8D2C4;font-size:16px;max-width:56ch}
+.stat{display:inline-block;border:1px solid rgba(243,239,230,.28);border-radius:999px;padding:5px 12px;font-size:12.5px;margin:8px 8px 0 0;font-weight:600;letter-spacing:.01em}
+.stat b{color:var(--gold)}
+.cta{display:inline-block;background:var(--gold);color:#161C1E;border:none;border-radius:8px;font-weight:800;font-size:15px;padding:13px 20px;min-height:48px;text-decoration:none;margin:14px 10px 0 0;font-family:'Space Grotesk',sans-serif}
+.cta.ghost{background:transparent;color:#F3EFE6;border:1.5px solid rgba(243,239,230,.5)}
+.starpill{background:var(--gold);color:#161C1E;border-radius:999px;padding:2px 10px;font-weight:800;font-size:13px;float:right}
+.underpill{display:inline-block;background:#E4F0E9;color:#1E5B41;border-radius:4px;padding:1px 7px;font-weight:700;font-size:12.5px}
+.opp{border:1px solid var(--line);border-left:none;border-radius:10px;box-shadow:0 1px 3px rgba(20,35,43,.07);padding:13px 14px}
+.opp .p{font-size:19px}
+.steps{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 4px}
+.step{flex:1 1 150px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px;font-size:13.5px}
+.step b{display:block;font-size:15px;font-family:'Space Grotesk',sans-serif;margin-bottom:3px}
+.unlock{border:2px solid var(--gold);background:#FFF9EC;border-radius:10px}
 .opp{border:1px solid var(--line);border-left:3px solid var(--gold);background:#fff;border-radius:4px;padding:11px 12px;margin:10px 0}
 .opp .a{font-weight:700;font-size:14.5px} .opp .p{font-size:16px;font-weight:700;margin:2px 0}
 .opp .mline{font-size:13px;color:var(--muted)} .opp.locked{opacity:.92;background:#FBFAF7}
@@ -219,13 +238,16 @@ COMPARE_BODY = """
 <p>Full profiles: <a href="{{ base }}/rentals/{{ a.m.slug }}/">{{ a.m.name }}</a> · <a href="{{ base }}/rentals/{{ b.m.slug }}/">{{ b.m.name }}</a></p>"""
 
 INDEX_BODY = """
-<h1>The best places in America to buy rental property — ranked, mapped, updated daily</h1>
-<p class="lede">We track <b>{{ tracked }}</b> US metros and score each 0-100 (the Star Score) on the numbers that decide whether a rental actually pays: home prices vs rents, landlord law, taxes, growth and risk — on {{ vintage }} Zillow data. Every morning our scanner also flags <a href="{{ base }}/deals/">live under-market listings</a>. Current #1: <b><a href="{{ base }}/rentals/{{ top.m.slug }}/">{{ top.m.name }}, {{ top.m.state }}</a></b> at <b>{{ top.score }}/100</b> with an {{ top.yield_pct }}% gross yield.</p>
+<div class="hero"><h1>Incredible rental deals, <span class="k">flagged every morning</span></h1>
+<p>Our scanner sweeps live listings across America, flags the ones priced under market — price cuts, motivated sellers, below-comp pricing — and scores every deal and every market. You see the best of it before anyone else is looking.</p>
+<div><span class="stat"><b>{{ n_deals }}</b> live Star Deals</span><span class="stat"><b>{{ tracked }}</b> markets scored</span><span class="stat">updated <b>daily</b></span><span class="stat">{{ vintage }} Zillow data</span></div>
+<div><a class="cta" href="{{ base }}/deals/">See today's Star Deals</a><a class="cta ghost" href="#map">Explore the map</a></div></div>
+<div class="steps"><div class="step"><b>1 · Scan</b>Every morning we sweep live listings in {{ tracked }} scored markets.</div><div class="step"><b>2 · Score</b>The Star Score (0-100) grades every market; every flagged deal gets a star rating.</div><div class="step"><b>3 · Buy under market</b>You underwrite the shortlist — calculator, financing and crews one tap away.</div></div>
 {% if top_deals %}<h2 style="margin-top:18px">Today's top Star Deals</h2>
-{% for o in top_deals %}<div class="opp"><span class="a">{{ o.addr }}</span> <span style="float:right;color:var(--gold);font-weight:700">★ {{ o.score }}</span>
-<div class="p">${{ "{:,}".format(o.price) }} <span class="mline">· <a href="{{ base }}/rentals/{{ o.slug }}/">{{ o.metro }}, {{ o.st }}</a> · est {{ o.under_pct }}% under · {{ o.yield_pct }}% yield</span></div></div>
+{% for o in top_deals %}<div class="opp"><span class="starpill">★ {{ o.score }}</span><span class="a">{{ o.addr }}</span>
+<div class="p">${{ "{:,}".format(o.price) }} <span class="underpill">est {{ o.under_pct }}% under</span> <span class="mline">· <a href="{{ base }}/rentals/{{ o.slug }}/">{{ o.metro }}, {{ o.st }}</a> · {{ o.yield_pct }}% yield</span></div></div>
 {% endfor %}<p class="quick"><b><a href="{{ base }}/deals/">See all {{ n_deals }} flagged deals — {{ n_locked }} unlock with membership →</a></b></p>{% endif %}
-<h2>Explore the markets behind the deals</h2>
+<h2 id="map">Explore the markets behind the deals</h2>
 <div class="map-wrap"><div class="mapctl">
 <label>Min yield <select id="f-y"><option value="0">any</option><option value="6">6%+</option><option value="7">7%+</option><option value="8">8%+</option></select></label>
 <label>Max price <select id="f-v"><option value="99999999">any</option><option value="250000">$250K</option><option value="350000">$350K</option><option value="500000">$500K</option></select></label>
@@ -299,7 +321,9 @@ MS_INDEX_BODY = """
 
 DEALS_BODY = """
 <nav class="crumbs"><a href="{{ base }}/">Atlas</a> › Star Deals</nav>
-<h1>Star Deals: every under-market flag, nationwide</h1>
+<div class="hero" style="margin-top:8px"><h1>Today's <span class="k">Star Deals</span></h1>
+<p>Fresh from this morning's sweep: the listings showing real under-market signals, scored and ranked.</p>
+<div><span class="stat"><b>{{ deals_free_n }}</b> open now</span><span class="stat"><b>{{ n_locked }}</b> behind the unlock</span><span class="stat">refreshed <b>daily</b></span></div></div>
 <p class="lede">Every morning our scanner sweeps live listings across {{ n_metros }} markets and flags the ones showing under-market signals — price cuts, long days on market, below-comp pricing. Today's top {{ deals_free_n }} are open below. <b>{{ n_locked }} more are waiting behind the unlock.</b></p>
 <div class="mapctl" style="border:1px solid var(--line);border-radius:6px;flex-wrap:wrap">
 <label>State <select id="d-st"><option value="">all</option></select></label>
@@ -341,9 +365,9 @@ function draw(){
 document.getElementById("d-count").textContent=f.length+" open deal"+(f.length==1?"":"s")+" match · "+lm+" more locked";
  var seg=document.getElementById("d-seg"); if(seg)seg.value=JSON.stringify({st:st,p:p,b:b,y:y});
  document.getElementById("d-list").innerHTML=f.slice(0,60).map(d=>
-  '<div class="opp"><span class="a">'+d.addr+'</span> <span style="float:right;color:var(--gold);font-weight:700">★ '+d.score+'</span>'+
+  '<div class="opp"><span class="starpill">★ '+d.score+'</span><span class="a">'+d.addr+'</span>'+
   '<div class="p">'+fm(d.price)+' <span class="mline">· '+(d.beds||"?")+'bd '+(d.baths||"?")+'ba'+(d.sqft?" · "+d.sqft.toLocaleString()+" sqft":"")+'</span></div>'+
-  '<div class="mline"><a href="{{ base }}/rentals/'+d.slug+'/">'+d.metro+", "+d.st+'</a> · est '+d.under_pct+'% under · modeled rent '+fm(d.est_rent)+'/mo ('+d.yield_pct+'% yield) · flagged '+d.as_of+'</div>'+
+  '<div class="mline"><span class="underpill">est '+d.under_pct+'% under</span> <a href="{{ base }}/rentals/'+d.slug+'/">'+d.metro+", "+d.st+'</a> · modeled rent '+fm(d.est_rent)+'/mo ('+d.yield_pct+'% yield) · flagged '+d.as_of+'</div>'+
   '<div style="margin-top:8px"><a href="{{ base }}/financing/"><button style="font-size:13px;padding:6px 11px;min-height:32px">Get financing</button></a> <a href="{{ base }}/rentals/brrrr-calculator/"><button style="font-size:13px;padding:6px 11px;min-height:32px;background:transparent;color:var(--ink);border:1px solid var(--ink)">Estimate rehab</button></a> <a class="sig" style="text-decoration:none" href="https://www.google.com/search?q='+encodeURIComponent(d.addr)+'">find listing →</a></div></div>').join("");
 }
 ["d-st","d-p","d-b","d-y","d-sort"].forEach(i=>document.getElementById(i).addEventListener("change",draw));draw();
