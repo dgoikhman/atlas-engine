@@ -6,3 +6,28 @@
 [census] ACS 2023 profile
 [census] ACS 2018 profile
 [done] context for 241 metros -> /home/runner/work/atlas-engine/atlas-engine/data/metro_context.csv
+[listings] scanning 21 metros (10 daily + 11 rotation of 232, cycle 21d)
+[listings] Florence: 463 active, 5 flagged
+[listings] Montgomery: 1000 active, 5 flagged
+[listings] Mobile: 1000 active, 5 flagged
+[listings] Charleston: 295 active, 5 flagged
+[listings] Jackson: 526 active, 5 flagged
+[listings] Saginaw: 499 active, 5 flagged
+[listings] Macon: 1000 active, 5 flagged
+[listings] Columbus: 657 active, 5 flagged
+[listings] Huntington: 226 active, 5 flagged
+[listings] Terre Haute: 353 active, 5 flagged
+[listings] Augusta: 749 active, 5 flagged
+[listings] Fort Wayne: 1000 active, 5 flagged
+[listings] Savannah: 1000 active, 5 flagged
+[listings] Elkhart: 245 active, 5 flagged
+[listings] Fayetteville: 882 active, 5 flagged
+[listings] North Port: 1000 active, 5 flagged
+[listings] Lancaster: 310 active, 5 flagged
+[listings] Appleton: 365 active, 5 flagged
+[listings] St. George: 6 active, 3 flagged
+[listings] Urban Honolulu: 0 active, 0 flagged
+[listings] Santa Rosa: 620 active, 5 flagged
+[why] narratives: 210 cached, 55 written this run
+[listings] flagged 98 Star Opportunities across 41 metros -> /home/runner/work/atlas-engine/atlas-engine/data/star_opportunities.json
+[listings] API calls this run: 32 (budget 70) — monthly pace ≈ 960
