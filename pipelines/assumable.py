@@ -31,8 +31,9 @@ def fetch(state, year, loan_types):
     if local:
         p = os.path.join(local, f"hmda_{state.lower()}_{year}.json")
         return json.load(open(p)) if os.path.exists(p) else None
-    params = {"states": state, "years": year, "actions_taken": "1",
-              "loan_purposes": "1"}
+    # HMDA API allows max TWO filter criteria: actions_taken counts as one,
+    # loan_types as the second. (Purposes dropped — gov refis are assumable too.)
+    params = {"states": state, "years": year, "actions_taken": "1"}
     if loan_types:
         params["loan_types"] = loan_types      # 2=FHA 3=VA 4=USDA
     r = requests.get(API, params=params, headers=HDRS, timeout=120)
@@ -86,6 +87,8 @@ def main():
                          "assumability": s})
         print(f"[assumable] {st}: {gov:,} gov-backed of {allc:,} purchases "
               f"2019-21 ({share:.1f}%)")
+    if rows and not any(float(r["gov_share_pct"]) > 0 for r in rows):
+        sys.exit("[error] all gov shares zero — query broken; refusing to write garbage")
     if len(rows) < int(os.environ.get("MIN_ROWS", "50")):
         sys.exit(f"[error] only {len(rows)} metro rows — API shape likely "
                  "changed; see logged responses")
