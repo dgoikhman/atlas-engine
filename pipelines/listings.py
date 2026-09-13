@@ -137,6 +137,49 @@ def metro_stats(listings):
 
 
 WHY_CACHE = os.path.join(ROOT, "data", "why_cache.json")
+ASSUME_CACHE = os.path.join(ROOT, "data", "assumable_flags.json")
+
+def flag_assumable(out):
+    """Superstar enrichment: per flagged deal, look up the open lien
+    (loan type + origination year) via a licensed property-data API.
+    Dormant until ASSUMABLE_API_KEY (ATTOM-class) is set — never guessed:
+    a deal is 'assumable' only when the lien record says FHA/VA/USDA
+    with a 2018-2022 origination, or a seller/agent confirms it."""
+    key = os.environ.get("ASSUMABLE_API_KEY")
+    cache = json.load(open(ASSUME_CACHE)) if os.path.exists(ASSUME_CACHE) else {}
+    if key:
+        import requests as rq
+        todo = [(o["addr"], o) for e in out.values() for o in e["items"]
+                if o["addr"] not in cache][:60]
+        for addr, o in todo:
+            try:
+                r = rq.get("https://api.gateway.attomdata.com/propertyapi/v1.0.0/property/detailmortgage",
+                           params={"address": addr}, headers={"apikey": key}, timeout=30)
+                if not r.ok:
+                    print(f"[assume] {addr[:34]}: HTTP {r.status_code}")
+                    continue
+                d = r.json()
+                m = (d.get("property") or [{}])[0].get("mortgage") or {}
+                ltype = (m.get("lender", {}).get("loanType") or m.get("loanType") or "").upper()
+                yr = int(str(m.get("date", {}).get("firstDate") or m.get("firstDate") or "0")[:4] or 0)
+                if any(t in ltype for t in ("FHA", "VA", "USDA")) and 2018 <= yr <= 2022:
+                    cache[addr] = {"assumable": "likely", "type": ltype, "vintage": yr}
+                else:
+                    cache[addr] = {"assumable": None}
+            except Exception as e:
+                print(f"[assume] {addr[:30]}: {type(e).__name__}")
+                break
+        json.dump(cache, open(ASSUME_CACHE, "w"))
+    n = 0
+    for e in out.values():
+        for o in e["items"]:
+            c = cache.get(o["addr"]) or {}
+            if c.get("assumable"):
+                o["assumable"] = c["assumable"]
+                o["assume_note"] = f"{c.get('type','gov-backed')} {c.get('vintage','')}".strip()
+                n += 1
+    print(f"[assume] superstar flags: {n} "
+          f"({'enrichment live' if key else 'dormant — no lien-data key; seller/agent confirmations only'})")
 
 def write_whys(out):
     """Generate 'why it's available' notes for deals lacking one. Signals-only:
@@ -246,6 +289,7 @@ def main():
         print(f"[listings] {name}: {len(listings)} active, {len(picks)} flagged")
         time.sleep(0.4)
     write_whys(out)
+    flag_assumable(out)
     json.dump(out, open(OUT, "w"))
     print(f"[listings] flagged {total} Star Opportunities across {len(out)} metros -> {OUT}")
     print(f"[listings] API calls this run: {CALLS['n']} (budget {MAX_CALLS}) — "

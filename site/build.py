@@ -106,6 +106,7 @@ nav.crumbs{font-size:13px;color:var(--muted);margin-top:8px}
 .stat b{color:var(--gold)}
 .cta{display:inline-block;background:var(--gold);color:#161C1E;border:none;border-radius:8px;font-weight:800;font-size:15px;padding:13px 20px;min-height:48px;text-decoration:none;margin:14px 10px 0 0;font-family:'Space Grotesk',sans-serif}
 .cta.ghost{background:transparent;color:#F3EFE6;border:1.5px solid rgba(243,239,230,.5)}
+.superpill{background:linear-gradient(90deg,var(--gold),#2E6E4E);color:#fff;border-radius:999px;padding:2px 10px;font-weight:800;font-size:13px;float:right;margin-left:6px}
 .starpill{background:var(--gold);color:#161C1E;border-radius:999px;padding:2px 10px;font-weight:800;font-size:13px;float:right}
 .underpill{display:inline-block;background:#E4F0E9;color:#1E5B41;border-radius:4px;padding:1px 7px;font-weight:700;font-size:12.5px}
 .opp{border:1px solid var(--line);border-left:none;border-radius:10px;box-shadow:0 1px 3px rgba(20,35,43,.07);padding:13px 14px}
@@ -349,12 +350,12 @@ function draw(){
      b=+document.getElementById("d-b").value,y=+document.getElementById("d-y").value,
      srt=document.getElementById("d-sort").value;
  var f=D.filter(d=>(!st||d.st==st)&&d.price<=p&&(d.beds||0)>=b&&d.yield_pct>=y);
- f.sort((a,c)=>srt=="yield"?c.yield_pct-a.yield_pct:srt=="price"?a.price-c.price:srt=="fresh"?(c.as_of>a.as_of?1:-1):c.score-a.score);
+ f.sort((a,c)=>(c.assumable?1:0)-(a.assumable?1:0)||(srt=="yield"?c.yield_pct-a.yield_pct:srt=="price"?a.price-c.price:srt=="fresh"?(c.as_of>a.as_of?1:-1):c.score-a.score));
  var lm=L.filter(d=>(!st||d.st==st)&&d.price<=p&&(d.beds||0)>=b&&d.yield_pct>=y).length;
 document.getElementById("d-count").textContent=f.length+" open deal"+(f.length==1?"":"s")+" match · "+lm+" more locked";
  var seg=document.getElementById("d-seg"); if(seg)seg.value=JSON.stringify({st:st,p:p,b:b,y:y});
  document.getElementById("d-list").innerHTML=f.slice(0,60).map(d=>
-  '<div class="opp"><span class="starpill">★ '+d.score+'</span><span class="a">'+d.addr+'</span>'+
+  '<div class="opp">'+(d.assumable?'<span class="superpill">★★ SUPERSTAR · assumable '+(d.assume_note||'')+'</span>':'')+'<span class="starpill">★ '+d.score+'</span><span class="a">'+d.addr+'</span>'+
   '<div class="p">'+fm(d.price)+' <span class="mline">· '+(d.beds||"?")+'bd '+(d.baths||"?")+'ba'+(d.sqft?" · "+d.sqft.toLocaleString()+" sqft":"")+'</span></div>'+
   '<div class="mline"><span class="underpill">est '+d.under_pct+'% under</span> <a href="{{ base }}/rentals/'+d.slug+'/">'+d.metro+", "+d.st+'</a> · modeled rent '+fm(d.est_rent)+'/mo ('+d.yield_pct+'% yield) · flagged '+d.as_of+'</div>'+
   '<div class="mline" style="margin-top:5px">'+(d.mot?'<span class="underpill" style="background:#F3E7CE;color:#7A5A12">Motivation '+d.mot+' · '+d.tag+'</span> ':'')+(d.why?d.why:'')+'</div>'+
@@ -389,7 +390,7 @@ function draw(){
  f.sort((a,c)=>srt=="yield"?c.yield_pct-a.yield_pct:srt=="price"?a.price-c.price:srt=="fresh"?(c.as_of>a.as_of?1:-1):c.score-a.score);
  document.getElementById("d-count").textContent=f.length+" deals match your filters";
  document.getElementById("d-list").innerHTML=f.slice(0,80).map(d=>
-  '<div class="opp"><span class="starpill">★ '+d.score+'</span><span class="a">'+d.addr+'</span>'+
+  '<div class="opp">'+(d.assumable?'<span class="superpill">★★ SUPERSTAR · assumable '+(d.assume_note||'')+'</span>':'')+'<span class="starpill">★ '+d.score+'</span><span class="a">'+d.addr+'</span>'+
   '<div class="p">'+fm(d.price)+' <span class="mline">· '+(d.beds||"?")+'bd '+(d.baths||"?")+'ba'+(d.sqft?" · "+d.sqft.toLocaleString()+" sqft":"")+'</span></div>'+
   '<div class="mline"><span class="underpill">est '+d.under_pct+'% under</span> <a href="{{ base }}/rentals/'+d.slug+'/">'+d.metro+", "+d.st+'</a> · modeled rent '+fm(d.est_rent)+'/mo ('+d.yield_pct+'% yield) · flagged '+d.as_of+'</div>'+
   '<div class="mline" style="margin-top:5px">'+(d.mot?'<span class="underpill" style="background:#F3E7CE;color:#7A5A12">Motivation '+d.mot+' · '+d.tag+'</span> ':'')+(d.why||'')+'</div>'+
@@ -459,6 +460,9 @@ PARTNERS_BODY = """
 {% else %}<div class="explain">Applications open this week.</div>{% endif %}
 
 <p class="quick">All partners are verified before featuring; exclusivity is per market per category; month to month, no lock-ins. Investor trust is the product — partners who protect it keep their markets.</p>"""
+
+ASM_WRAP = """{{ body }}
+<div class="explain"><b>Selling a home with an assumable note — or an agent with one listed?</b> Superstar placement (top of every feed, marked ★★) is free while we build the layer.{% if form_endpoint %}<form action="{{ form_endpoint }}" method="POST" style="margin-top:8px"><input type="hidden" name="type" value="assumable_listing"><input type="email" name="email" required placeholder="you@email.com" style="padding:9px;border:1px solid var(--line);border-radius:4px;width:44%"><input type="text" name="detail" required placeholder="Address + loan type/rate (e.g. VA 2.75%)" style="padding:9px;border:1px solid var(--line);border-radius:4px;width:50%;margin-left:4px"><button type="submit" style="margin-top:8px">Submit for Superstar placement</button></form>{% else %}<span style="color:var(--muted);font-size:13.5px"> Submissions open this week.</span>{% endif %}</div>"""
 
 QUIZ_BODY = """
 <nav class="crumbs"><a href="{{ base }}/">Atlas</a> › Find your market</nav>
@@ -620,7 +624,7 @@ function calc(){
 env = Environment(loader=DictLoader({
     "base": BASE, "metro": METRO_BODY, "rankings": RANKINGS_BODY,
     "compare": COMPARE_BODY, "index": INDEX_BODY, "method": METHOD_BODY,
-    "calc": CALC_BODY, "guide": GUIDE_BODY, "state": STATE_BODY, "life": LIFE_BODY, "quiz": QUIZ_BODY, "pro": PRO_BODY, "deals": DEALS_BODY, "dealsfeed": DEALS_FEED, "members": MEMBERS_BODY, "fin": FIN_BODY, "partners": PARTNERS_BODY, "ms_city": MS_CITY_BODY, "ms_index": MS_INDEX_BODY,
+    "calc": CALC_BODY, "guide": GUIDE_BODY, "state": STATE_BODY, "life": LIFE_BODY, "quiz": QUIZ_BODY, "pro": PRO_BODY, "asm_wrap": ASM_WRAP, "deals": DEALS_BODY, "dealsfeed": DEALS_FEED, "members": MEMBERS_BODY, "fin": FIN_BODY, "partners": PARTNERS_BODY, "ms_city": MS_CITY_BODY, "ms_index": MS_INDEX_BODY,
 }))
 
 
@@ -998,7 +1002,7 @@ def main():
         urls.append(page("/rentals/assumable-mortgage-markets/",
             f"The Assumability Index ({year}): Where Assumable ~3% Mortgages Concentrate",
             "State-by-state map of assumable government-backed low-rate loans (FHA/VA/USDA, 2019-21 vintage) from public HMDA data. VA loans: assumable by non-veteran investors.",
-            "\n".join(asm_body)))
+            env.get_template("asm_wrap").render(body="\n".join(asm_body), form_endpoint=FORM_ENDPOINT, base=BASE_URL)))
     urls.append(page("/deals/", f"Star Deals: Under-Market Rental Listings Nationwide ({year})",
                      f"{len(deals)} under-market flagged listings across {len(pulse)} US markets: price cuts, long DOM, below-comp pricing — filterable by state, price, beds and yield.",
                      env.get_template("deals").render(base=BASE_URL, n_metros=len(pulse) or 1,
