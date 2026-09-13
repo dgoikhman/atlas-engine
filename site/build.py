@@ -675,6 +675,48 @@ def make_og(fname, heading, stat, score=None, band=None):
     im.save(os.path.join(OUT, "og", fname), "PNG", optimize=True)
     return f"{BASE_URL}/og/{fname}"
 
+
+STATE_TILES = {  # (col,row) tile-grid layout of the US
+ "AK":(0,0),"ME":(11,0),"VT":(10,1),"NH":(11,1),
+ "WA":(1,2),"ID":(2,2),"MT":(3,2),"ND":(4,2),"MN":(5,2),"WI":(6,2),"MI":(7,2),"NY":(9,2),"MA":(10,2),"RI":(11,2),
+ "OR":(1,3),"NV":(2,3),"WY":(3,3),"SD":(4,3),"IA":(5,3),"IL":(6,3),"IN":(7,3),"OH":(8,3),"PA":(9,3),"NJ":(10,3),"CT":(11,3),
+ "CA":(1,4),"UT":(2,4),"CO":(3,4),"NE":(4,4),"MO":(5,4),"KY":(6,4),"WV":(7,4),"VA":(8,4),"MD":(9,4),"DE":(10,4),
+ "AZ":(2,5),"NM":(3,5),"KS":(4,5),"AR":(5,5),"TN":(6,5),"NC":(7,5),"SC":(8,5),
+ "OK":(4,6),"LA":(5,6),"MS":(6,6),"AL":(7,6),"GA":(8,6),
+ "HI":(0,7),"TX":(4,7),"FL":(9,7),
+}
+
+def assumable_map_svg(st_rows, base_url, state_pages):
+    """The Assumable Mortgage Map of America — tile-grid choropleth."""
+    def fill(ix):
+        ix = int(ix)
+        if ix >= 80: return "#1E4E49"
+        if ix >= 60: return "#C08A1E"
+        if ix >= 40: return "#D9BE7A"
+        return "#E7E1D2"
+    def txt(ix):
+        return "#F3EFE6" if int(ix) >= 60 else "#3A4750"
+    S, G = 56, 5
+    parts = ['<svg viewBox="0 0 740 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The Assumable Mortgage Map of America">']
+    for st, (c, r) in STATE_TILES.items():
+        row = st_rows.get(st)
+        if not row:
+            parts.append(f'<rect x="{c*(S+G)+6}" y="{r*(S+G)+6}" width="{S}" height="{S}" rx="7" fill="#EFECE4"/>')
+            parts.append(f'<text x="{c*(S+G)+6+S/2}" y="{r*(S+G)+6+S/2+4}" text-anchor="middle" font-size="15" font-weight="700" fill="#B9B2A4">{st}</text>')
+            continue
+        ix, sh = row["assumability"], row["gov_share_pct"]
+        x, y = c*(S+G)+6, r*(S+G)+6
+        link = state_pages.get(st)
+        if link:
+            parts.append(f'<a href="{link}">')
+        parts.append(f'<rect x="{x}" y="{y}" width="{S}" height="{S}" rx="7" fill="{fill(ix)}"><title>{st}: {sh}% of 2019-21 originations government-backed · index {ix}</title></rect>')
+        parts.append(f'<text x="{x+S/2}" y="{y+S/2-4}" text-anchor="middle" font-size="15" font-weight="800" fill="{txt(ix)}">{st}</text>')
+        parts.append(f'<text x="{x+S/2}" y="{y+S/2+14}" text-anchor="middle" font-size="11.5" font-weight="600" fill="{txt(ix)}">{sh}%</text>')
+        if link:
+            parts.append('</a>')
+    parts.append('</svg>')
+    return "".join(parts)
+
 US_OUTLINE = [(48.4,-124.7),(46.2,-124.0),(42.0,-124.4),(40.4,-124.4),(38.9,-123.7),
  (37.8,-122.5),(36.6,-121.9),(34.4,-120.5),(33.7,-118.3),(32.5,-117.1),(32.5,-114.8),
  (31.3,-111.1),(31.8,-106.5),(29.5,-104.4),(29.3,-103.3),(26.0,-97.5),(27.8,-97.2),
@@ -989,20 +1031,28 @@ def main():
         st_rows = {}
         for r in ASM.values():
             st_rows[r["state"]] = r
+        state_pages = {st: f"{BASE_URL}/rentals/state/{STATE_NAMES.get(st, st).lower().replace(' ', '-')}/"
+                       for st in st_rows if st in STATE_NAMES}
         ranked_states = sorted(st_rows.values(), key=lambda x: -int(x["assumability"]))
         asm_body = ['<nav class="crumbs"><a href="{}/">Atlas</a> › Assumable markets</nav>'.format(BASE_URL),
-            '<h1>The Assumability Index: where ~3% mortgages hide in plain sight ({})</h1>'.format(year),
+            '<h1>The Assumable Mortgage Map of America ({})</h1>'.format(year),
             '<p class="lede">Government-backed loans (FHA, VA, USDA) are assumable by law — a qualified buyer can take over the seller\'s rate. The 2019-2021 vintage averages near 3%, against ~7% today. This index maps where that assumable cohort concentrates, from public HMDA origination data. <b>VA loans are assumable by non-veterans, including for investment purchases</b> — the most underused financing structure in rental investing.</p>',
+            '<div class="map-wrap" style="background:#fff;padding:10px">' + assumable_map_svg(st_rows, BASE_URL, state_pages) + '</div>',
+            '<p class="quick"><span class="chip" style="background:#1E4E49">80+</span> <span class="chip" style="background:#C08A1E">60-79</span> <span class="chip" style="background:#D9BE7A;color:#3A4750">40-59</span> <span class="chip" style="background:#E7E1D2;color:#3A4750">&lt;40</span> — Assumability Index: gov-backed share of 2019-21 originations (60%) + pool depth (40%), from public HMDA records. Tap a state for its markets.</p>',
             '<table><tr><th>#</th><th>State</th><th class="n">Gov-backed loans 2019-21</th><th class="n">Share</th><th class="n">Index</th></tr>']
         for i, r in enumerate(ranked_states[:30]):
             band = "b-green" if int(r["assumability"]) >= 70 else "b-gold" if int(r["assumability"]) >= 55 else "b-mid"
             asm_body.append('<tr><td>{}</td><td>{}</td><td class="n">{:,}</td><td class="n">{}%</td><td class="n"><span class="chip {}">{}</span></td></tr>'.format(
                 i + 1, r["state"], int(r["gov_1921_state"]), r["gov_share_pct"], band, r["assumability"]))
         asm_body.append('</table><h2>How to use this</h2><p>High-index states are where under-market deals most often come attached to assumable low-rate notes. Per-listing assumable flags require loan-level verification — coming to Star Deals as remarks and title data land; until then, ask every listing agent one question: "Is the seller\'s loan FHA or VA?" Assumption concierges like Roam handle the paperwork in ~two dozen states.</p><p class="quick">Methodology: HMDA public origination records; index = state gov-backed share of 2019-21 originations (refinanced FHA/VA loans are assumable too) (60%) + pool depth (40%). State-cohort v1 — metro-level joins next. Not lending advice.</p>')
+        top5 = ranked_states[:5]
+        og_asm = make_og("assumable-map.png", ["The Assumable Mortgage", "Map of America"],
+                         " · ".join(f"{r['state']} {r['gov_share_pct']}%" for r in top5) + "  gov-backed '19-21",
+                         None, None)
         urls.append(page("/rentals/assumable-mortgage-markets/",
-            f"The Assumability Index ({year}): Where Assumable ~3% Mortgages Concentrate",
+            f"The Assumable Mortgage Map of America ({year})",
             "State-by-state map of assumable government-backed low-rate loans (FHA/VA/USDA, 2019-21 vintage) from public HMDA data. VA loans: assumable by non-veteran investors.",
-            env.get_template("asm_wrap").render(body="\n".join(asm_body), form_endpoint=FORM_ENDPOINT, base=BASE_URL)))
+            env.get_template("asm_wrap").render(body="\n".join(asm_body), form_endpoint=FORM_ENDPOINT, base=BASE_URL), og_image=og_asm))
     urls.append(page("/deals/", f"Star Deals: Under-Market Rental Listings Nationwide ({year})",
                      f"{len(deals)} under-market flagged listings across {len(pulse)} US markets: price cuts, long DOM, below-comp pricing — filterable by state, price, beds and yield.",
                      env.get_template("deals").render(base=BASE_URL, n_metros=len(pulse) or 1,
