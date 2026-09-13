@@ -6,3 +6,11 @@
 [census] ACS 2023 profile
 [census] ACS 2018 profile
 [done] context for 241 metros -> /home/runner/work/atlas-engine/atlas-engine/data/metro_context.csv
+[listings] TARGETED sweep: 5 CO metros
+[listings] Colorado Springs: 1000 active, 5 flagged
+[listings] Fort Collins: 910 active, 5 flagged
+[listings] Greeley: 499 active, 5 flagged
+[listings] Boulder: 793 active, 5 flagged
+[listings] Denver: 1000 active, 5 flagged
+[why] narratives: 235 cached, 25 written this run
+[listings] targeted done: 25 flagged | API calls: 9
