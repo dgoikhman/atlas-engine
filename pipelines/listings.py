@@ -202,6 +202,25 @@ def main():
         sc, _ = compute("rentals", d)
         metros.append((sc, m["slug"], m["name"], m["state"], d))
     metros.sort(reverse=True)
+    only_state = os.environ.get("LISTINGS_STATE") or ""
+    if only_state:
+        scan_list = [m for m in metros if m[3] == only_state]
+        out = json.load(open(OUT)) if os.path.exists(OUT) else {}
+        total = 0
+        print(f"[listings] TARGETED sweep: {len(scan_list)} {only_state} metros")
+        for sc, slug, name, state, d in scan_list:
+            listings = fetch(name, state, key)
+            picks = score_metro(listings, d["rent"], d["home_value"])
+            if listings:
+                out[slug] = {"as_of": time.strftime("%Y-%m-%d"), "items": picks,
+                             "stats": metro_stats(listings)}
+                total += len(picks)
+            print(f"[listings] {name}: {len(listings)} active, {len(picks)} flagged")
+            time.sleep(0.4)
+        write_whys(out)
+        json.dump(out, open(OUT, "w"))
+        print(f"[listings] targeted done: {total} flagged | API calls: {CALLS['n']}")
+        return
     import datetime as _dt
     day = _dt.date.today().toordinal()
     rest = metros[N_DAILY:]

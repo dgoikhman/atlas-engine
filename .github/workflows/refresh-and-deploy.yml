@@ -1,9 +1,13 @@
 name: Refresh data and deploy site
 on:
+  workflow_dispatch:
+    inputs:
+      state:
+        description: "Targeted state sweep (e.g. CO) — leave empty for normal run"
+        default: ""
   schedule:
     - cron: "0 6 1 * *"        # monthly full refresh (Zillow/Census), 1st 06:00 UTC
     - cron: "0 11 * * *"       # daily: fresh Star Opportunities scan + rebuild
-  workflow_dispatch:
   push:
     branches: [main]
 concurrency:
@@ -46,6 +50,7 @@ jobs:
         env:
           RENTCAST_API_KEY: ${{ secrets.RENTCAST_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          LISTINGS_STATE: ${{ inputs.state }}
           LISTINGS_DAILY: ${{ vars.LISTINGS_DAILY }}
           LISTINGS_ROTATION_DAYS: ${{ vars.LISTINGS_ROTATION_DAYS }}
         run: |
