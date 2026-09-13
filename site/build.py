@@ -195,6 +195,7 @@ if(localStorage.getItem("bm_credit"))document.getElementById("bp-credit").value=
 </div>{% endfor %}
 <p class="quick">Run one through the <a href="{{ base }}/rentals/brrrr-calculator/">BRRRR calculator</a>. Rent figures are modeled from metro data, not appraisals.</p>
 {% endif %}<p class="quick" style="border:1px dashed var(--line);border-radius:5px;padding:8px 10px">Investor-friendly agent working {{ m.name }}? <a href="{{ base }}/partners/">Become this market's Featured Agent →</a></p>
+{% if asm and asm.assumability|int >= 60 %}<p class="quick"><b>Assumable-mortgage pocket:</b> {{ asm.gov_share_pct }}% of {{ m.state }}'s 2019-21 purchase loans were government-backed (FHA/VA/USDA) — assumable by law, mostly at ~3% rates. VA loans can be assumed by non-veterans, including for investment purchases. <a href="{{ base }}/rentals/assumable-mortgage-markets/">The Assumability Index →</a></p>{% endif %}
 <h2>What would a rehab cost here?</h2>
 <p>National rule-of-thumb renovation costs (2026, per square foot) applied to a typical ~1,400 sq ft single-family in this market — every house differs, so treat these as planning ranges, not bids:</p>
 <table><tr><th>Scope</th><th class="n">$/sq ft</th><th class="n">Typical house</th></tr>
@@ -750,6 +751,8 @@ def main():
     refs = sorted([enrich(m) for m in metros if m["ref"]], key=lambda x: -x["score"])
     everything = ranked + refs
     total = len(ranked)
+    asm_path = os.path.join(ROOT, "data", "assumable_index.csv")
+    ASM = {r["slug"]: r for r in csv.DictReader(open(asm_path))} if os.path.exists(asm_path) else {}
     ops_path = os.path.join(ROOT, "data", "star_opportunities.json")
     star_ops = json.load(open(ops_path)) if os.path.exists(ops_path) else {}
     ctx_path = os.path.join(ROOT, "data", "metro_context.csv")
@@ -761,7 +764,8 @@ def main():
     _sidx += [{"n": f"{STATE_NAMES.get(st, st)} ({st}) — best rental markets",
                "u": f"/rentals/state/{STATE_NAMES.get(st, st).lower().replace(' ', '-')}/"}
               for st in sorted({x["m"].state for x in ranked})]
-    _sidx += [{"n": "Star Deals — all flagged listings", "u": "/deals/"},
+    _sidx += [{"n": "Assumable mortgage markets — the Assumability Index", "u": "/rentals/assumable-mortgage-markets/"},
+              {"n": "Star Deals — all flagged listings", "u": "/deals/"},
               {"n": "Rankings — best BRRRR markets", "u": f"/rentals/best-rental-markets-{year}/"},
               {"n": "Market finder (5-tap quiz)", "u": "/start/"},
               {"n": "BRRRR & rehab calculator", "u": "/rentals/brrrr-calculator/"},
@@ -838,7 +842,7 @@ def main():
             star_str=r["star_str"], rank=rank, total=total,
             factors=r["factors"], compares=compares, verdict=verdict,
             brrrr_answer=brrrr_answer, unlocked=(rank <= 15 or r not in ranked),
-            has_living=(m.slug in ctx), band=r["band"], ops=star_ops.get(m.slug))
+            has_living=(m.slug in ctx), band=r["band"], ops=star_ops.get(m.slug), asm=ASM.get(m.slug))
         urls.append(page(
             f"/rentals/{m.slug}/",
             f"{m.name}, {m.state} BRRRR & Rental Market Data {year}: Prices, Rents, Star Score",
@@ -977,6 +981,24 @@ def main():
              env.get_template("members").render(base=BASE_URL, n=len(deals),
                  today=TODAY, deals_json=json.dumps(deals)), noindex=True)
         print(f"[build] members page: /m/{mtok[:4]}…/ ({len(deals)} deals)")
+    if ASM:
+        st_rows = {}
+        for r in ASM.values():
+            st_rows[r["state"]] = r
+        ranked_states = sorted(st_rows.values(), key=lambda x: -int(x["assumability"]))
+        asm_body = ['<nav class="crumbs"><a href="{}/">Atlas</a> › Assumable markets</nav>'.format(BASE_URL),
+            '<h1>The Assumability Index: where ~3% mortgages hide in plain sight ({})</h1>'.format(year),
+            '<p class="lede">Government-backed loans (FHA, VA, USDA) are assumable by law — a qualified buyer can take over the seller\'s rate. The 2019-2021 vintage averages near 3%, against ~7% today. This index maps where that assumable cohort concentrates, from public HMDA origination data. <b>VA loans are assumable by non-veterans, including for investment purchases</b> — the most underused financing structure in rental investing.</p>',
+            '<table><tr><th>#</th><th>State</th><th class="n">Gov-backed purchases 2019-21</th><th class="n">Share</th><th class="n">Index</th></tr>']
+        for i, r in enumerate(ranked_states[:30]):
+            band = "b-green" if int(r["assumability"]) >= 70 else "b-gold" if int(r["assumability"]) >= 55 else "b-mid"
+            asm_body.append('<tr><td>{}</td><td>{}</td><td class="n">{:,}</td><td class="n">{}%</td><td class="n"><span class="chip {}">{}</span></td></tr>'.format(
+                i + 1, r["state"], int(r["gov_1921_state"]), r["gov_share_pct"], band, r["assumability"]))
+        asm_body.append('</table><h2>How to use this</h2><p>High-index states are where under-market deals most often come attached to assumable low-rate notes. Per-listing assumable flags require loan-level verification — coming to Star Deals as remarks and title data land; until then, ask every listing agent one question: "Is the seller\'s loan FHA or VA?" Assumption concierges like Roam handle the paperwork in ~two dozen states.</p><p class="quick">Methodology: HMDA public origination records; index = state gov-backed share of 2019-21 purchase originations (60%) + pool depth (40%). State-cohort v1 — metro-level joins next. Not lending advice.</p>')
+        urls.append(page("/rentals/assumable-mortgage-markets/",
+            f"The Assumability Index ({year}): Where Assumable ~3% Mortgages Concentrate",
+            "State-by-state map of assumable government-backed low-rate loans (FHA/VA/USDA, 2019-21 vintage) from public HMDA data. VA loans: assumable by non-veteran investors.",
+            "\n".join(asm_body)))
     urls.append(page("/deals/", f"Star Deals: Under-Market Rental Listings Nationwide ({year})",
                      f"{len(deals)} under-market flagged listings across {len(pulse)} US markets: price cuts, long DOM, below-comp pricing — filterable by state, price, beds and yield.",
                      env.get_template("deals").render(base=BASE_URL, n_metros=len(pulse) or 1,
