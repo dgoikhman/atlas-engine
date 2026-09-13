@@ -6,4 +6,3 @@
 [census] ACS 2023 profile
 [census] ACS 2018 profile
 [done] context for 241 metros -> /home/runner/work/atlas-engine/atlas-engine/data/metro_context.csv
-[listings] already scanned today (2026-09-13) — skipping (set LISTINGS_FORCE=1 to override); 0 API calls spent
