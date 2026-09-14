@@ -1,0 +1,58 @@
+{
+  "slug": "florence-sc",
+  "employers": [
+    {
+      "name": "McLeod Health",
+      "note": "Not-for-profit health system headquartered in Florence; approximately 18,000 team members, 900+ medical staff and 3,800+ licensed nurses across seven hospitals (system-wide figure, 15-county service area)",
+      "source": "https://www.mcleodhealth.org/about-us/"
+    },
+    {
+      "name": "QVC",
+      "note": "E-commerce and broadcast retail distribution center; listed among Florence County's major employers by the regional economic development alliance",
+      "source": "https://www.nesasc.org/counties/florence"
+    },
+    {
+      "name": "Honda of South Carolina Mfg.",
+      "note": "Powersports manufacturing in Timmonsville (Florence County); ~1,000 associates. Global home of Honda side-by-side vehicles (Pioneer and Talon), producing since 1998.",
+      "source": "https://manufacturing.honda.com/south-carolina-manufacturing/"
+    },
+    {
+      "name": "Ruiz Foods",
+      "note": "Frozen foods manufacturing (El Monterey, Tornados) on Florence Harllee Blvd; $79M expansion adding 705 jobs announced July 2017",
+      "source": "https://www.sccommerce.com/news/ruiz-foods-expand-existing-florence-county-manufacturing-facility-creating-more-700-jobs"
+    },
+    {
+      "name": "GE HealthCare",
+      "note": "Medical equipment manufacturing; listed among Florence County's major employers",
+      "source": "https://www.nesasc.org/counties/florence"
+    },
+    {
+      "name": "Nan Ya Plastics Corporation America",
+      "note": "Plastics and resins manufacturing; listed among Florence County's major employers",
+      "source": "https://www.nesasc.org/counties/florence"
+    }
+  ],
+  "institutions": [
+    "Francis Marion University — public four-year university with 60+ undergraduate and graduate programs; now operates several buildings downtown including the FMU Performing Arts Center.",
+    "Florence-Darlington Technical College — two-year college with enrollment over 4,500; runs the Southeastern Institute of Manufacturing and Technology (SiMT) workforce training center.",
+    "McLeod Regional Medical Center — flagship hospital of the Florence-headquartered McLeod Health system.",
+    "MUSC Health Florence Medical Center — Medical University of South Carolina's hospital presence in the metro, giving Florence two competing hospital systems.",
+    "HopeHealth — federally qualified community health center network and one of the county's largest listed employers."
+  ],
+  "highlights": [
+    "Downtown Florence is a nationally accredited Main Street program and won the Great American Main Street Award from Main Street America in 2023 — an unusually strong downtown turnaround for a metro this size.",
+    "Downtown carries the South Carolina Arts Commission Cultural District designation, one of only about eight such districts statewide.",
+    "The cultural core is anchored by the Florence County Museum and its Waters Gallery, the FMU Performing Arts Center, FMU University Place Gallery and the Florence Little Theatre.",
+    "The city manages three distinct downtown districts — the National Register historic district, the Irby Street Corridor Overlay District, and the Cultural District — which is where redevelopment incentives are concentrated."
+  ],
+  "sources": [
+    "https://www.nesasc.org/counties/florence",
+    "https://www.flochamber.com/about-flo/business-industry-info/",
+    "https://www.mcleodhealth.org/about-us/",
+    "https://manufacturing.honda.com/south-carolina-manufacturing/",
+    "https://www.sccommerce.com/news/ruiz-foods-expand-existing-florence-county-manufacturing-facility-creating-more-700-jobs",
+    "https://www.cityofflorencesc.gov/planning-research-and-development/downtown-development",
+    "https://www.florencedowntown.com/visit-downtown"
+  ],
+  "researched": "2026-09-14"
+}

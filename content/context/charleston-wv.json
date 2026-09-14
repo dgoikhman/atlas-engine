@@ -1,0 +1,59 @@
+{
+  "slug": "charleston-wv",
+  "employers": [
+    {
+      "name": "CAMC (Charleston Area Medical Center), part of Vandalia Health",
+      "note": "Healthcare; nearly 8,000 employees and 1,500+ medical-staff providers across a seven-hospital, 1,138-bed system — four of those hospitals are in Charleston. System-wide figure, not a metro-boundary count.",
+      "source": "https://www.camc.org/about-camc"
+    },
+    {
+      "name": "Kanawha County Schools",
+      "note": "Public K-12 education; 3,549 staff including 1,700 teacher FTE across 61 schools (NCES, 2024-25 school year).",
+      "source": "https://nces.ed.gov/ccd/districtsearch/district_detail.asp?ID2=5400600"
+    },
+    {
+      "name": "WVU Medicine Thomas Hospitals",
+      "note": "Healthcare; Thomas Memorial Hospital in South Charleston, part of WVU Medicine. No local headcount published — the only figures available are system-wide.",
+      "source": "https://wvumedicine.org/thomas-hospitals/about-us/"
+    },
+    {
+      "name": "Union Carbide Corporation / Dow West Virginia Operations",
+      "note": "Chemical and polymer manufacturing; South Charleston site plus tenant operations at Institute. No current headcount published by Dow.",
+      "source": "https://corporate.dow.com/en-us/locations/west-virginia.html"
+    },
+    {
+      "name": "City of Charleston",
+      "note": "Municipal government; almost 700 full-time employees as of July 1, 2025.",
+      "source": "https://www.wvgazettemail.com/news/kanawha_valley/heres-who-has-the-highest-base-salaries-in-kanawha-county-charleston-governments/article_798df93d-b691-440c-87ac-13cf8a3c8f87.html"
+    }
+  ],
+  "institutions": [
+    "West Virginia State Capitol Complex — seat of state government; the Cass Gilbert-designed capitol was dedicated June 20, 1932 and the complex occupies 16 acres along the Kanawha River.",
+    "CAMC (Vandalia Health) — nonprofit 1,138-bed regional referral center of seven hospitals, and West Virginia's principal medical teaching facility.",
+    "West Virginia State University, Institute — public land-grant HBCU founded in 1891; roughly 3,500 students and more than 70 undergraduate and graduate programs.",
+    "University of Charleston — private university at 2300 MacCorkle Ave SE, on the Kanawha riverfront directly across from the capitol complex.",
+    "WVU Medicine Thomas Memorial Hospital — acute-care hospital in South Charleston with a 24-hour emergency room and graduate medical education programs."
+  ],
+  "highlights": [
+    "The West Virginia State Capitol is one of the few state capitols with a gold-leafed dome, rising 293 feet — five feet higher than the dome of the U.S. Capitol.",
+    "East End Historic District — one of nine Charleston districts on the National Register of Historic Places, and the only one subject to city design review; Elk City Historic District on the West Side is another.",
+    "Clay Center for the Arts & Sciences — 240,000-square-foot downtown venue opened in 2003, housing the Juliet Art Museum, Avampato Discovery Museum, Caperton Planetarium and Maier Foundation Performance Hall.",
+    "Kanawha State Forest — 9,300 acres with more than 60 miles of hiking and biking trails, seven miles from downtown Charleston."
+  ],
+  "sources": [
+    "https://www.camc.org/about-camc",
+    "https://nces.ed.gov/ccd/districtsearch/district_detail.asp?ID2=5400600",
+    "https://wvumedicine.org/thomas-hospitals/about-us/",
+    "https://wvumedicine.org/locations/thomas-memorial-hospital/",
+    "https://corporate.dow.com/en-us/locations/west-virginia.html",
+    "https://www.wvgazettemail.com/news/kanawha_valley/heres-who-has-the-highest-base-salaries-in-kanawha-county-charleston-governments/article_798df93d-b691-440c-87ac-13cf8a3c8f87.html",
+    "http://www.wvlegislature.gov/educational/photo_gallery/photo.cfm",
+    "https://wvstateu.edu/about/",
+    "https://www.ucwv.edu/about/",
+    "https://www.theclaycenter.org/about",
+    "https://wvstateparks.com/parks/kanawha-state-forest/",
+    "https://www.charlestonwv.gov/government/city-departments/planning/historic-preservation",
+    "https://www.bls.gov/regions/mid-atlantic/news-release/2023/countyemploymentandwages_westvirginia_20231213.htm"
+  ],
+  "researched": "2026-09-14"
+}

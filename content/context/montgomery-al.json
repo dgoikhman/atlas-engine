@@ -1,0 +1,58 @@
+{
+  "slug": "montgomery-al",
+  "employers": [
+    {
+      "name": "Maxwell-Gunter Air Force Base",
+      "note": "Military / professional military education; ~12,500 employees per the Montgomery Chamber's 2025 major-employer list. Home to Air University and a Department of Defense core data center at Gunter Annex.",
+      "source": "https://www.montgomerychamber.com/mgm-employers"
+    },
+    {
+      "name": "State of Alabama",
+      "note": "State government; ~10,315 employees. Montgomery is the state capital, and government is the metro's structural employment base.",
+      "source": "https://www.montgomerychamber.com/mgm-employers"
+    },
+    {
+      "name": "Baptist Health",
+      "note": "Healthcare; ~5,000 employees. Three-hospital system affiliated with the UAB Health System.",
+      "source": "https://www.montgomerychamber.com/mgm-employers"
+    },
+    {
+      "name": "Hyundai Motor Manufacturing Alabama",
+      "note": "Automobile manufacturing; ~4,200 employees. The metro's largest manufacturing employer; HMMA and its suppliers report $4.82B in annual economic impact to Alabama.",
+      "source": "https://www.montgomerychamber.com/economic-diversity"
+    },
+    {
+      "name": "ALFA Companies",
+      "note": "Insurance; ~2,600 employees. Montgomery-headquartered insurer.",
+      "source": "https://www.montgomerychamber.com/mgm-employers"
+    },
+    {
+      "name": "Jackson Hospital & Clinic, Inc.",
+      "note": "Healthcare; ~2,100 employees. Independent non-profit acute-care hospital, giving the metro a second hospital system.",
+      "source": "https://www.montgomerychamber.com/mgm-employers"
+    }
+  ],
+  "institutions": [
+    "Air University at Maxwell AFB — the U.S. Air Force's professional military education center, with roughly 30 schools and a student throughput of more than 34,000 annually.",
+    "Alabama State University — public historically Black university tracing to Lincoln Normal School (1867), relocated to Montgomery in 1887; enrollment of more than 6,000 students.",
+    "Auburn University at Montgomery — Auburn branch campus on a 500-acre site in east Montgomery, with more than 5,000 students and ~1,266 employees.",
+    "Baptist Health — three hospitals (Baptist Medical Center South, Baptist Medical Center East, Prattville Baptist), affiliated with UAB Health System.",
+    "Jackson Hospital — independent non-profit acute-care hospital and physician network."
+  ],
+  "highlights": [
+    "The Equal Justice Initiative's Legacy Sites — the Legacy Museum at 400 N. Court Street, the National Memorial for Peace and Justice, and the Freedom Monument Sculpture Park — are a national-draw cluster downtown, connected by a free shuttle.",
+    "The Rosa Parks Museum, operated by Troy University at 252 Montgomery Street, stands on the exact site of Parks's December 1955 arrest and is the nation's only museum dedicated to her; Montgomery Bus Boycott history is the metro's defining tourism asset.",
+    "Dexter Avenue and the surrounding downtown/riverfront district is where the civil-rights sites, the state capitol complex and recent downtown redevelopment converge — the walkable core worth knowing.",
+    "Montgomery Whitewater, a 120-acre recirculating whitewater and outdoor adventure park off I-65, opened in July 2023 as a public-private quality-of-life and tourism play — the metro's most significant recent non-industrial development."
+  ],
+  "sources": [
+    "https://www.montgomerychamber.com/mgm-employers",
+    "https://www.montgomerychamber.com/economic-diversity",
+    "https://www.montgomerychamber.com/whitewater",
+    "https://legacysites.eji.org/",
+    "https://encyclopediaofalabama.org/article/alabama-state-university-asu/",
+    "https://encyclopediaofalabama.org/article/auburn-university-at-montgomery-aum/",
+    "https://www.troy.edu/rosaparks/"
+  ],
+  "researched": "2026-09-14"
+}

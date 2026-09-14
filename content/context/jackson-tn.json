@@ -1,0 +1,65 @@
+{
+  "slug": "jackson-tn",
+  "employers": [
+    {
+      "name": "West Tennessee Healthcare",
+      "note": "Healthcare; more than 7,000 employees across 17 West Tennessee counties, headquartered in Jackson. System-wide figure, not a Madison County count.",
+      "source": "https://www.uthsc.edu/jackson-family-medicine/west-tennessee-healthcare.php"
+    },
+    {
+      "name": "Delta Faucet Company",
+      "note": "Manufacturing — commercial and residential faucets (Masco Corp.); 1,340 employees per the Greater Jackson Chamber Industry Guide (published January 2025).",
+      "source": "https://jacksontn.com/wp-content/uploads/Industry-Guide-Public-Version-2024-Formal.pdf"
+    },
+    {
+      "name": "Kellanova",
+      "note": "Food manufacturing — potato crisps, saltines and crackers; 1,164 employees, in Jackson since 1971 (Chamber Industry Guide, January 2025).",
+      "source": "https://jacksontn.com/wp-content/uploads/Industry-Guide-Public-Version-2024-Formal.pdf"
+    },
+    {
+      "name": "Stanley Black & Decker",
+      "note": "Manufacturing and customer service center — professional power tools; 1,008 employees (Chamber Industry Guide, January 2025).",
+      "source": "https://jacksontn.com/wp-content/uploads/Industry-Guide-Public-Version-2024-Formal.pdf"
+    },
+    {
+      "name": "Conagra Brands",
+      "note": "Food manufacturing — frozen pancakes, pizzas, breakfast entrees and fish; 1,000 employees (Chamber Industry Guide, January 2025).",
+      "source": "https://jacksontn.com/wp-content/uploads/Industry-Guide-Public-Version-2024-Formal.pdf"
+    },
+    {
+      "name": "Kirkland's, Inc.",
+      "note": "Retail corporate headquarters and home decor distribution center; 572 employees (Chamber Industry Guide, January 2025).",
+      "source": "https://jacksontn.com/wp-content/uploads/Industry-Guide-Public-Version-2024-Formal.pdf"
+    }
+  ],
+  "institutions": [
+    "Jackson-Madison County General Hospital — 642-bed tertiary care center and flagship of West Tennessee Healthcare; the only tertiary care hospital between Memphis and Nashville, serving a 19-county rural area.",
+    "Union University — private Christian university founded in 1823, affiliated with the Tennessee Baptist Convention; 2,718 undergraduate and graduate students on its main Jackson campus.",
+    "Lane College — historically Black college founded in 1882 by Bishop Isaac Lane, affiliated with the Christian Methodist Episcopal Church; liberal arts baccalaureate curriculum in east Jackson.",
+    "Jackson State Community College — public two-year college whose fall 2025 enrollment topped 4,000, a 16.7% year-over-year increase that led all Tennessee community colleges and public universities.",
+    "TCAT Jackson — Tennessee College of Applied Technology campus with 30+ technical programs including industrial maintenance, welding, practical nursing and automotive technology."
+  ],
+  "highlights": [
+    "Cypress Grove Nature Park — a 164.8-acre cypress preserve in the Forked Deer River floodplain minutes from downtown, crossed by a 7,136-foot elevated boardwalk, with a 25-acre lake, a 36-foot observation tower and the Aerie Trail Raptor Center; opened October 1985.",
+    "Downtown Jackson Arts District — formally approved by Jackson City Council in 2022 and mapped by the city's Public Art Commission; anchored by the Ned R. McWherter West Tennessee Cultural Arts Center, the 1903 Carnegie Center, the Jackson Symphony and the AMP amphitheater at the West Tennessee Farmers Market.",
+    "Bemis — a planned cotton-mill village begun in 1900 by the Bemis Brothers Bag Company, now a National Register historic district nominated in 1991; its 1922 Beaux Arts auditorium houses the Bemis Mill Village Museum.",
+    "Casey Jones Home & Railroad Museum — the restored home of Illinois Central engineer Casey Jones, with his pocket watch from his last ride, a 35-ton locomotive replica and a Railroads & The Civil War in Tennessee exhibit."
+  ],
+  "sources": [
+    "https://jacksontn.com/development/",
+    "https://jacksontn.com/development/data-resources/",
+    "https://jacksontn.com/wp-content/uploads/Industry-Guide-Public-Version-2024-Formal.pdf",
+    "https://jacksontn.com/wp-content/uploads/Economic-Overview-Madison-County-Tennessee-3.31.25.pdf",
+    "https://www.uthsc.edu/jackson-family-medicine/west-tennessee-healthcare.php",
+    "https://www.wth.org/locations/jackson-madison-co-general/",
+    "https://www.uu.edu/about/",
+    "https://www.lanecollege.edu/about/history-of-lane-college",
+    "https://jscc.edu/news/2025/jscc-leads-tn-enrollment/",
+    "https://tcatjackson.edu/",
+    "https://www.jacksontn.gov/government/communications/public_notices___press_releases/cypressgrove40thanniversary",
+    "https://www.downtownjacksontn.com/arts-district",
+    "https://www.caseyjones.com/museum/",
+    "https://bemishistory.org/bemis-mill-village-museum/"
+  ],
+  "researched": "2026-09-14"
+}

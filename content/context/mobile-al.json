@@ -1,0 +1,59 @@
+{
+  "slug": "mobile-al",
+  "employers": [
+    {
+      "name": "Infirmary Health",
+      "note": "Healthcare; 6,700+ team members. Describes itself as the largest private employer in the region (October 2024).",
+      "source": "https://www.infirmaryhealth.org/news-education/2024/october/infirmary-health-earns-recognition-as-alabama-s-/"
+    },
+    {
+      "name": "Austal USA",
+      "note": "Shipbuilding / defense; over 3,000 people across 1.5M sq ft in Mobile. Has delivered 34 ships to the Navy since 2009.",
+      "source": "https://www.austalusa.com/"
+    },
+    {
+      "name": "Mobile County Public Schools",
+      "note": "Public K-12 education; 5,845 FTE staff serving 49,946 students (NCES, 2024-25 school year).",
+      "source": "https://nces.ed.gov/ccd/districtsearch/district_detail.asp?ID2=0102370"
+    },
+    {
+      "name": "Airbus U.S. Manufacturing Facility",
+      "note": "Aerospace / aircraft final assembly; more than 2,000 people as of October 2025, when Airbus inaugurated a second A320 final assembly line adding roughly 1,000 more jobs.",
+      "source": "https://www.airbus.com/en/newsroom/press-releases/2025-10-airbus-inaugurates-second-a320-final-assembly-line-in-the-us"
+    },
+    {
+      "name": "University of South Alabama / USA Health",
+      "note": "Higher education and academic healthcare; cited as Mobile County's largest employer. Headcount deliberately omitted — published figures ranged from 3,800 to 7,200 and none could be confirmed against a primary source.",
+      "source": "https://encyclopediaofalabama.org/article/university-of-south-alabama-usa/"
+    }
+  ],
+  "institutions": [
+    "University of South Alabama — public research university in Mobile; 14,285 students enrolled in fall 2025, a third straight year of enrollment growth.",
+    "USA Health — the university's academic health system, operating University Hospital, Children's & Women's Hospital and the Mitchell Cancer Institute.",
+    "Spring Hill College — founded 1830; the oldest Catholic college in the Southeast and Alabama's oldest institution of higher learning.",
+    "Alabama Port Authority / Port of Mobile — the state's deepwater seaport, which the authority credits with supporting one in seven jobs statewide."
+  ],
+  "highlights": [
+    "Africatown — the north-Mobile community founded in 1866 by survivors of the Clotilda, the last known U.S. slave ship. The Africatown Heritage House at 2465 Winbush Street opened July 2023 and houses 'Clotilda: The Exhibition'.",
+    "USS ALABAMA Battleship Memorial Park on Battleship Parkway — the WWII battleship USS Alabama, the submarine USS Drum, an aircraft pavilion and armor displays.",
+    "Bellingrath Gardens and Home — a 65-acre public garden and house museum on the Fowl River about 20 miles south of Mobile, open to the public since 1932.",
+    "Mobile's Mardi Gras — the Gulf Coast's founding Carnival tradition, with the first observance recorded in Mobile in 1699 and the first American-style parade in 1831."
+  ],
+  "sources": [
+    "https://www.infirmaryhealth.org/news-education/2024/october/infirmary-health-earns-recognition-as-alabama-s-/",
+    "https://www.austalusa.com/",
+    "https://nces.ed.gov/ccd/districtsearch/district_detail.asp?ID2=0102370",
+    "https://www.airbus.com/en/newsroom/press-releases/2025-10-airbus-inaugurates-second-a320-final-assembly-line-in-the-us",
+    "https://encyclopediaofalabama.org/article/university-of-south-alabama-usa/",
+    "https://www.southalabama.edu/departments/publicrelations/pressreleases/090525enrollmentincrease.html",
+    "https://www.southalabama.edu/aboutusa/usahealth.html",
+    "https://www.shc.edu/about-spring-hill-jesuit-college/",
+    "https://alports.com/",
+    "https://alports.com/economic-impact/",
+    "https://www.mobilecountyal.gov/africatown-heritage-house-2/",
+    "https://www.ussalabama.com/",
+    "https://encyclopediaofalabama.org/article/bellingrath-gardens-and-home/",
+    "https://encyclopediaofalabama.org/article/mobiles-mardi-gras/"
+  ],
+  "researched": "2026-09-14"
+}
