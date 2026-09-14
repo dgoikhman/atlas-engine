@@ -6,3 +6,79 @@
 [census] ACS 2023 profile
 [census] ACS 2018 profile
 [done] context for 241 metros -> /home/runner/work/atlas-engine/atlas-engine/data/metro_context.csv
+[listings] scanning 21 metros (10 daily + 11 rotation of 232, cycle 21d)
+[listings] Florence: 454 active, 5 flagged
+[listings] Montgomery: 1000 active, 5 flagged
+[listings] Mobile: 1000 active, 5 flagged
+[listings] Charleston: 289 active, 5 flagged
+[listings] Jackson: 522 active, 5 flagged
+[listings] Saginaw: 473 active, 5 flagged
+[listings] Macon: 1000 active, 5 flagged
+[listings] Columbus: 643 active, 5 flagged
+[listings] Huntington: 213 active, 5 flagged
+[listings] Terre Haute: 344 active, 5 flagged
+[listings] Jackson: 657 active, 5 flagged
+[listings] Scranton: 261 active, 5 flagged
+[listings] Spartanburg: 982 active, 5 flagged
+[listings] Waco: 970 active, 5 flagged
+[listings] Clarksville: 1000 active, 5 flagged
+[listings] Houston: 1000 active, 5 flagged
+[listings] Huntsville: 1000 active, 5 flagged
+[listings] Tucson: 1000 active, 5 flagged
+[listings] Albany: 255 active, 5 flagged
+[listings] Madison: 539 active, 5 flagged
+[listings] Denver: 1000 active, 5 flagged
+[why] narratives: 291 cached, 56 written this run
+[assume] superstar flags: 0 (dormant — no lien-data key; seller/agent confirmations only)
+[listings] flagged 105 Star Opportunities across 55 metros -> /home/runner/work/atlas-engine/atlas-engine/data/star_opportunities.json
+[listings] API calls this run: 35 (budget 70) — monthly pace ≈ 1,050
+[assumable] AL: 147,085 gov-backed of 500,135 purchases 2019-21 (29.4%)
+[assumable] AK: 27,224 gov-backed of 69,077 purchases 2019-21 (39.4%)
+[assumable] AZ: 287,912 gov-backed of 1,271,422 purchases 2019-21 (22.6%)
+[assumable] AR: 77,547 gov-backed of 276,908 purchases 2019-21 (28.0%)
+[assumable] CA: 694,833 gov-backed of 5,116,691 purchases 2019-21 (13.6%)
+[assumable] CO: 240,512 gov-backed of 1,228,887 purchases 2019-21 (19.6%)
+[assumable] CT: 62,792 gov-backed of 370,259 purchases 2019-21 (17.0%)
+[assumable] DE: 34,069 gov-backed of 139,566 purchases 2019-21 (24.4%)
+[assumable] FL: 667,291 gov-backed of 2,565,428 purchases 2019-21 (26.0%)
+[assumable] GA: 350,900 gov-backed of 1,242,440 purchases 2019-21 (28.2%)
+[assumable] HI: 35,317 gov-backed of 157,480 purchases 2019-21 (22.4%)
+[assumable] ID: 60,201 gov-backed of 338,712 purchases 2019-21 (17.8%)
+[assumable] IL: 214,367 gov-backed of 1,346,439 purchases 2019-21 (15.9%)
+[assumable] IN: 175,357 gov-backed of 842,409 purchases 2019-21 (20.8%)
+[assumable] IA: 48,166 gov-backed of 373,730 purchases 2019-21 (12.9%)
+[assumable] KS: 58,503 gov-backed of 282,853 purchases 2019-21 (20.7%)
+[assumable] KY: 101,475 gov-backed of 457,725 purchases 2019-21 (22.2%)
+[assumable] LA: 114,008 gov-backed of 381,271 purchases 2019-21 (29.9%)
+[assumable] ME: 29,403 gov-backed of 167,736 purchases 2019-21 (17.5%)
+[assumable] MD: 217,046 gov-backed of 825,595 purchases 2019-21 (26.3%)
+[assumable] MA: 90,361 gov-backed of 911,191 purchases 2019-21 (9.9%)
+[assumable] MI: 178,682 gov-backed of 1,216,535 purchases 2019-21 (14.7%)
+[assumable] MN: 106,994 gov-backed of 804,320 purchases 2019-21 (13.3%)
+[assumable] MS: 66,982 gov-backed of 219,912 purchases 2019-21 (30.5%)
+[assumable] MO: 155,168 gov-backed of 719,987 purchases 2019-21 (21.6%)
+[assumable] MT: 26,878 gov-backed of 132,830 purchases 2019-21 (20.2%)
+[assumable] NE: 39,834 gov-backed of 216,615 purchases 2019-21 (18.4%)
+[assumable] NV: 132,834 gov-backed of 484,309 purchases 2019-21 (27.4%)
+[assumable] NH: 30,437 gov-backed of 194,046 purchases 2019-21 (15.7%)
+[assumable] NJ: 154,204 gov-backed of 983,551 purchases 2019-21 (15.7%)
+[assumable] NM: 58,625 gov-backed of 192,246 purchases 2019-21 (30.5%)
+[assumable] NY: 131,744 gov-backed of 1,184,093 purchases 2019-21 (11.1%)
+[assumable] NC: 292,354 gov-backed of 1,366,647 purchases 2019-21 (21.4%)
+[assumable] ND: 15,425 gov-backed of 76,190 purchases 2019-21 (20.2%)
+[assumable] OH: 239,764 gov-backed of 1,291,269 purchases 2019-21 (18.6%)
+[assumable] OK: 100,066 gov-backed of 328,083 purchases 2019-21 (30.5%)
+[assumable] OR: 107,548 gov-backed of 643,237 purchases 2019-21 (16.7%)
+[assumable] PA: 208,566 gov-backed of 1,294,096 purchases 2019-21 (16.1%)
+[assumable] RI: 25,073 gov-backed of 142,975 purchases 2019-21 (17.5%)
+[assumable] SC: 179,287 gov-backed of 655,740 purchases 2019-21 (27.3%)
+[assumable] SD: 20,461 gov-backed of 95,839 purchases 2019-21 (21.3%)
+[assumable] TN: 204,499 gov-backed of 824,967 purchases 2019-21 (24.8%)
+[assumable] TX: 687,699 gov-backed of 2,685,780 purchases 2019-21 (25.6%)
+[assumable] UT: 103,507 gov-backed of 680,078 purchases 2019-21 (15.2%)
+[assumable] VT: 7,898 gov-backed of 66,901 purchases 2019-21 (11.8%)
+[assumable] VA: 350,108 gov-backed of 1,213,822 purchases 2019-21 (28.8%)
+[assumable] WA: 231,282 gov-backed of 1,306,377 purchases 2019-21 (17.7%)
+[assumable] WV: 34,968 gov-backed of 126,499 purchases 2019-21 (27.6%)
+[assumable] WI: 86,960 gov-backed of 826,377 purchases 2019-21 (10.5%)
+[done] Assumability Index for 241 metros -> /home/runner/work/atlas-engine/atlas-engine/data/assumable_index.csv
