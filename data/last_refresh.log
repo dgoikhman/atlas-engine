@@ -2,36 +2,36 @@
 [zillow:zori] trying https://files.zillowstatic.com/research/public_csvs/zori/Metro_zori_uc_sfrcondomfr_sm_sa_month.csv
 [gazetteer] https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_cbsa_national.zip
 [gazetteer] 935 CBSA coordinates
-[done] 242 metros -> /home/runner/work/atlas-engine/atlas-engine/data/metros_live.csv (values 2026-07-31, rents 2026-07-31, growth vs 2021-07-31)
+[done] 242 metros -> /home/runner/work/atlas-engine/atlas-engine/data/metros_live.csv (values 2026-08-31, rents 2026-08-31, growth vs 2021-08-31)
 [census] ACS 2023 profile
 [census] ACS 2018 profile
 [done] context for 241 metros -> /home/runner/work/atlas-engine/atlas-engine/data/metro_context.csv
 [listings] scanning 21 metros (10 daily + 11 rotation of 232, cycle 21d)
-[listings] Florence: 456 active, 5 flagged
+[listings] Florence: 459 active, 5 flagged
+[listings] Charleston: 294 active, 5 flagged
 [listings] Montgomery: 1000 active, 5 flagged
 [listings] Mobile: 1000 active, 5 flagged
-[listings] Charleston: 293 active, 5 flagged
-[listings] Jackson: 528 active, 5 flagged
-[listings] Saginaw: 481 active, 5 flagged
+[listings] Jackson: 531 active, 5 flagged
 [listings] Macon: 1000 active, 5 flagged
-[listings] Columbus: 645 active, 5 flagged
-[listings] Huntington: 215 active, 5 flagged
-[listings] Terre Haute: 348 active, 5 flagged
-[listings] El Paso: 1000 active, 5 flagged
-[listings] Lafayette: 912 active, 5 flagged
-[listings] Johnson City: 365 active, 5 flagged
+[listings] Columbus: 643 active, 5 flagged
+[listings] Jackson: 665 active, 5 flagged
+[listings] Terre Haute: 349 active, 5 flagged
+[listings] Huntington: 216 active, 5 flagged
+[listings] Binghamton: 276 active, 5 flagged
+[listings] Lake Charles: 997 active, 5 flagged
+[listings] Erie: 318 active, 5 flagged
 [listings] Port St. Lucie: 29 active, 5 flagged
-[listings] Roanoke: 763 active, 5 flagged
-[listings] Columbia: 650 active, 5 flagged
-[listings] Panama City: 1000 active, 5 flagged
-[listings] Fresno: 1000 active, 5 flagged
-[listings] Anchorage: 681 active, 5 flagged
-[listings] Yuba City: 227 active, 5 flagged
-[listings] Bellingham: 563 active, 5 flagged
-[why] narratives: 343 cached, 52 written this run
+[listings] Clarksville: 1000 active, 5 flagged
+[listings] Dover: 274 active, 5 flagged
+[listings] Richmond: 670 active, 5 flagged
+[listings] Ann Arbor: 498 active, 5 flagged
+[listings] Albany: 264 active, 5 flagged
+[listings] Washington: 1000 active, 5 flagged
+[listings] San Diego: 1000 active, 5 flagged
+[why] narratives: 385 cached, 42 written this run
 [assume] superstar flags: 0 (dormant — no lien-data key; seller/agent confirmations only)
-[listings] flagged 105 Star Opportunities across 65 metros -> /home/runner/work/atlas-engine/atlas-engine/data/star_opportunities.json
-[listings] API calls this run: 34 (budget 70) — monthly pace ≈ 1,020
+[listings] flagged 105 Star Opportunities across 72 metros -> /home/runner/work/atlas-engine/atlas-engine/data/star_opportunities.json
+[listings] API calls this run: 32 (budget 70) — monthly pace ≈ 960
 [assumable] AL: 147,085 gov-backed of 500,135 purchases 2019-21 (29.4%)
 [assumable] AK: 27,224 gov-backed of 69,077 purchases 2019-21 (39.4%)
 [assumable] AZ: 287,912 gov-backed of 1,271,422 purchases 2019-21 (22.6%)
