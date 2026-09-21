@@ -7,31 +7,31 @@
 [census] ACS 2018 profile
 [done] context for 241 metros -> /home/runner/work/atlas-engine/atlas-engine/data/metro_context.csv
 [listings] scanning 21 metros (10 daily + 11 rotation of 232, cycle 21d)
-[listings] Florence: 459 active, 5 flagged
-[listings] Charleston: 276 active, 5 flagged
+[listings] Florence: 452 active, 5 flagged
+[listings] Charleston: 269 active, 5 flagged
 [listings] Montgomery: 1000 active, 5 flagged
 [listings] Mobile: 1000 active, 5 flagged
-[listings] Jackson: 525 active, 5 flagged
+[listings] Jackson: 524 active, 5 flagged
 [listings] Macon: 1000 active, 5 flagged
-[listings] Columbus: 648 active, 5 flagged
-[listings] Jackson: 659 active, 5 flagged
-[listings] Terre Haute: 353 active, 5 flagged
-[listings] Huntington: 209 active, 5 flagged
-[listings] Youngstown: 274 active, 5 flagged
-[listings] Utica: 155 active, 5 flagged
-[listings] Syracuse: 342 active, 5 flagged
-[listings] Laredo: 905 active, 5 flagged
-[listings] Gainesville: 936 active, 5 flagged
-[listings] New Haven: 187 active, 5 flagged
-[listings] Grand Rapids: 745 active, 5 flagged
-[listings] Worcester: 369 active, 5 flagged
-[listings] Crestview: 545 active, 5 flagged
-[listings] Santa Maria: 213 active, 5 flagged
-[listings] Austin: 1000 active, 5 flagged
-[why] narratives: 572 cached, 58 written this run
+[listings] Columbus: 646 active, 5 flagged
+[listings] Jackson: 650 active, 5 flagged
+[listings] Terre Haute: 348 active, 5 flagged
+[listings] Huntington: 206 active, 5 flagged
+[listings] Toledo: 810 active, 5 flagged
+[listings] Fort Smith: 477 active, 5 flagged
+[listings] Ocala: 1000 active, 5 flagged
+[listings] New Orleans: 1000 active, 5 flagged
+[listings] Tallahassee: 1000 active, 5 flagged
+[listings] Kalamazoo: 513 active, 5 flagged
+[listings] Daphne: 379 active, 5 flagged
+[listings] New York: 1000 active, 5 flagged
+[listings] Bridgeport: 215 active, 5 flagged
+[listings] Redding: 580 active, 5 flagged
+[listings] Seattle: 1000 active, 5 flagged
+[why] narratives: 626 cached, 54 written this run
 [assume] superstar flags: 0 (dormant — no lien-data key; seller/agent confirmations only)
-[listings] flagged 105 Star Opportunities across 101 metros -> /home/runner/work/atlas-engine/atlas-engine/data/star_opportunities.json
-[listings] API calls this run: 32 (budget 70) — monthly pace ≈ 960
+[listings] flagged 105 Star Opportunities across 111 metros -> /home/runner/work/atlas-engine/atlas-engine/data/star_opportunities.json
+[listings] API calls this run: 35 (budget 70) — monthly pace ≈ 1,050
 [assumable] AL: 147,085 gov-backed of 500,135 purchases 2019-21 (29.4%)
 [assumable] AK: 27,224 gov-backed of 69,077 purchases 2019-21 (39.4%)
 [assumable] AZ: 287,912 gov-backed of 1,271,422 purchases 2019-21 (22.6%)
