@@ -7,30 +7,30 @@
 [census] ACS 2018 profile
 [done] context for 241 metros -> /home/runner/work/atlas-engine/atlas-engine/data/metro_context.csv
 [listings] scanning 21 metros (10 daily + 11 rotation of 232, cycle 21d)
-[listings] Florence: 453 active, 5 flagged
-[listings] Charleston: 282 active, 5 flagged
+[listings] Florence: 448 active, 5 flagged
+[listings] Charleston: 275 active, 5 flagged
 [listings] Montgomery: 1000 active, 5 flagged
 [listings] Mobile: 1000 active, 5 flagged
 [listings] Jackson: 519 active, 5 flagged
 [listings] Macon: 1000 active, 5 flagged
-[listings] Columbus: 656 active, 5 flagged
-[listings] Jackson: 667 active, 5 flagged
-[listings] Terre Haute: 342 active, 5 flagged
-[listings] Huntington: 211 active, 5 flagged
-[listings] Joplin: 378 active, 5 flagged
-[listings] Oklahoma City: 1000 active, 5 flagged
-[listings] Longview: 528 active, 5 flagged
-[listings] Baton Rouge: 1000 active, 5 flagged
-[listings] Chattanooga: 1000 active, 5 flagged
-[listings] Athens: 597 active, 5 flagged
-[listings] Hilton Head Island: 772 active, 5 flagged
-[listings] Lake Havasu City: 875 active, 5 flagged
-[listings] Sioux Falls: 1000 active, 5 flagged
-[listings] Kennewick: 609 active, 5 flagged
-[listings] Salinas: 158 active, 5 flagged
-[why] narratives: 932 cached, 57 written this run
+[listings] Columbus: 653 active, 5 flagged
+[listings] Jackson: 658 active, 5 flagged
+[listings] Terre Haute: 340 active, 5 flagged
+[listings] Huntington: 207 active, 5 flagged
+[listings] Monroe: 350 active, 5 flagged
+[listings] Memphis: 1000 active, 5 flagged
+[listings] Greensboro: 1000 active, 5 flagged
+[listings] Elkhart: 244 active, 5 flagged
+[listings] Charleston: 857 active, 5 flagged
+[listings] San Antonio: 1000 active, 5 flagged
+[listings] Rochester: 732 active, 5 flagged
+[listings] Billings: 1000 active, 5 flagged
+[listings] Raleigh: 1000 active, 5 flagged
+[listings] Yakima: 579 active, 5 flagged
+[listings] Sacramento: 1000 active, 5 flagged
+[why] narratives: 981 cached, 49 written this run
 [assume] superstar flags: 0 (dormant — no lien-data key; seller/agent confirmations only)
-[listings] flagged 105 Star Opportunities across 167 metros -> /home/runner/work/atlas-engine/atlas-engine/data/star_opportunities.json
+[listings] flagged 105 Star Opportunities across 176 metros -> /home/runner/work/atlas-engine/atlas-engine/data/star_opportunities.json
 [listings] API calls this run: 36 (budget 70) — monthly pace ≈ 1,080
 [assumable] AL: 147,085 gov-backed of 500,135 purchases 2019-21 (29.4%)
 [assumable] AK: 27,224 gov-backed of 69,077 purchases 2019-21 (39.4%)
