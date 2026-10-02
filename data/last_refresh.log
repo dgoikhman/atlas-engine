@@ -6,7 +6,32 @@
 [census] ACS 2023 profile
 [census] ACS 2018 profile
 [done] context for 241 metros -> /home/runner/work/atlas-engine/atlas-engine/data/metro_context.csv
-[listings] already scanned today (2026-10-01) — skipping (set LISTINGS_FORCE=1 to override); 0 API calls spent
+[listings] scanning 21 metros (10 daily + 11 rotation of 232, cycle 21d)
+[listings] Florence: 455 active, 5 flagged
+[listings] Charleston: 275 active, 5 flagged
+[listings] Montgomery: 1000 active, 5 flagged
+[listings] Mobile: 1000 active, 5 flagged
+[listings] Jackson: 543 active, 5 flagged
+[listings] Macon: 1000 active, 5 flagged
+[listings] Columbus: 667 active, 5 flagged
+[listings] Jackson: 671 active, 5 flagged
+[listings] Terre Haute: 345 active, 5 flagged
+[listings] Huntington: 214 active, 5 flagged
+[listings] Kingsport: 523 active, 5 flagged
+[listings] Flint: 589 active, 5 flagged
+[listings] Indianapolis: 1000 active, 5 flagged
+[listings] Rochester: 655 active, 5 flagged
+[listings] Palm Bay: 1000 active, 5 flagged
+[listings] Orlando: 1000 active, 5 flagged
+[listings] Lancaster: 311 active, 5 flagged
+[listings] Kingston: 178 active, 5 flagged
+[listings] Provo: 286 active, 5 flagged
+[listings] Urban Honolulu: 0 active, 0 flagged
+[listings] Chico: 375 active, 5 flagged
+[why] narratives: 1178 cached, 44 written this run
+[assume] superstar flags: 0 (dormant — no lien-data key; seller/agent confirmations only)
+[listings] flagged 100 Star Opportunities across 209 metros -> /home/runner/work/atlas-engine/atlas-engine/data/star_opportunities.json
+[listings] API calls this run: 33 (budget 70) — monthly pace ≈ 990
 [assumable] AL: 147,085 gov-backed of 500,135 purchases 2019-21 (29.4%)
 [assumable] AK: 27,224 gov-backed of 69,077 purchases 2019-21 (39.4%)
 [assumable] AZ: 287,912 gov-backed of 1,271,422 purchases 2019-21 (22.6%)
