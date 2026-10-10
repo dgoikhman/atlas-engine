@@ -7,31 +7,32 @@
 [census] ACS 2018 profile
 [done] context for 241 metros -> /home/runner/work/atlas-engine/atlas-engine/data/metro_context.csv
 [listings] scanning 21 metros (10 daily + 11 rotation of 232, cycle 21d)
-[listings] Florence: 455 active, 5 flagged
-[listings] Charleston: 267 active, 5 flagged
+[listings] Florence: 451 active, 5 flagged
+[listings] Charleston: 266 active, 5 flagged
 [listings] Montgomery: 1000 active, 5 flagged
 [listings] Mobile: 1000 active, 5 flagged
-[listings] Jackson: 530 active, 5 flagged
+[listings] Jackson: 524 active, 5 flagged
 [listings] Macon: 1000 active, 5 flagged
-[listings] Columbus: 647 active, 5 flagged
-[listings] Jackson: 662 active, 5 flagged
-[listings] Terre Haute: 343 active, 5 flagged
-[listings] Huntington: 234 active, 5 flagged
-[listings] Warner Robins: 297 active, 5 flagged
-[listings] Amarillo: 1000 active, 5 flagged
-[listings] Rockford: 353 active, 5 flagged
-[listings] Savannah: 1000 active, 5 flagged
-[listings] Reading: 325 active, 5 flagged
-[listings] York: 434 active, 5 flagged
-[listings] North Port: 1000 active, 5 flagged
-[listings] Charlottesville: 603 active, 5 flagged
-[listings] Las Vegas: 1000 active, 5 flagged
-[listings] Boise City: 0 active, 0 flagged
-[listings] Eugene: 685 active, 5 flagged
-[why] narratives: 1411 cached, 16 written this run
+[listings] Columbus: 650 active, 5 flagged
+[listings] Jackson: 669 active, 5 flagged
+[listings] Terre Haute: 340 active, 5 flagged
+[listings] Huntington: 238 active, 5 flagged
+[listings] Gulfport: 825 active, 5 flagged
+[listings] Lubbock: 1000 active, 5 flagged
+[listings] Johnson City: 391 active, 5 flagged
+[listings] Lansing: 579 active, 5 flagged
+[listings] Lexington: 970 active, 5 flagged
+[listings] Springfield: 314 active, 5 flagged
+[listings] Albuquerque: 1000 active, 5 flagged
+[listings] Fresno: 1000 active, 5 flagged
+[listings] Providence: 401 active, 5 flagged
+[listings] Barnstable Town: 0 active, 0 flagged
+[listings] Los Angeles: 1000 active, 5 flagged
+[why] generation stopped: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CftqrsNAQLqBrj813qB5c'}
+[why] narratives: 1411 cached, 17 written this run
 [assume] superstar flags: 0 (dormant — no lien-data key; seller/agent confirmations only)
 [listings] flagged 100 Star Opportunities across 236 metros -> /home/runner/work/atlas-engine/atlas-engine/data/star_opportunities.json
-[listings] API calls this run: 33 (budget 70) — monthly pace ≈ 990
+[listings] API calls this run: 34 (budget 70) — monthly pace ≈ 1,020
 [assumable] AL: 147,085 gov-backed of 500,135 purchases 2019-21 (29.4%)
 [assumable] AK: 27,224 gov-backed of 69,077 purchases 2019-21 (39.4%)
 [assumable] AZ: 287,912 gov-backed of 1,271,422 purchases 2019-21 (22.6%)
