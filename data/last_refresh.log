@@ -7,32 +7,32 @@
 [census] ACS 2018 profile
 [done] context for 241 metros -> /home/runner/work/atlas-engine/atlas-engine/data/metro_context.csv
 [listings] scanning 21 metros (10 daily + 11 rotation of 232, cycle 21d)
-[listings] Florence: 460 active, 5 flagged
-[listings] Charleston: 266 active, 5 flagged
+[listings] Florence: 474 active, 5 flagged
+[listings] Charleston: 268 active, 5 flagged
 [listings] Montgomery: 1000 active, 5 flagged
 [listings] Mobile: 1000 active, 5 flagged
-[listings] Jackson: 521 active, 5 flagged
+[listings] Jackson: 530 active, 5 flagged
 [listings] Macon: 1000 active, 5 flagged
-[listings] Columbus: 654 active, 5 flagged
-[listings] Jackson: 676 active, 5 flagged
-[listings] Terre Haute: 343 active, 5 flagged
-[listings] Huntington: 245 active, 5 flagged
-[listings] Columbia: 1000 active, 5 flagged
-[listings] Cleveland: 1000 active, 5 flagged
-[listings] Yuma: 1000 active, 5 flagged
-[listings] Bowling Green: 683 active, 5 flagged
-[listings] Lynchburg: 461 active, 5 flagged
-[listings] Hartford: 115 active, 5 flagged
-[listings] Des Moines: 1000 active, 5 flagged
-[listings] Visalia: 593 active, 5 flagged
-[listings] Merced: 330 active, 5 flagged
-[listings] Stockton: 730 active, 5 flagged
-[listings] Bremerton: 318 active, 5 flagged
-[why] generation stopped: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011Cg2PJoUsgrKz9waujxtYd'}
+[listings] Columbus: 656 active, 5 flagged
+[listings] Jackson: 678 active, 5 flagged
+[listings] Terre Haute: 342 active, 5 flagged
+[listings] Huntington: 243 active, 5 flagged
+[listings] Tuscaloosa: 699 active, 5 flagged
+[listings] Wichita: 1000 active, 5 flagged
+[listings] Birmingham: 1000 active, 5 flagged
+[listings] Duluth: 334 active, 5 flagged
+[listings] Virginia Beach: 1000 active, 5 flagged
+[listings] Philadelphia: 1000 active, 5 flagged
+[listings] Columbus: 1000 active, 5 flagged
+[listings] Portland: 284 active, 5 flagged
+[listings] Asheville: 1000 active, 5 flagged
+[listings] Modesto: 491 active, 5 flagged
+[listings] Salem: 1000 active, 5 flagged
+[why] generation stopped: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011Cg4G8FoXw6cWhWbRUCRjA'}
 [why] narratives: 1411 cached, 80 written this run
 [assume] superstar flags: 0 (dormant — no lien-data key; seller/agent confirmations only)
 [listings] flagged 105 Star Opportunities across 236 metros -> /home/runner/work/atlas-engine/atlas-engine/data/star_opportunities.json
-[listings] API calls this run: 34 (budget 70) — monthly pace ≈ 1,020
+[listings] API calls this run: 35 (budget 70) — monthly pace ≈ 1,050
 [assumable] AL: 147,085 gov-backed of 500,135 purchases 2019-21 (29.4%)
 [assumable] AK: 27,224 gov-backed of 69,077 purchases 2019-21 (39.4%)
 [assumable] AZ: 287,912 gov-backed of 1,271,422 purchases 2019-21 (22.6%)
