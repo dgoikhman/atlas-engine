@@ -7,28 +7,28 @@
 [census] ACS 2018 profile
 [done] context for 241 metros -> /home/runner/work/atlas-engine/atlas-engine/data/metro_context.csv
 [listings] scanning 21 metros (10 daily + 11 rotation of 232, cycle 21d)
-[listings] Florence: 478 active, 5 flagged
-[listings] Charleston: 270 active, 5 flagged
-[listings] Columbus: 648 active, 5 flagged
+[listings] Florence: 483 active, 5 flagged
+[listings] Charleston: 271 active, 5 flagged
+[listings] Columbus: 649 active, 5 flagged
 [listings] Montgomery: 1000 active, 5 flagged
 [listings] Mobile: 1000 active, 5 flagged
-[listings] Jackson: 529 active, 5 flagged
+[listings] Jackson: 535 active, 5 flagged
 [listings] Huntington: 244 active, 5 flagged
 [listings] Macon: 1000 active, 5 flagged
-[listings] Terre Haute: 343 active, 5 flagged
-[listings] Jackson: 664 active, 5 flagged
-[listings] Fayetteville: 1000 active, 5 flagged
-[listings] Canton: 373 active, 5 flagged
-[listings] Champaign: 188 active, 5 flagged
-[listings] Reading: 338 active, 5 flagged
-[listings] Chattanooga: 1000 active, 5 flagged
-[listings] Hartford: 118 active, 5 flagged
-[listings] Lincoln: 1000 active, 5 flagged
-[listings] Visalia: 566 active, 5 flagged
-[listings] Ogden: 579 active, 5 flagged
-[listings] Fort Collins: 898 active, 5 flagged
-[listings] Portland: 1000 active, 5 flagged
-[why] generation stopped: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CgDjTcjaitxMDsVEzn4XZ'}
+[listings] Terre Haute: 347 active, 5 flagged
+[listings] Jackson: 671 active, 5 flagged
+[listings] Hickory: 432 active, 5 flagged
+[listings] Rockford: 337 active, 5 flagged
+[listings] Lansing: 600 active, 5 flagged
+[listings] Lexington: 950 active, 5 flagged
+[listings] Trenton: 251 active, 5 flagged
+[listings] Atlanta: 1000 active, 5 flagged
+[listings] Bakersfield: 1000 active, 5 flagged
+[listings] Milwaukee: 1000 active, 5 flagged
+[listings] Raleigh: 1000 active, 5 flagged
+[listings] Olympia: 691 active, 5 flagged
+[listings] Santa Cruz: 177 active, 5 flagged
+[why] generation stopped: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CgFeY2ufUB91qWKfWrGKe'}
 [why] narratives: 1411 cached, 80 written this run
 [assume] superstar flags: 0 (dormant — no lien-data key; seller/agent confirmations only)
 [listings] flagged 105 Star Opportunities across 236 metros -> /home/runner/work/atlas-engine/atlas-engine/data/star_opportunities.json
