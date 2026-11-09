@@ -9,30 +9,30 @@
 [listings] scanning 21 metros (10 daily + 11 rotation of 232, cycle 21d)
 [listings] Florence: 462 active, 5 flagged
 [listings] Charleston: 271 active, 5 flagged
-[listings] Columbus: 644 active, 5 flagged
+[listings] Columbus: 634 active, 5 flagged
 [listings] Montgomery: 1000 active, 5 flagged
 [listings] Mobile: 1000 active, 5 flagged
-[listings] Jackson: 549 active, 5 flagged
+[listings] Jackson: 546 active, 5 flagged
 [listings] Huntington: 253 active, 5 flagged
 [listings] Macon: 1000 active, 5 flagged
-[listings] Terre Haute: 360 active, 5 flagged
-[listings] Jackson: 639 active, 5 flagged
-[listings] Monroe: 353 active, 5 flagged
-[listings] Oklahoma City: 1000 active, 5 flagged
-[listings] Detroit: 1000 active, 5 flagged
-[listings] Miami: 1000 active, 5 flagged
-[listings] Cincinnati: 1000 active, 5 flagged
-[listings] New Haven: 169 active, 5 flagged
-[listings] El Centro: 89 active, 5 flagged
-[listings] Nashville: 1000 active, 5 flagged
-[listings] Minneapolis: 1000 active, 5 flagged
-[listings] Kennewick: 583 active, 5 flagged
-[listings] Salinas: 148 active, 5 flagged
-[why] generation stopped: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011Cgqp3D5aSK6vD2PjFafZD'}
+[listings] Terre Haute: 354 active, 5 flagged
+[listings] Jackson: 631 active, 5 flagged
+[listings] Beaumont: 951 active, 5 flagged
+[listings] Memphis: 1000 active, 5 flagged
+[listings] Yuma: 1000 active, 5 flagged
+[listings] Springfield: 996 active, 5 flagged
+[listings] Myrtle Beach: 1000 active, 5 flagged
+[listings] Deltona: 492 active, 5 flagged
+[listings] Charlottesville: 556 active, 5 flagged
+[listings] Portland: 251 active, 5 flagged
+[listings] Sioux Falls: 1000 active, 5 flagged
+[listings] Yakima: 575 active, 5 flagged
+[listings] Sacramento: 1000 active, 5 flagged
+[why] generation stopped: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011Cgt3tQ7zL26AjNmbwKrAQ'}
 [why] narratives: 1411 cached, 80 written this run
 [assume] superstar flags: 0 (dormant — no lien-data key; seller/agent confirmations only)
 [listings] flagged 105 Star Opportunities across 236 metros -> /home/runner/work/atlas-engine/atlas-engine/data/star_opportunities.json
-[listings] API calls this run: 34 (budget 70) — monthly pace ≈ 1,020
+[listings] API calls this run: 36 (budget 70) — monthly pace ≈ 1,080
 [assumable] AL: 147,085 gov-backed of 500,135 purchases 2019-21 (29.4%)
 [assumable] AK: 27,224 gov-backed of 69,077 purchases 2019-21 (39.4%)
 [assumable] AZ: 287,912 gov-backed of 1,271,422 purchases 2019-21 (22.6%)
