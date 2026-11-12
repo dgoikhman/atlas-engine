@@ -7,32 +7,53 @@
 [census] ACS 2018 profile
 [done] context for 241 metros -> /home/runner/work/atlas-engine/atlas-engine/data/metro_context.csv
 [listings] scanning 21 metros (10 daily + 11 rotation of 232, cycle 21d)
-[listings] Florence: 467 active, 5 flagged
-[listings] Charleston: 278 active, 5 flagged
-[listings] Columbus: 656 active, 5 flagged
-[listings] Montgomery: 1000 active, 5 flagged
-[listings] Mobile: 1000 active, 5 flagged
-[listings] Jackson: 549 active, 5 flagged
-[listings] Huntington: 261 active, 5 flagged
-[listings] Macon: 1000 active, 5 flagged
-[listings] Terre Haute: 363 active, 5 flagged
-[listings] Jackson: 631 active, 5 flagged
-[listings] Hickory: 452 active, 5 flagged
-[listings] Rockford: 355 active, 5 flagged
-[listings] Lansing: 576 active, 5 flagged
-[listings] Lexington: 918 active, 5 flagged
-[listings] Trenton: 250 active, 5 flagged
-[listings] Atlanta: 1000 active, 5 flagged
-[listings] Bakersfield: 1000 active, 5 flagged
-[listings] Milwaukee: 1000 active, 5 flagged
-[listings] Raleigh: 1000 active, 5 flagged
-[listings] Olympia: 643 active, 5 flagged
-[listings] Santa Cruz: 167 active, 5 flagged
-[why] generation stopped: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CgwcAvqsBv1zDncHzqu1J'}
+[listings] Florence: HTTP 403 — skipping
+[listings] Florence: 0 active, 0 flagged
+[listings] Charleston: HTTP 403 — skipping
+[listings] Charleston: 0 active, 0 flagged
+[listings] Columbus: HTTP 403 — skipping
+[listings] Columbus: 0 active, 0 flagged
+[listings] Montgomery: HTTP 403 — skipping
+[listings] Montgomery: 0 active, 0 flagged
+[listings] Mobile: HTTP 403 — skipping
+[listings] Mobile: 0 active, 0 flagged
+[listings] Jackson: HTTP 403 — skipping
+[listings] Jackson: 0 active, 0 flagged
+[listings] Huntington: HTTP 403 — skipping
+[listings] Huntington: 0 active, 0 flagged
+[listings] Macon: HTTP 403 — skipping
+[listings] Macon: 0 active, 0 flagged
+[listings] Terre Haute: HTTP 403 — skipping
+[listings] Terre Haute: 0 active, 0 flagged
+[listings] Jackson: HTTP 403 — skipping
+[listings] Jackson: 0 active, 0 flagged
+[listings] South Bend: HTTP 403 — skipping
+[listings] South Bend: 0 active, 0 flagged
+[listings] Tulsa: HTTP 403 — skipping
+[listings] Tulsa: 0 active, 0 flagged
+[listings] Lakeland: HTTP 403 — skipping
+[listings] Lakeland: 0 active, 0 flagged
+[listings] Greenville: HTTP 403 — skipping
+[listings] Greenville: 0 active, 0 flagged
+[listings] Tampa: HTTP 403 — skipping
+[listings] Tampa: 0 active, 0 flagged
+[listings] College Station: HTTP 403 — skipping
+[listings] College Station: 0 active, 0 flagged
+[listings] Naples: HTTP 403 — skipping
+[listings] Naples: 0 active, 0 flagged
+[listings] Billings: HTTP 403 — skipping
+[listings] Billings: 0 active, 0 flagged
+[listings] Salt Lake City: HTTP 403 — skipping
+[listings] Salt Lake City: 0 active, 0 flagged
+[listings] Urban Honolulu: HTTP 403 — skipping
+[listings] Urban Honolulu: 0 active, 0 flagged
+[listings] Bend: HTTP 403 — skipping
+[listings] Bend: 0 active, 0 flagged
+[why] generation stopped: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CgyXN83YqNkn1QL9bvm2q'}
 [why] narratives: 1411 cached, 80 written this run
 [assume] superstar flags: 0 (dormant — no lien-data key; seller/agent confirmations only)
-[listings] flagged 105 Star Opportunities across 236 metros -> /home/runner/work/atlas-engine/atlas-engine/data/star_opportunities.json
-[listings] API calls this run: 34 (budget 70) — monthly pace ≈ 1,020
+[listings] flagged 0 Star Opportunities across 236 metros -> /home/runner/work/atlas-engine/atlas-engine/data/star_opportunities.json
+[listings] API calls this run: 21 (budget 70) — monthly pace ≈ 630
 [assumable] AL: 147,085 gov-backed of 500,135 purchases 2019-21 (29.4%)
 [assumable] AK: 27,224 gov-backed of 69,077 purchases 2019-21 (39.4%)
 [assumable] AZ: 287,912 gov-backed of 1,271,422 purchases 2019-21 (22.6%)
