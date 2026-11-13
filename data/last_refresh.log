@@ -27,29 +27,29 @@
 [listings] Terre Haute: 0 active, 0 flagged
 [listings] Jackson: HTTP 403 — skipping
 [listings] Jackson: 0 active, 0 flagged
-[listings] South Bend: HTTP 403 — skipping
-[listings] South Bend: 0 active, 0 flagged
-[listings] Tulsa: HTTP 403 — skipping
-[listings] Tulsa: 0 active, 0 flagged
-[listings] Lakeland: HTTP 403 — skipping
-[listings] Lakeland: 0 active, 0 flagged
-[listings] Greenville: HTTP 403 — skipping
-[listings] Greenville: 0 active, 0 flagged
-[listings] Tampa: HTTP 403 — skipping
-[listings] Tampa: 0 active, 0 flagged
-[listings] College Station: HTTP 403 — skipping
-[listings] College Station: 0 active, 0 flagged
-[listings] Naples: HTTP 403 — skipping
-[listings] Naples: 0 active, 0 flagged
-[listings] Billings: HTTP 403 — skipping
-[listings] Billings: 0 active, 0 flagged
-[listings] Salt Lake City: HTTP 403 — skipping
-[listings] Salt Lake City: 0 active, 0 flagged
-[listings] Urban Honolulu: HTTP 403 — skipping
-[listings] Urban Honolulu: 0 active, 0 flagged
-[listings] Bend: HTTP 403 — skipping
-[listings] Bend: 0 active, 0 flagged
-[why] generation stopped: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CgyXN83YqNkn1QL9bvm2q'}
+[listings] Joplin: HTTP 403 — skipping
+[listings] Joplin: 0 active, 0 flagged
+[listings] Erie: HTTP 403 — skipping
+[listings] Erie: 0 active, 0 flagged
+[listings] St. Louis: HTTP 403 — skipping
+[listings] St. Louis: 0 active, 0 flagged
+[listings] Knoxville: HTTP 403 — skipping
+[listings] Knoxville: 0 active, 0 flagged
+[listings] Kalamazoo: HTTP 403 — skipping
+[listings] Kalamazoo: 0 active, 0 flagged
+[listings] Cape Coral: HTTP 403 — skipping
+[listings] Cape Coral: 0 active, 0 flagged
+[listings] Lancaster: HTTP 403 — skipping
+[listings] Lancaster: 0 active, 0 flagged
+[listings] Kingston: HTTP 403 — skipping
+[listings] Kingston: 0 active, 0 flagged
+[listings] Yuba City: HTTP 403 — skipping
+[listings] Yuba City: 0 active, 0 flagged
+[listings] San Luis Obispo: HTTP 403 — skipping
+[listings] San Luis Obispo: 0 active, 0 flagged
+[listings] Chico: HTTP 403 — skipping
+[listings] Chico: 0 active, 0 flagged
+[why] generation stopped: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011Ch1PiN8WPEhprBBQdM91B'}
 [why] narratives: 1411 cached, 80 written this run
 [assume] superstar flags: 0 (dormant — no lien-data key; seller/agent confirmations only)
 [listings] flagged 0 Star Opportunities across 236 metros -> /home/runner/work/atlas-engine/atlas-engine/data/star_opportunities.json
