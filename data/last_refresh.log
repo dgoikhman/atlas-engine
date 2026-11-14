@@ -27,29 +27,29 @@
 [listings] Terre Haute: 0 active, 0 flagged
 [listings] Jackson: HTTP 403 — skipping
 [listings] Jackson: 0 active, 0 flagged
-[listings] Joplin: HTTP 403 — skipping
-[listings] Joplin: 0 active, 0 flagged
-[listings] Erie: HTTP 403 — skipping
-[listings] Erie: 0 active, 0 flagged
-[listings] St. Louis: HTTP 403 — skipping
-[listings] St. Louis: 0 active, 0 flagged
-[listings] Knoxville: HTTP 403 — skipping
-[listings] Knoxville: 0 active, 0 flagged
-[listings] Kalamazoo: HTTP 403 — skipping
-[listings] Kalamazoo: 0 active, 0 flagged
-[listings] Cape Coral: HTTP 403 — skipping
-[listings] Cape Coral: 0 active, 0 flagged
-[listings] Lancaster: HTTP 403 — skipping
-[listings] Lancaster: 0 active, 0 flagged
-[listings] Kingston: HTTP 403 — skipping
-[listings] Kingston: 0 active, 0 flagged
-[listings] Yuba City: HTTP 403 — skipping
-[listings] Yuba City: 0 active, 0 flagged
-[listings] San Luis Obispo: HTTP 403 — skipping
-[listings] San Luis Obispo: 0 active, 0 flagged
-[listings] Chico: HTTP 403 — skipping
-[listings] Chico: 0 active, 0 flagged
-[why] generation stopped: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011Ch1PiN8WPEhprBBQdM91B'}
+[listings] Shreveport: HTTP 403 — skipping
+[listings] Shreveport: 0 active, 0 flagged
+[listings] Jacksonville: HTTP 403 — skipping
+[listings] Jacksonville: 0 active, 0 flagged
+[listings] Longview: HTTP 403 — skipping
+[listings] Longview: 0 active, 0 flagged
+[listings] Bowling Green: HTTP 403 — skipping
+[listings] Bowling Green: 0 active, 0 flagged
+[listings] Columbia: HTTP 403 — skipping
+[listings] Columbia: 0 active, 0 flagged
+[listings] Omaha: HTTP 403 — skipping
+[listings] Omaha: 0 active, 0 flagged
+[listings] Hilton Head Island: HTTP 403 — skipping
+[listings] Hilton Head Island: 0 active, 0 flagged
+[listings] Salisbury: HTTP 403 — skipping
+[listings] Salisbury: 0 active, 0 flagged
+[listings] Provo: HTTP 403 — skipping
+[listings] Provo: 0 active, 0 flagged
+[listings] Greeley: HTTP 403 — skipping
+[listings] Greeley: 0 active, 0 flagged
+[listings] Santa Rosa: HTTP 403 — skipping
+[listings] Santa Rosa: 0 active, 0 flagged
+[why] generation stopped: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011Ch3Aaf5FdqtaTeVdMqyXP'}
 [why] narratives: 1411 cached, 80 written this run
 [assume] superstar flags: 0 (dormant — no lien-data key; seller/agent confirmations only)
 [listings] flagged 0 Star Opportunities across 236 metros -> /home/runner/work/atlas-engine/atlas-engine/data/star_opportunities.json
