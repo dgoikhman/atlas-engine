@@ -27,29 +27,29 @@
 [listings] Macon: 0 active, 0 flagged
 [listings] Jackson: HTTP 403 — skipping
 [listings] Jackson: 0 active, 0 flagged
-[listings] Brownsville: HTTP 403 — skipping
-[listings] Brownsville: 0 active, 0 flagged
-[listings] Joplin: HTTP 403 — skipping
-[listings] Joplin: 0 active, 0 flagged
-[listings] Johnson City: HTTP 403 — skipping
-[listings] Johnson City: 0 active, 0 flagged
-[listings] Longview: HTTP 403 — skipping
-[listings] Longview: 0 active, 0 flagged
-[listings] Muskegon: HTTP 403 — skipping
-[listings] Muskegon: 0 active, 0 flagged
-[listings] Houston: HTTP 403 — skipping
-[listings] Houston: 0 active, 0 flagged
-[listings] Columbus: HTTP 403 — skipping
-[listings] Columbus: 0 active, 0 flagged
-[listings] Hilton Head Island: HTTP 403 — skipping
-[listings] Hilton Head Island: 0 active, 0 flagged
-[listings] Asheville: HTTP 403 — skipping
-[listings] Asheville: 0 active, 0 flagged
-[listings] St. George: HTTP 403 — skipping
-[listings] St. George: 0 active, 0 flagged
-[listings] Eugene: HTTP 403 — skipping
-[listings] Eugene: 0 active, 0 flagged
-[why] generation stopped: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011Ch94exhqdkEtwVVSrKmaM'}
+[listings] Tuscaloosa: HTTP 403 — skipping
+[listings] Tuscaloosa: 0 active, 0 flagged
+[listings] Augusta: HTTP 403 — skipping
+[listings] Augusta: 0 active, 0 flagged
+[listings] Tulsa: HTTP 403 — skipping
+[listings] Tulsa: 0 active, 0 flagged
+[listings] Yuma: HTTP 403 — skipping
+[listings] Yuma: 0 active, 0 flagged
+[listings] Athens: HTTP 403 — skipping
+[listings] Athens: 0 active, 0 flagged
+[listings] Tampa: HTTP 403 — skipping
+[listings] Tampa: 0 active, 0 flagged
+[listings] Huntsville: HTTP 403 — skipping
+[listings] Huntsville: 0 active, 0 flagged
+[listings] Baltimore: HTTP 403 — skipping
+[listings] Baltimore: 0 active, 0 flagged
+[listings] Billings: HTTP 403 — skipping
+[listings] Billings: 0 active, 0 flagged
+[listings] Boise City: HTTP 403 — skipping
+[listings] Boise City: 0 active, 0 flagged
+[listings] Denver: HTTP 403 — skipping
+[listings] Denver: 0 active, 0 flagged
+[why] generation stopped: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011ChAvkDqQ15Gwzgh9UicEV'}
 [why] narratives: 1411 cached, 80 written this run
 [assume] superstar flags: 0 (dormant — no lien-data key; seller/agent confirmations only)
 [listings] flagged 0 Star Opportunities across 236 metros -> /home/runner/work/atlas-engine/atlas-engine/data/star_opportunities.json
