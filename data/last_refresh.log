@@ -27,29 +27,29 @@
 [listings] Macon: 0 active, 0 flagged
 [listings] Jackson: HTTP 403 — skipping
 [listings] Jackson: 0 active, 0 flagged
-[listings] Binghamton: HTTP 403 — skipping
-[listings] Binghamton: 0 active, 0 flagged
-[listings] Rockford: HTTP 403 — skipping
-[listings] Rockford: 0 active, 0 flagged
-[listings] Jacksonville: HTTP 403 — skipping
-[listings] Jacksonville: 0 active, 0 flagged
-[listings] New Orleans: HTTP 403 — skipping
-[listings] New Orleans: 0 active, 0 flagged
-[listings] Reading: HTTP 403 — skipping
-[listings] Reading: 0 active, 0 flagged
-[listings] Palm Bay: HTTP 403 — skipping
-[listings] Palm Bay: 0 active, 0 flagged
-[listings] Orlando: HTTP 403 — skipping
-[listings] Orlando: 0 active, 0 flagged
-[listings] Tucson: HTTP 403 — skipping
-[listings] Tucson: 0 active, 0 flagged
-[listings] Providence: HTTP 403 — skipping
-[listings] Providence: 0 active, 0 flagged
-[listings] Washington: HTTP 403 — skipping
-[listings] Washington: 0 active, 0 flagged
-[listings] San Diego: HTTP 403 — skipping
-[listings] San Diego: 0 active, 0 flagged
-[why] generation stopped: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011ChCq2XxJs4GT6tEvkEiCs'}
+[listings] Toledo: HTTP 403 — skipping
+[listings] Toledo: 0 active, 0 flagged
+[listings] Corpus Christi: HTTP 403 — skipping
+[listings] Corpus Christi: 0 active, 0 flagged
+[listings] Lafayette: HTTP 403 — skipping
+[listings] Lafayette: 0 active, 0 flagged
+[listings] Las Cruces: HTTP 403 — skipping
+[listings] Las Cruces: 0 active, 0 flagged
+[listings] Tallahassee: HTTP 403 — skipping
+[listings] Tallahassee: 0 active, 0 flagged
+[listings] Trenton: HTTP 403 — skipping
+[listings] Trenton: 0 active, 0 flagged
+[listings] Daphne: HTTP 403 — skipping
+[listings] Daphne: 0 active, 0 flagged
+[listings] Hilo: HTTP 403 — skipping
+[listings] Hilo: 0 active, 0 flagged
+[listings] Appleton: HTTP 403 — skipping
+[listings] Appleton: 0 active, 0 flagged
+[listings] Barnstable Town: HTTP 403 — skipping
+[listings] Barnstable Town: 0 active, 0 flagged
+[listings] Bellingham: HTTP 403 — skipping
+[listings] Bellingham: 0 active, 0 flagged
+[why] generation stopped: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011ChEh6ZfCZKqzJzAmxZnhn'}
 [why] narratives: 1411 cached, 80 written this run
 [assume] superstar flags: 0 (dormant — no lien-data key; seller/agent confirmations only)
 [listings] flagged 0 Star Opportunities across 236 metros -> /home/runner/work/atlas-engine/atlas-engine/data/star_opportunities.json
