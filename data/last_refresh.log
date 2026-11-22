@@ -27,29 +27,29 @@
 [listings] Macon: 0 active, 0 flagged
 [listings] Jackson: HTTP 403 — skipping
 [listings] Jackson: 0 active, 0 flagged
-[listings] El Paso: HTTP 403 — skipping
-[listings] El Paso: 0 active, 0 flagged
-[listings] Lafayette: HTTP 403 — skipping
-[listings] Lafayette: 0 active, 0 flagged
-[listings] Fort Wayne: HTTP 403 — skipping
-[listings] Fort Wayne: 0 active, 0 flagged
-[listings] Elkhart: HTTP 403 — skipping
-[listings] Elkhart: 0 active, 0 flagged
-[listings] Killeen: HTTP 403 — skipping
-[listings] Killeen: 0 active, 0 flagged
-[listings] York: HTTP 403 — skipping
-[listings] York: 0 active, 0 flagged
-[listings] Des Moines: HTTP 403 — skipping
-[listings] Des Moines: 0 active, 0 flagged
-[listings] Anchorage: HTTP 403 — skipping
-[listings] Anchorage: 0 active, 0 flagged
-[listings] Green Bay: HTTP 403 — skipping
-[listings] Green Bay: 0 active, 0 flagged
-[listings] Riverside: HTTP 403 — skipping
-[listings] Riverside: 0 active, 0 flagged
-[listings] Los Angeles: HTTP 403 — skipping
-[listings] Los Angeles: 0 active, 0 flagged
-[why] generation stopped: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011ChGVvqrxghQMb4Vvogzra'}
+[listings] Peoria: HTTP 403 — skipping
+[listings] Peoria: 0 active, 0 flagged
+[listings] Scranton: HTTP 403 — skipping
+[listings] Scranton: 0 active, 0 flagged
+[listings] Erie: HTTP 403 — skipping
+[listings] Erie: 0 active, 0 flagged
+[listings] Port St. Lucie: HTTP 403 — skipping
+[listings] Port St. Lucie: 0 active, 0 flagged
+[listings] Clarksville: HTTP 403 — skipping
+[listings] Clarksville: 0 active, 0 flagged
+[listings] Columbia: HTTP 403 — skipping
+[listings] Columbia: 0 active, 0 flagged
+[listings] Ann Arbor: HTTP 403 — skipping
+[listings] Ann Arbor: 0 active, 0 flagged
+[listings] Worcester: HTTP 403 — skipping
+[listings] Worcester: 0 active, 0 flagged
+[listings] Fargo: HTTP 403 — skipping
+[listings] Fargo: 0 active, 0 flagged
+[listings] Santa Maria: HTTP 403 — skipping
+[listings] Santa Maria: 0 active, 0 flagged
+[listings] Seattle: HTTP 403 — skipping
+[listings] Seattle: 0 active, 0 flagged
+[why] generation stopped: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011ChJRHu3Tw8FMpcJcjdr1w'}
 [why] narratives: 1411 cached, 80 written this run
 [assume] superstar flags: 0 (dormant — no lien-data key; seller/agent confirmations only)
 [listings] flagged 0 Star Opportunities across 236 metros -> /home/runner/work/atlas-engine/atlas-engine/data/star_opportunities.json
