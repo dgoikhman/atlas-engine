@@ -27,29 +27,29 @@
 [listings] Macon: 0 active, 0 flagged
 [listings] Jackson: HTTP 403 — skipping
 [listings] Jackson: 0 active, 0 flagged
-[listings] Peoria: HTTP 403 — skipping
-[listings] Peoria: 0 active, 0 flagged
-[listings] Scranton: HTTP 403 — skipping
-[listings] Scranton: 0 active, 0 flagged
-[listings] Erie: HTTP 403 — skipping
-[listings] Erie: 0 active, 0 flagged
-[listings] Port St. Lucie: HTTP 403 — skipping
-[listings] Port St. Lucie: 0 active, 0 flagged
-[listings] Clarksville: HTTP 403 — skipping
-[listings] Clarksville: 0 active, 0 flagged
-[listings] Columbia: HTTP 403 — skipping
-[listings] Columbia: 0 active, 0 flagged
-[listings] Ann Arbor: HTTP 403 — skipping
-[listings] Ann Arbor: 0 active, 0 flagged
-[listings] Worcester: HTTP 403 — skipping
-[listings] Worcester: 0 active, 0 flagged
-[listings] Fargo: HTTP 403 — skipping
-[listings] Fargo: 0 active, 0 flagged
-[listings] Santa Maria: HTTP 403 — skipping
-[listings] Santa Maria: 0 active, 0 flagged
-[listings] Seattle: HTTP 403 — skipping
-[listings] Seattle: 0 active, 0 flagged
-[why] generation stopped: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011ChJRHu3Tw8FMpcJcjdr1w'}
+[listings] Warner Robins: HTTP 403 — skipping
+[listings] Warner Robins: 0 active, 0 flagged
+[listings] Lake Charles: HTTP 403 — skipping
+[listings] Lake Charles: 0 active, 0 flagged
+[listings] Evansville: HTTP 403 — skipping
+[listings] Evansville: 0 active, 0 flagged
+[listings] Rochester: HTTP 403 — skipping
+[listings] Rochester: 0 active, 0 flagged
+[listings] Cincinnati: HTTP 403 — skipping
+[listings] Cincinnati: 0 active, 0 flagged
+[listings] Charleston: HTTP 403 — skipping
+[listings] Charleston: 0 active, 0 flagged
+[listings] Gainesville: HTTP 403 — skipping
+[listings] Gainesville: 0 active, 0 flagged
+[listings] Visalia: HTTP 403 — skipping
+[listings] Visalia: 0 active, 0 flagged
+[listings] Dallas: HTTP 403 — skipping
+[listings] Dallas: 0 active, 0 flagged
+[listings] Stockton: HTTP 403 — skipping
+[listings] Stockton: 0 active, 0 flagged
+[listings] Spokane: HTTP 403 — skipping
+[listings] Spokane: 0 active, 0 flagged
+[why] generation stopped: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011ChLeUhewzk71HpP6C1TK9'}
 [why] narratives: 1411 cached, 80 written this run
 [assume] superstar flags: 0 (dormant — no lien-data key; seller/agent confirmations only)
 [listings] flagged 0 Star Opportunities across 236 metros -> /home/runner/work/atlas-engine/atlas-engine/data/star_opportunities.json
