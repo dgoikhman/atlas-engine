@@ -27,29 +27,29 @@
 [listings] Macon: 0 active, 0 flagged
 [listings] Jackson: HTTP 403 — skipping
 [listings] Jackson: 0 active, 0 flagged
-[listings] Gulfport: HTTP 403 — skipping
-[listings] Gulfport: 0 active, 0 flagged
-[listings] Fort Smith: HTTP 403 — skipping
-[listings] Fort Smith: 0 active, 0 flagged
-[listings] Davenport: HTTP 403 — skipping
-[listings] Davenport: 0 active, 0 flagged
-[listings] Savannah: HTTP 403 — skipping
-[listings] Savannah: 0 active, 0 flagged
-[listings] Harrisburg: HTTP 403 — skipping
-[listings] Harrisburg: 0 active, 0 flagged
-[listings] Philadelphia: HTTP 403 — skipping
-[listings] Philadelphia: 0 active, 0 flagged
-[listings] Cape Coral: HTTP 403 — skipping
-[listings] Cape Coral: 0 active, 0 flagged
-[listings] Wilmington: HTTP 403 — skipping
-[listings] Wilmington: 0 active, 0 flagged
-[listings] Las Vegas: HTTP 403 — skipping
-[listings] Las Vegas: 0 active, 0 flagged
-[listings] Reno: HTTP 403 — skipping
-[listings] Reno: 0 active, 0 flagged
-[listings] Austin: HTTP 403 — skipping
-[listings] Austin: 0 active, 0 flagged
-[why] generation stopped: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011ChNRbwCDJxyjg36wy6Nsi'}
+[listings] Columbia: HTTP 403 — skipping
+[listings] Columbia: 0 active, 0 flagged
+[listings] Houma: HTTP 403 — skipping
+[listings] Houma: 0 active, 0 flagged
+[listings] Birmingham: HTTP 403 — skipping
+[listings] Birmingham: 0 active, 0 flagged
+[listings] Baton Rouge: HTTP 403 — skipping
+[listings] Baton Rouge: 0 active, 0 flagged
+[listings] Lynchburg: HTTP 403 — skipping
+[listings] Lynchburg: 0 active, 0 flagged
+[listings] Hagerstown: HTTP 403 — skipping
+[listings] Hagerstown: 0 active, 0 flagged
+[listings] Albuquerque: HTTP 403 — skipping
+[listings] Albuquerque: 0 active, 0 flagged
+[listings] Madison: HTTP 403 — skipping
+[listings] Madison: 0 active, 0 flagged
+[listings] Salisbury: HTTP 403 — skipping
+[listings] Salisbury: 0 active, 0 flagged
+[listings] Modesto: HTTP 403 — skipping
+[listings] Modesto: 0 active, 0 flagged
+[listings] San Jose: HTTP 403 — skipping
+[listings] San Jose: 0 active, 0 flagged
+[why] generation stopped: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011ChQGbGFdSGFeDmzui1sFm'}
 [why] narratives: 1411 cached, 80 written this run
 [assume] superstar flags: 0 (dormant — no lien-data key; seller/agent confirmations only)
 [listings] flagged 0 Star Opportunities across 236 metros -> /home/runner/work/atlas-engine/atlas-engine/data/star_opportunities.json
