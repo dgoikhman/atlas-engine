@@ -27,29 +27,29 @@
 [listings] Macon: 0 active, 0 flagged
 [listings] Jackson: HTTP 403 — skipping
 [listings] Jackson: 0 active, 0 flagged
-[listings] McAllen: HTTP 403 — skipping
-[listings] McAllen: 0 active, 0 flagged
-[listings] Utica: HTTP 403 — skipping
-[listings] Utica: 0 active, 0 flagged
-[listings] Winston: HTTP 403 — skipping
-[listings] Winston: 0 active, 0 flagged
-[listings] Bowling Green: HTTP 403 — skipping
-[listings] Bowling Green: 0 active, 0 flagged
-[listings] Allentown: HTTP 403 — skipping
-[listings] Allentown: 0 active, 0 flagged
-[listings] Racine: HTTP 403 — skipping
-[listings] Racine: 0 active, 0 flagged
-[listings] Richmond: HTTP 403 — skipping
-[listings] Richmond: 0 active, 0 flagged
-[listings] Lake Havasu City: HTTP 403 — skipping
-[listings] Lake Havasu City: 0 active, 0 flagged
-[listings] Minneapolis: HTTP 403 — skipping
-[listings] Minneapolis: 0 active, 0 flagged
-[listings] Medford: HTTP 403 — skipping
-[listings] Medford: 0 active, 0 flagged
-[listings] Bremerton: HTTP 403 — skipping
-[listings] Bremerton: 0 active, 0 flagged
-[why] generation stopped: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011ChS8e3CikGhaC8QvhUdR3'}
+[listings] Kingsport: HTTP 403 — skipping
+[listings] Kingsport: 0 active, 0 flagged
+[listings] Cleveland: HTTP 403 — skipping
+[listings] Cleveland: 0 active, 0 flagged
+[listings] Greensboro: HTTP 403 — skipping
+[listings] Greensboro: 0 active, 0 flagged
+[listings] Roanoke: HTTP 403 — skipping
+[listings] Roanoke: 0 active, 0 flagged
+[listings] Virginia Beach: HTTP 403 — skipping
+[listings] Virginia Beach: 0 active, 0 flagged
+[listings] Burlington: HTTP 403 — skipping
+[listings] Burlington: 0 active, 0 flagged
+[listings] Charlottesville: HTTP 403 — skipping
+[listings] Charlottesville: 0 active, 0 flagged
+[listings] Portland: HTTP 403 — skipping
+[listings] Portland: 0 active, 0 flagged
+[listings] Bridgeport: HTTP 403 — skipping
+[listings] Bridgeport: 0 active, 0 flagged
+[listings] Colorado Springs: HTTP 403 — skipping
+[listings] Colorado Springs: 0 active, 0 flagged
+[listings] Oxnard: HTTP 403 — skipping
+[listings] Oxnard: 0 active, 0 flagged
+[why] generation stopped: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011ChU1aB64EpEvdEEkXvanG'}
 [why] narratives: 1411 cached, 80 written this run
 [assume] superstar flags: 0 (dormant — no lien-data key; seller/agent confirmations only)
 [listings] flagged 0 Star Opportunities across 236 metros -> /home/runner/work/atlas-engine/atlas-engine/data/star_opportunities.json
